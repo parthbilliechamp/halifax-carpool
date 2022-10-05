@@ -29,7 +29,7 @@ test:
 deploy-test:
   stage: deploy
   tags:
-    - ugrad
+    - dalfcs_gitlab_docker_ci
   image: ruby:2.6
   script:
     - apt get update -qy
