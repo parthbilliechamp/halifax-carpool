@@ -30,6 +30,7 @@ deploy-test:
   stage: deploy
   tags:
     - dalfcs_gitlab_docker_ci
+    - dalfcs_docker_kvm
   image: ruby:2.6
   script:
     - apt get update -qy
