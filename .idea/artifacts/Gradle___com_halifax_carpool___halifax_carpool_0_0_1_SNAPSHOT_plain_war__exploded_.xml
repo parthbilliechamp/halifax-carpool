@@ -1,0 +1,53 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Gradle : com.halifax.carpool : halifax-carpool-0.0.1-SNAPSHOT-plain.war (exploded)">
+    <output-path>$PROJECT_DIR$/halifax-carpool/build/libs/exploded/halifax-carpool-0.0.1-SNAPSHOT-plain.war</output-path>
+    <properties id="gradle-properties">
+      <options external-project-path="$PROJECT_DIR$/halifax-carpool">
+        <buildTaskPath>:war_exploded</buildTaskPath>
+        <cleanTaskPath>:cleanWar_exploded</cleanTaskPath>
+        <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/halifax-carpool/build/libs/exploded/halifax-carpool-0.0.1-SNAPSHOT-plain.war/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="halifax-carpool.main/web/Web Gradle : halifax-carpool-0.0.1-SNAPSHOT-plain.war" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="halifax-carpool.main" />
+          <element id="dir-copy" path="$PROJECT_DIR$/halifax-carpool/build/resources/main" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-web:2.7.4" />
+          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-json:2.7.4" />
+          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter:2.7.4" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.3.23" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.4" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.4" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.13.4" />
+          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:2.7.4" />
+          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot:2.7.4" />
+          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-logging:2.7.4" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.yaml:snakeyaml:1.30" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.3.23" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.13.4" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.13.4" />
+          <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.11" />
+          <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-to-slf4j:2.17.2" />
+          <element id="library" level="project" name="Gradle: org.slf4j:jul-to-slf4j:1.7.36" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.3.23" />
+          <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.11" />
+          <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.36" />
+          <element id="library" level="project" name="Gradle: org.apache.logging.log4j:log4j-api:2.17.2" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/halifax-carpool/halifax-carpool.iml" filepath="$PROJECT_DIR$/halifax-carpool/halifax-carpool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/halifax-carpool.main.iml" filepath="$PROJECT_DIR$/.idea/modules/halifax-carpool.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/halifax-carpool.test.iml" filepath="$PROJECT_DIR$/.idea/modules/halifax-carpool.test.iml" />
+    </modules>
+  </component>
+</project>
