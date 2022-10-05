@@ -12,9 +12,7 @@ build:
   tags:
     - grad
   image: gradle:alpine
-  script:
-    - cd halifax-carpool
-    - ./gradlew assemble
+  script: ./gradlew assemble
   only:
     refs:
       - branches
@@ -23,9 +21,7 @@ test:
   tags:
     - grad
   image: gradle:alpine
-  script:
-    - cd halifax-carpool
-    - ./gradlew assemble
+  script: ./gradlew assemble
   only:
     refs:
       - branches
@@ -42,4 +38,3 @@ deploy-test:
     - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
   only:
     - develop
-
