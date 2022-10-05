@@ -10,4 +10,9 @@ class HalifaxCarpoolApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void initialTest() {
+		assert true;
+	}
+
 }
