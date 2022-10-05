@@ -12,7 +12,7 @@ class HalifaxCarpoolApplicationTests {
 
 	@Test
 	void initialTest() {
-		assert true;
+		assert false;
 	}
 
 }
