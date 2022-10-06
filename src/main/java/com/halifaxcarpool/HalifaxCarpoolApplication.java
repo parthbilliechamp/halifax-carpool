@@ -8,7 +8,7 @@ public class HalifaxCarpoolApplication {
 
 	public static void main(String[] args) {
 		//SpringApplication.run(HalifaxCarpoolApplication.class, args);
-		System.out.println("Application running successfully");
+		System.out.println("Application running successfully!!!");
 	}
 
 }
