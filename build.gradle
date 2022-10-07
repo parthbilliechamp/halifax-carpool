@@ -1,0 +1,37 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.4'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+}
+
+group = 'com'
+version = 'v0.0.1'
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+
+	manifest {
+		attributes 'Main-Class': 'com.halifaxcarpool.HalifaxCarpoolApplication'
+	}
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
+
+dependencies {
+	//implementation 'org.springframework.boot:spring-boot-starter-mail'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	//runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
