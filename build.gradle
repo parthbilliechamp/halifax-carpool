@@ -27,14 +27,14 @@ jar {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	//implementation 'org.springframework.boot:spring-boot-starter-mail'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-	runtimeOnly 'mysql:mysql-connector-java'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+	//implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	//runtimeOnly 'mysql:mysql-connector-java'
+	//testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
