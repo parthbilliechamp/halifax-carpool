@@ -7,8 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HalifaxCarpoolApplication {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(HalifaxCarpoolApplication.class, args);
-		System.out.println("Application running successfully!!!");
+		SpringApplication.run(HalifaxCarpoolApplication.class, args);
 	}
 
 }
