@@ -10,7 +10,7 @@ stages:
 build:
   stage: build
   tags:
-    - grad
+    - dalfcs_gitlab_docker_ci
   image: gradle:alpine
   script: ./gradlew assemble
   only:
@@ -19,7 +19,7 @@ build:
 test:
   stage: test
   tags:
-    - grad
+    - dalfcs_gitlab_docker_ci
   image: gradle:alpine
   script: ./gradlew check
   only:
