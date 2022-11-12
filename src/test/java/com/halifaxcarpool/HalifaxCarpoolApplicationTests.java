@@ -1,6 +1,5 @@
 package com.halifaxcarpool;
 
-import com.halifaxcarpool.database.DatabaseConnector;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,18 +32,18 @@ class HalifaxCarpoolApplicationTests {
 	void initialTest() {
 
 	}
-	@Test
-	void testDbConnection() {
-		try {
-			Connection connection = DatabaseConnector.getConnection(url, userName, password);
-			PreparedStatement ps = connection.prepareStatement("select * from movie");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				System.out.println(rs.getString(1));
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
+//	@Test
+//	void testDbConnection() {
+//		try {
+//			Connection connection = DatabaseConnector.getConnection(url, userName, password);
+//			PreparedStatement ps = connection.prepareStatement("select * from movie");
+//			ResultSet rs = ps.executeQuery();
+//			while (rs.next()) {
+//				System.out.println(rs.getString(1));
+//			}
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//	}
 
 }
