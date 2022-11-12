@@ -34,8 +34,9 @@ public class ViewRidesDaoImpl implements IViewRidesDao {
         ride.rideId = 1;
         ride.startLocation = "Halifax public garden";
         ride.endLocation = "Dalhousie university";
-        return new ArrayList<>(List.of(ride));
-
+        List<Ride> list = new ArrayList<>();
+        list.add(ride);
+        return list;
     }
 
     @Override
