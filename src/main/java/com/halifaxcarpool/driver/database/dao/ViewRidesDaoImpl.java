@@ -49,7 +49,9 @@ public class ViewRidesDaoImpl implements IViewRidesDao {
             database.closeDatabaseConnection();
         }
         Ride ride = new Ride();
-        return new ArrayList<>(List.of(ride));
+        List<Ride> list = new ArrayList<>();
+        list.add(ride);
+        return list;
     }
 
 }
