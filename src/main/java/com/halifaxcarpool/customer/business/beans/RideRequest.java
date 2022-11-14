@@ -7,4 +7,5 @@ public class RideRequest {
     public int customerId;
     String startLocationCoordinates;
     String endLocationCoordinates;
+
 }
