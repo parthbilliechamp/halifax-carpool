@@ -1,7 +1,7 @@
 package com.halifaxcarpool.driver.controller;
 
-import com.halifaxcarpool.driver.business.IViewRides;
-import com.halifaxcarpool.driver.business.ViewRidesImpl;
+import com.halifaxcarpool.driver.business.IRide;
+import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.presentation.DriverUI;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class DriverController {
     @GetMapping("/driver/view_rides")
     @ResponseBody
     String viewRides() {
-        IViewRides viewRides = new ViewRidesImpl();
+        IRide viewRides = new RideImpl();
         List<Ride> rideList = viewRides.getAllRides();
         return driverUI.displayRides(rideList);
     }

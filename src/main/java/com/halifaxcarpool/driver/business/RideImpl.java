@@ -6,7 +6,7 @@ import com.halifaxcarpool.driver.database.dao.ViewRidesDaoImpl;
 
 import java.util.List;
 
-public class ViewRidesImpl implements IViewRides {
+public class RideImpl implements IRide {
 
     IViewRidesDao viewRidesDao = new ViewRidesDaoImpl();
 
@@ -16,7 +16,7 @@ public class ViewRidesImpl implements IViewRides {
     }
 
     @Override
-    public List<Ride> getRidesByDriver(int driverId) {
+    public List<Ride> getAllRidesFor(int driverId) {
         return viewRidesDao.getAllRidesForDriver(driverId);
     }
 

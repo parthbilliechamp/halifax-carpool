@@ -4,10 +4,10 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.List;
 
-public interface IViewRides {
+public interface IRide {
 
     List<Ride> getAllRides();
 
-    List<Ride> getRidesByDriver(int driverId);
+    List<Ride> getAllRidesFor(int driverId);
 
 }
