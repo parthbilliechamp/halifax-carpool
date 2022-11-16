@@ -8,8 +8,8 @@ import java.util.List;
 public class RideRequestImpl implements IRideRequest {
 
     @Override
-    public boolean createRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao) {
-        return rideRequestsDao.insertRideRequest(rideRequest);
+    public void createRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao) {
+        rideRequestsDao.insertRideRequest(rideRequest);
     }
 
     @Override

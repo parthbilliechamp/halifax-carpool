@@ -39,10 +39,10 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/create-ride-request")
-    public boolean createRideRequest(@RequestBody RideRequest rideRequest){
+    public void createRideRequest(@RequestBody RideRequest rideRequest){
         IRideRequest rideRequestForCreation = new RideRequestImpl();
         IRideRequestsDao rideRequestsDao = new IRideRequestsDaoImpl();
-        return rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
+        rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
     }
 
 }

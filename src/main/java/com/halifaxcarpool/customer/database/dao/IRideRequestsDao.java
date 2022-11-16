@@ -4,5 +4,5 @@ import com.halifaxcarpool.customer.business.beans.RideRequest;
 
 public interface IRideRequestsDao {
 
-    public boolean insertRideRequest(RideRequest rideRequest);
+    public void insertRideRequest(RideRequest rideRequest);
 }
