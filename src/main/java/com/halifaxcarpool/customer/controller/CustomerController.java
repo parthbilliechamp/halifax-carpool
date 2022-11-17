@@ -1,19 +1,21 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.customer.CustomerConstants;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
 import com.halifaxcarpool.customer.business.authentication.*;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.customer.business.IRideRequest;
-import com.halifaxcarpool.customer.presentation.UserUI;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Controller
 public class CustomerController {
-
-    UserUI userUI = new UserUI();
+    private static final String VIEW_RIDE_REQUESTS = "view_ride_requests";
 
     @GetMapping("/customer/login")
     @ResponseBody
@@ -26,12 +28,13 @@ public class CustomerController {
         return "";
     }
 
-    @GetMapping("/customer/view_ride-requests")
-    @ResponseBody
-    String viewRides() {
+    @GetMapping("/customer/view_ride_requests")
+    String viewRides(Model model) {
+        String rideRequestsAttribute = "rideRequests";
         IRideRequest viewRideRequests = new RideRequestImpl();
-        List<RideRequest> rideList = viewRideRequests.viewRideRequests(1);
-        return userUI.viewRideRequests();
+        List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(1);
+        model.addAttribute(rideRequestsAttribute, rideRequests);
+        return VIEW_RIDE_REQUESTS;
     }
 
 }
