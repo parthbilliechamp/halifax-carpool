@@ -8,7 +8,7 @@ public interface IRideRequest {
 
     void createRideRequest(RideRequest rideRequest);
 
-    List<RideRequest> viewRideRequests(int userId);
+    List<RideRequest> viewRideRequests(int customerId);
 
     void cancelRideRequest(int rideId);
 
