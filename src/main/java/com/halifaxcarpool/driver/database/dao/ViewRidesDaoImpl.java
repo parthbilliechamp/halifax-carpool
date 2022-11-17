@@ -28,7 +28,7 @@ public class ViewRidesDaoImpl implements IViewRidesDao {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            database.closeDatabaseConnection();
+            //database.closeDatabaseConnection();
         }
         Ride ride = new Ride();
         ride.rideId = 1;
@@ -47,7 +47,7 @@ public class ViewRidesDaoImpl implements IViewRidesDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            database.closeDatabaseConnection();
+            //database.closeDatabaseConnection();
         }
         Ride ride = new Ride();
         List<Ride> list = new ArrayList<>();

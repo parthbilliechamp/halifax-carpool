@@ -26,7 +26,7 @@ public class DatabaseConnection {
     public static Connection getConnectionInstance() {
         if (null == connection) {
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mydb", "root", "champ123");
+                connection = DriverManager.getConnection("jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_12_DEVINT", "CSCI5308_12_DEVINT_USER", "beRuqMq7cG");
             } catch (Exception e) {
                 e.printStackTrace();
             }
