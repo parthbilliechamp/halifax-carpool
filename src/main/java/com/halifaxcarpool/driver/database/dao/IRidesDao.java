@@ -4,9 +4,9 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.List;
 
-public interface IViewRidesDao {
+public interface IRidesDao {
 
-    List<Ride> getAllRides();
+    boolean createRide(Ride ride);
 
-    List<Ride> getAllRidesForDriver(int driverId);
+    List<Ride> getRides(int driverId);
 }

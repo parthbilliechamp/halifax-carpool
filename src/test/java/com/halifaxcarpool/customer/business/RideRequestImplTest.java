@@ -1,8 +1,6 @@
 package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
-import com.halifaxcarpool.customer.database.dao.RideRequestsDaoMockImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

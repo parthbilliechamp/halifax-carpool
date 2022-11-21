@@ -1,16 +1,16 @@
 package com.halifaxcarpool.customer.controller;
 
-import com.halifaxcarpool.customer.CustomerConstants;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
 import com.halifaxcarpool.customer.business.authentication.*;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
-import com.halifaxcarpool.customer.database.dao.IRideRequestsDaoImpl;
-import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.customer.business.IRideRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
