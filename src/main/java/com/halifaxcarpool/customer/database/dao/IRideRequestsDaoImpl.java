@@ -7,6 +7,7 @@ import com.halifaxcarpool.customer.business.beans.RideRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class IRideRequestsDaoImpl implements IRideRequestsDao {
 
@@ -32,5 +33,10 @@ public class IRideRequestsDaoImpl implements IRideRequestsDao {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @Override
+    public List<RideRequest> viewRideRequests(int customerId) {
+        return null;
     }
 }
