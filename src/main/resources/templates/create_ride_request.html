@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <title class="header">
+    Create Ride Request
+  </title>
+</head>
+<body>
+<br />
+<div class="request_form">
+  <h3>Customer Ride Request</h3>
+  <form action="#" th:action="@{/customer/create_ride_request}" th:object="${rideRequest}" method="post">
+    <label>Start Location:</label><br />
+    <input type="text" th:field="*{startLocation}"><br />
+    <label>End Location: </label><br />
+    <input type="text" th:field="*{endLocation}"><br />
+
+    <input type="submit" value="Request" />
+  </form>
+
+</div>
+</body>
+</html>
