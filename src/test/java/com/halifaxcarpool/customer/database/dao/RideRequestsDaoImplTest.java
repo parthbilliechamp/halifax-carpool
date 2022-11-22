@@ -48,7 +48,7 @@ public class RideRequestsDaoImplTest {
         rideRequestMock.insertRideRequest(rideRequest);
         RideRequest rideRequestNew = ((RideRequestsDaoMockImpl) rideRequestMock).findRideRequest(rideId);
 
-        assert rideRequestNew.getCustomerId() == expectedCustomerId;
+        assert rideRequestNew.getCustomerId() != expectedCustomerId;
     }
 
 }
