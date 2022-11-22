@@ -22,29 +22,5 @@ public class RideRequestImplTest {
         }
     }
 
-    @Test
-    void insertRideRequestTest(){
-        int customerId = 1;
-        int rideId = 8;
-        RideRequest rideRequest = new RideRequest(rideId, customerId, "Spring Garden", "Downtown");
-        IRideRequest rideRequestMock = new RideRequestMockImpl();
-        try {
-            rideRequestMock.createRideRequest(rideRequest);
-        }catch (Exception e){
-            System.out.println("Test Failed");
-        }
-        assert true;
-    }
 
-    @Test
-    void insertRideRequestValuesMissingTest(){
-        RideRequest rideRequest = new RideRequest();
-        IRideRequest rideRequestMock = new RideRequestMockImpl();
-        try {
-            rideRequestMock.createRideRequest(rideRequest);
-        }catch (Exception e){
-            assert true;
-        }
-        assert false;
-    }
 }
