@@ -21,21 +21,26 @@ public class RidesDaoMockImpl implements IRidesDao {
     }
 
     @Override
-    public List<Ride> getRides(int driverId) {
-        return mockData.get(driverId);
+    public List<Ride> getRides(int rideId) {
+        return mockData.get(rideId);
+    }
+
+    @Override
+    public Ride getRide(int rideId) {
+        return null;
     }
 
     private static void populateMockData() {
-        int driverId = 1;
+        int rideId = 1;
         List<Ride> rides = new ArrayList<>();
-        rides.add(new Ride(1, driverId, "Barrington st", "Dalhousie", 3, 1, ""));
-        rides.add(new Ride(2, driverId, "Park Lane", "Bayers rd.", 1, 0, ""));
-        mockData.put(driverId, rides);
-        driverId = 2;
+        rides.add(new Ride(rideId, 1, "Barrington st", "Dalhousie", 3, 1, ""));
+        rides.add(new Ride(rideId, 2, "Park Lane", "Bayers rd.", 1, 0, ""));
+        mockData.put(rideId, rides);
+        rideId = 2;
         rides = new ArrayList<>();
-        rides.add(new Ride(3, driverId, "Citadel", "Gottingen st.", 3, 1, ""));
-        rides.add(new Ride(4, driverId, "Halifax Park", "Cunard st.", 4, 1, ""));
-        mockData.put(driverId, rides);
+        rides.add(new Ride(rideId, 3, "Citadel", "Gottingen st.", 3, 1, ""));
+        rides.add(new Ride(rideId, 4, "Halifax Park", "Cunard st.", 4, 1, ""));
+        mockData.put(rideId, rides);
     }
 
 }

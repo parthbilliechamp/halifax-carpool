@@ -13,12 +13,12 @@ public class RidesDaoImplTest {
 
     @Test
     void viewRidesTest() {
-        int driverId = 1;
+        int rideId = 1;
         IRidesDao ridesDao = new RidesDaoMockImpl();
-        List<Ride> rides = ridesDao.getRides(driverId);
+        List<Ride> rides = ridesDao.getRides(rideId);
         assert 2 == rides.size();
         for (Ride ride: rides) {
-            assert driverId == ride.driverId;
+            assert rideId == ride.rideId;
         }
     }
 

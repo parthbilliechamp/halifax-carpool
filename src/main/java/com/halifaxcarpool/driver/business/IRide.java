@@ -11,4 +11,6 @@ public interface IRide {
 
     List<Ride> viewRides(int driverId, IRidesDao ridesDao);
 
+    Ride getRide(int rideId, IRidesDao ridesDao);
+
 }

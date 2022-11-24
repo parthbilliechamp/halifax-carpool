@@ -9,4 +9,6 @@ public interface IRidesDao {
     boolean createRide(Ride ride);
 
     List<Ride> getRides(int driverId);
+
+    Ride getRide(int rideId);
 }

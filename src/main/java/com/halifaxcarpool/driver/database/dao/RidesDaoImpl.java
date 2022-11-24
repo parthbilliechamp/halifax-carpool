@@ -38,6 +38,11 @@ public class RidesDaoImpl implements IRidesDao {
         return new ArrayList<>();
     }
 
+    @Override
+    public Ride getRide(int rideId) {
+        return null;
+    }
+
     private static List<Ride> buildRideRequestsFrom(ResultSet resultSet) throws SQLException {
 
         List<Ride> rideList = new ArrayList<>();

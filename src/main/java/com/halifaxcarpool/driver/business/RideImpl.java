@@ -20,4 +20,9 @@ public class RideImpl implements IRide {
         return ridesDao.getRides(driverId);
     }
 
+    @Override
+    public Ride getRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.getRide(rideId);
+    }
+
 }
