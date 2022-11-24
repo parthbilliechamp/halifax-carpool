@@ -14,14 +14,15 @@ public class CustomerRegistrationDaoImpl implements ICustomerRegistrationDao {
     Connection connection;
 
     public CustomerRegistrationDaoImpl() {
-        database = new DatabaseImpl();
-        connection = database.openDatabaseConnection();
+
     }
 
     public void registerCustomer(Customer customer) {
         try {
+            database = new DatabaseImpl();
+            connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO `CSCI5308_12_DEVINT`.`customer` (`customer_id`, `customer_name`, `customer_contact`, `customer_email`) VALUES (3, 'Denis NewLop', '(852) 865-623', 'Sh@fdd.com')");
+            statement.executeQuery("CALL insert_customer_details('"+ customer.getCustomerName() + "', '" + customer.getCustomerContact() + "', '" + customer.getCustomerEmail() + "', '" + customer.getCustomerPassword() + "')");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

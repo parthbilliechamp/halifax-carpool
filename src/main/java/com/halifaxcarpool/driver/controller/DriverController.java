@@ -1,5 +1,8 @@
 package com.halifaxcarpool.driver.controller;
 
+import com.halifaxcarpool.customer.business.beans.Customer;
+import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
+import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.beans.Driver;
@@ -13,6 +16,8 @@ import com.halifaxcarpool.driver.business.registration.IDriverRegistration;
 import com.halifaxcarpool.driver.presentation.DriverUI;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -23,13 +28,18 @@ public class DriverController {
     private static final String DRIVER_REGISTRATION_FORM = "register_driver_form";
 
     DriverUI driverUI = new DriverUI();
+
     @GetMapping("/driver/register")
-    String registerCustomer(Model model) {
-        IDriverRegistration driverRegistration = new DriverRegistrationImpl();
-        Driver driver = new Driver();
-        driverRegistration.registerDriver(driver);
-        model.addAttribute("driverAttribute", driver);
+    String registerDriver(Model model) {
+        model.addAttribute("driver", new Driver());
         return DRIVER_REGISTRATION_FORM;
+    }
+
+    @PostMapping("/driver/register/save")
+    String saveRegisteredCustomer(@ModelAttribute("driver") Driver driver) {
+        IDriverRegistration driverRegistration = new DriverRegistrationImpl();
+        driverRegistration.registerDriver(driver);
+        return "index.html";
     }
 
     @GetMapping("/driver/view_rides")

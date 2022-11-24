@@ -31,15 +31,15 @@ public class CustomerController {
 
     @GetMapping("/customer/register")
     String registerCustomer(Model model) {
-        Customer customer = new Customer();
-        model.addAttribute("customerAttribute", customer);
+        model.addAttribute("customer", new Customer());
         return CUSTOMER_REGISTRATION_FORM;
     }
 
     @PostMapping("/customer/register/save")
     String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer) {
-//        Customer existingCustomer = cus
-        return null;
+        ICustomerRegistration customerRegistration = new CustomerRegistrationImpl();
+        customerRegistration.registerCustomer(customer);
+        return "index.html";
     }
 
     @GetMapping("/customer/view_ride_requests")

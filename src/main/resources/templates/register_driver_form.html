@@ -1,82 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" th:href="@{/css/demo.css}">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-        crossorigin="anonymous">
-  <title class="header">
-    Register Driver
-  </title>
-  <style>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        Register Driver
+    </title>
+    <style>
 
-    .gradient-custom-3 {
-      /* fallback for old browsers */
-      background: #84fab0;
+        .gradient-custom-3 {
+            /* fallback for old browsers */
+            background: #84fab0;
 
-      /* Chrome 10-25, Safari 5.1-6 */
-      background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
 
-      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-      background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
-    }
-    .gradient-custom-4 {
-      /* fallback for old browsers */
-      background: #84fab0;
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
+        }
 
-      /* Chrome 10-25, Safari 5.1-6 */
-      background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
+        .gradient-custom-4 {
+            /* fallback for old browsers */
+            background: #84fab0;
 
-      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-      background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
-    }
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
 
-  </style>
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+        }
+
+    </style>
 </head>
 <body>
 
 
+<section class="vh-200 bg-image"
+         style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card m-3" style="border-radius: 15px;">
+                        <div class="card-body p-6 m-2">
+                            <h2 class="text-uppercase text-center mb-3">Driver Registration</h2>
+                            <form role="form" th:action="@{/driver/register/save}" method="post" th:object="${driver}">
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="driverName">Your Name</label>
+                                    <input type="text" th:field="*{driver_name}" id="driverName"
+                                           class="form-control form-control-lg" required/>
+                                </div>
 
-<section class="vh-100 bg-image" style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
-  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-          <div class="card" style="border-radius: 15px;">
-            <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Driver Registration</h2>
-              <form action="#" th:action="@{/register}" method="post" th:object="${customerAttribute}">
-                <div class="form-outline mb-2">
-                  <label class="form-label" for="customerName">Your Name</label>
-                  <input type="text" th:field="" id="customerName" class="form-control form-control-lg" />
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="driver_email">Your Email</label>
+                                    <input type="email" th:field="*{driver_email}" id="driver_email"
+                                           class="form-control form-control-lg"/>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="driver_password">Enter a Password</label>
+                                    <input th:field="*{driver_password}" type="password" id="driver_password"
+                                           class="form-control form-control-lg" required/>
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="driver_license">License Number</label>
+                                    <input type="text" th:field="*{driver_license}" id="driver_license"
+                                           class="form-control form-control-lg" required/>
+                                </div>
+
+                                <div id="date-picker-example" class="form-outline mb-2 input-with-post-icon datepicker"
+                                     inline="true">
+                                    <label for="license_expiry_date">License Expiry Date</label>
+                                    <input th:field="*{license_expiry_date}" placeholder="Select date" type="date"
+                                           id="license_expiry_date" class="form-control" required>
+                                    <i class="fas fa-calendar input-prefix"></i>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="registered_vehicle_number">Vehicle
+                                        Number</label>
+                                    <input type="text" th:field="*{registered_vehicle_number}"
+                                           id="registered_vehicle_number" class="form-control form-control-lg"
+                                           required/>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="vehicle_name">Vehicle Name</label>
+                                    <input type="text" th:field="*{vehicle_name}" id="vehicle_name"
+                                           class="form-control form-control-lg" required/>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="vehicle_model">Vehicle Model</label>
+                                    <input type="text" th:field="*{vehicle_model}" id="vehicle_model"
+                                           class="form-control form-control-lg" required/>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="vehicle_color">Vehicle Color</label>
+                                    <input type="text" th:field="*{vehicle_color}" id="vehicle_color"
+                                           class="form-control form-control-lg" required/>
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" value="Request"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                                        Register
+                                    </button>
+                                </div>
+                                <p class="text-center text-muted mt-4 mb-0">Have already an account? <a href="#!"
+                                                                                                        class="fw-bold text-body"><u>Login
+                                    here</u></a></p>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-outline mb-2">
-                  <label class="form-label" for="form3Example3cg">Your Contact</label>
-                  <input type="email" th:field="" id="form3Example2cg" class="form-control form-control-lg" />
-                </div>
-                <div class="form-outline mb-2">
-                  <label class="form-label" for="form3Example3cg">Your Email</label>
-                  <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
-                </div>
-                <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example4cg">Password</label>
-                  <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
-                </div>
-                <div class="d-flex justify-content-center">
-                  <button type="button"
-                          class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
-                </div>
-                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
-                                                                                        class="fw-bold text-body"><u>Login here</u></a></p>
-              </form>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
 </body>
+
+<script>
+    $('.datepicker').datepicker({
+        inline: true
+    });
+</script>
 </html>

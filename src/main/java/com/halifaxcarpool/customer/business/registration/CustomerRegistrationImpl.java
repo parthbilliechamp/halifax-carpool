@@ -4,7 +4,7 @@ import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.database.dao.CustomerRegistrationDaoImpl;
 import com.halifaxcarpool.customer.database.dao.ICustomerRegistrationDao;
 
-public class CustomerRegistrationImpl implements ICustomerRegistration{
+public class CustomerRegistrationImpl implements ICustomerRegistration {
 
     ICustomerRegistrationDao customerRegistrationDao;
 

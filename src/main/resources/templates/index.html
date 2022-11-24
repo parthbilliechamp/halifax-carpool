@@ -47,15 +47,18 @@
                     <div class="card" style="border-radius: 15px;">
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Select User</h2>
-                            <div class="d-flex justify-content-center">
-                                <button type="button"
-                                        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                            <div>
+                                <a th:href="@{customer/register}"
+                                   class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                                     Customer
-                                </button>
-                                <button type="button"
-                                        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                                </a>
+                            </div>
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <a th:href="@{driver/register}"
+                                   class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
                                     Driver
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

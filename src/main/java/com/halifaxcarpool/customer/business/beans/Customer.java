@@ -1,39 +1,72 @@
 package com.halifaxcarpool.customer.business.beans;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-
-@Getter
-@Setter
-@Entity
-@Table(name = "customer")
 public class Customer {
-    @SequenceGenerator(
-            name = "users_sequence",
-            sequenceName = "customers_sequence",
-            allocationSize = 1
-    )
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customers_sequence"
-    )
-    private int customerId;
+    public Customer() {
 
-    @NotNull(message = "First Name cannot be empty")
-    @Column(name = "customer_name")
+    }
+
+    public Customer(int customerId, String customerName, String customerContact, String customerEmail, String customerPassword) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.customerContact = customerContact;
+        this.customerEmail = customerEmail;
+        this.customerPassword = customerPassword;
+    }
+
+    public int customerId;
     String customerName;
-
-    @NotNull(message = "Last Name cannot be empty")
-    @Column(name = "customer_contact")
     String customerContact;
-
-    @NotNull(message = "Last Name cannot be empty")
-    @Email(message = "Please enter a valid email address")
-    @Column(name = "customer_email", unique = true)
     String customerEmail;
+    String customerPassword;
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerContact() {
+        return customerContact;
+    }
+
+    public void setCustomerContact(String customerContact) {
+        this.customerContact = customerContact;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public String getCustomerPassword() {
+        return customerPassword;
+    }
+
+    public void setCustomerPassword(String customerPassword) {
+        this.customerPassword = customerPassword;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId=" + customerId +
+                ", customerName='" + customerName + '\'' +
+                ", customerContact='" + customerContact + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", customerPassword='" + customerPassword + '\'' +
+                '}';
+    }
 }
