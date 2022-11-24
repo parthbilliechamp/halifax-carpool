@@ -7,6 +7,6 @@ import java.util.List;
 
 public abstract class RideFinder {
 
-    abstract List<Ride> findMatchingRides(RideRequest rideRequest);
+    public abstract List<Ride> findMatchingRides(RideRequest rideRequest);
 
 }

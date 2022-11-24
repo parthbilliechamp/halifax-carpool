@@ -1,8 +1,11 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
+import com.halifaxcarpool.customer.business.beans.LatLng;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
 import com.halifaxcarpool.customer.business.recommendation.DistanceFinder;
+import com.halifaxcarpool.customer.business.recommendation.PolylineDecoder;
+import com.halifaxcarpool.customer.business.recommendation.RideFinderFacade;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -11,7 +14,80 @@ import java.util.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class RideRecommendationTest {
+//TODO update all the inputs
+public class RideFinderFacadeTest {
+
+    RideFinderFacade rideFinderFacade = new RideFinderFacade();
+
+    @Test
+    public void findDirectRouteRidesSameStartPointSameEndPointTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesInWayStartPointSameEndPointTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesSameStartPointInWayEndPointTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesInWayStartPointInWayEndPointTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesDifferentStartPointSameEndPointTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesSameStartPointDifferentEndPointTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesDifferentStartPointDifferentEndPointTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesSelectOnlyMatchingRidesTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesDoNotSelectRidesInOppositeDirectionTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
+
+    @Test
+    public void findDirectRouteRidesSelectSameDirectionAndDoNotSelectRideInOppositeDirectionTest() {
+        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
+        rideFinderFacade.findDirectRouteRides(null);
+        //add validation
+    }
 
     @Test
     public void test() {
@@ -65,7 +141,7 @@ public class RideRecommendationTest {
     public void test2() {
 
         String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        List<LatLng> points = PolylineDecoder.decodePoly(input);
+        List<LatLng> points = PolylineDecoder.decodePolyline(input);
         List<RideNode> rideNodeList = new ArrayList<>();
         int counter = 0;
         for (LatLng point: points) {
@@ -76,25 +152,25 @@ public class RideRecommendationTest {
         }
         counter = 0;
         input = "krpoGnzccKgBjCcExGeCnEoBdD{AvCmAtBmCtEcJtOm@dAKr@lAdB|AxB_A`E{@pDoBjJk@rCYz@mBvDUr@Kt@ApAFv@Pt@lApEf@nBHb@FtACrAObA";
-        points = PolylineDecoder.decodePoly(input);
+        points = PolylineDecoder.decodePolyline(input);
         for (LatLng point: points) {
             rideNodeList.add(new RideNode(point.latitude, point.longitude, 2, counter++));
         }
         counter = 0;
         input = "_pmoGvbccK]Pq@sEy@qFq@}DSc@S_@w@kAKUMq@sCnAiJzDuB|@yDzAgBr@kDzAgCfAwBz@QJm@wBwA_DoBiDk@mAu@uBUs@Ow@WuAW{A@m@DWDKD]AQGOKMGCKAMDIJGJU^qAzBgBtC}BoEuCcFw@wAuAwB_CyD}AwCmAiCQg@EU?YJm@N_@zAgB~AcBPQ\\\\w@Vk@^sA|@wCTq@\\\\u@l@i@lCoAd@U";
-        points = PolylineDecoder.decodePoly(input);
+        points = PolylineDecoder.decodePolyline(input);
         for (LatLng point: points) {
             rideNodeList.add(new RideNode(point.latitude, point.longitude, 3, counter++));
         }
         counter = 0;
         input = "_pmoGvbccK]Pb@lCj@jDfArHzAxJZzByDxA_FfBcFxBlBzKx@hEW^s@jAs@nAUf@q@|Ac@v@]d@[VsB`AgEnBa@Xb@zBpDlPrA`GHh@z@fD";
-        points = PolylineDecoder.decodePoly(input);
+        points = PolylineDecoder.decodePolyline(input);
         for (LatLng point: points) {
             rideNodeList.add(new RideNode(point.latitude, point.longitude, 4, counter++));
         }
         counter = 0;
         input = "kunoGjvdcK_@oBm@_DYqBg@iBSgAm@cD{@_F}@cFd@I`@OdAe@pCoAlDwAlEeBrAi@W_BWwAfBo@hDsA|HcDdGiCrFyBOaA";
-        points = PolylineDecoder.decodePoly(input);
+        points = PolylineDecoder.decodePolyline(input);
         for (LatLng point: points) {
             rideNodeList.add(new RideNode(point.latitude, point.longitude, 6, counter++));
         }

@@ -9,7 +9,7 @@ public abstract class RideFinderDecorator extends RideFinder {
 
     RideFinder rideFinder;
 
-    RideFinderDecorator(RideFinder rideFinder) {
+    public RideFinderDecorator(RideFinder rideFinder) {
         this.rideFinder = rideFinder;
     }
 

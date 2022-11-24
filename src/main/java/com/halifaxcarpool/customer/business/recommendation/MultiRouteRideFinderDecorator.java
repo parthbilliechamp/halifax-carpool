@@ -10,12 +10,12 @@ public class MultiRouteRideFinderDecorator extends RideFinderDecorator {
 
     RideFinderFacade rideFinderFacade = new RideFinderFacade();
 
-    MultiRouteRideFinderDecorator(RideFinder rideFinder) {
+    public MultiRouteRideFinderDecorator(RideFinder rideFinder) {
         super(rideFinder);
     }
 
     @Override
-    List<Ride> findMatchingRides(RideRequest rideRequest) {
+    public List<Ride> findMatchingRides(RideRequest rideRequest) {
         List<Ride> rideList = new ArrayList<>(super.rideFinder.findMatchingRides(rideRequest));
         List<Ride> multiRouteRides = rideFinderFacade.findMultiRouteRides(rideRequest);
         rideList.addAll(multiRouteRides);

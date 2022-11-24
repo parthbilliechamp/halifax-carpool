@@ -18,7 +18,6 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
 
     public RideRequestsDaoImpl() {
         database = new DatabaseImpl();
-        connection = database.openDatabaseConnection();
     }
 
     @Override
@@ -29,6 +28,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
     @Override
     public List<RideRequest> viewRideRequests(int customerId)  {
         try {
+            connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("CALL view_ride_requests(" + customerId + ")");
 
@@ -36,7 +36,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //connection.close();
+            database.closeDatabaseConnection();
         }
         return new ArrayList<>();
     }
