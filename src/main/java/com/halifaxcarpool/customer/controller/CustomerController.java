@@ -51,4 +51,17 @@ public class CustomerController {
         return VIEW_RIDE_REQUESTS;
     }
 
+    @GetMapping("/customer/create_ride_request")
+    public String showRideCreation(Model model){
+        model.addAttribute("rideRequest", new RideRequest());
+        return "create_ride_request";
+    }
+
+    @PostMapping("/customer/create_ride_request")
+    public void createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest){
+        System.out.println("helllooo");
+        IRideRequest rideRequestForCreation = new RideRequestImpl();
+        rideRequestForCreation.createRideRequest(rideRequest);
+    }
+
 }
