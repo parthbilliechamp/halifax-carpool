@@ -1,8 +1,5 @@
 package com.halifaxcarpool.driver.controller;
 
-import com.halifaxcarpool.customer.business.beans.Customer;
-import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
-import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.beans.Driver;
@@ -50,6 +47,18 @@ public class DriverController {
         List<Ride> rideList = ride.viewRides(1, ridesDao);
         model.addAttribute(ridesAttribute, rideList);
         return VIEW_RIDES_UI_FILE;
+    }
+
+    @GetMapping("/driver/create_new_ride")
+    public String showNewRideCreation(Model model){
+        model.addAttribute("ride", new Ride());
+        return "create_new_ride";
+    }
+
+    @PostMapping("/driver/create_new_ride")
+    public void createNewRide(@ModelAttribute("ride") Ride ride){
+        IRide newRideCreation = new RideImpl();
+        newRideCreation.createNewRide(ride);
     }
 
 }
