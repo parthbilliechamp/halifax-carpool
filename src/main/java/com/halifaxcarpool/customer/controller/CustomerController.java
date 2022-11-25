@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -19,14 +20,14 @@ public class CustomerController {
     private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
 
     @GetMapping("/customer/login")
-    @ResponseBody
-    String login() {
-        //#TODO read from user input
-        String userName = "";
-        String password = "";
+    String login(@ModelAttribute("customer") Customer customer,
+                 HttpServletRequest httpServletRequest) {
+        customer.setCustomerId(1);
+        httpServletRequest.getSession().setAttribute("customer_id", customer.getCustomerId());
         AuthenticationFacade authenticationFacade = new AuthenticationFacade();
-        boolean isValidCustomer = authenticationFacade.authenticate(userName, password);
-        return "";
+        boolean isValidCustomer =
+                authenticationFacade.authenticate(customer.getCustomerName(), customer.getCustomerPassword());
+        return "redirect:/customer_view_ride_requests";
     }
 
     @GetMapping("/customer/register")
@@ -36,17 +37,20 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/register/save")
-    String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer) {
+    String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer,
+                                  HttpServletRequest httpServletRequest) {
+        httpServletRequest.setAttribute("customer_id", customer.customerId);
         ICustomerRegistration customerRegistration = new CustomerRegistrationImpl();
         customerRegistration.registerCustomer(customer);
-        return "index.html";
+        return "customer_view_ride_requests";
     }
 
-    @GetMapping("/customer/view_ride_requests")
-    String viewRides(Model model) {
+    @GetMapping("/customer_view_ride_requests")
+    String viewRides(Model model, HttpServletRequest httpServletRequest) {
         String rideRequestsAttribute = "rideRequests";
+        int customerId = (int) httpServletRequest.getSession().getAttribute("customer_id");
         IRideRequest viewRideRequests = new RideRequestImpl();
-        List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(1);
+        List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customerId);
         model.addAttribute(rideRequestsAttribute, rideRequests);
         return VIEW_RIDE_REQUESTS;
     }
@@ -59,7 +63,6 @@ public class CustomerController {
 
     @PostMapping("/customer/create_ride_request")
     public void createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest){
-        System.out.println("helllooo");
         IRideRequest rideRequestForCreation = new RideRequestImpl();
         rideRequestForCreation.createRideRequest(rideRequest);
     }
