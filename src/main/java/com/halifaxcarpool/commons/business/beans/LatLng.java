@@ -1,4 +1,4 @@
-package com.halifaxcarpool.customer.business.beans;
+package com.halifaxcarpool.commons.business.beans;
 
 import java.util.Objects;
 

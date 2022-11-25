@@ -1,6 +1,6 @@
-package com.halifaxcarpool.customer.business.recommendation;
+package com.halifaxcarpool.commons.business;
 
-import com.halifaxcarpool.customer.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;

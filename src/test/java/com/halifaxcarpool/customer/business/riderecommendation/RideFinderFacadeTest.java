@@ -1,10 +1,10 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
-import com.halifaxcarpool.customer.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
 import com.halifaxcarpool.customer.business.recommendation.DistanceFinder;
-import com.halifaxcarpool.customer.business.recommendation.PolylineDecoder;
+import com.halifaxcarpool.commons.business.PolylineDecoder;
 import com.halifaxcarpool.customer.business.recommendation.RideFinderFacade;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

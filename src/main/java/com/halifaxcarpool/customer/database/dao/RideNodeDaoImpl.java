@@ -2,7 +2,7 @@ package com.halifaxcarpool.customer.database.dao;
 
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
-import com.halifaxcarpool.customer.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 
 import java.sql.Connection;

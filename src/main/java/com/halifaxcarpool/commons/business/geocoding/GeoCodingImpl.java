@@ -1,9 +1,11 @@
-package com.halifaxcarpool.customer.business.recommendation;
+package com.halifaxcarpool.commons.business.geocoding;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
-import com.halifaxcarpool.customer.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.ApiContextFactory;
+import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 
 public class GeoCodingImpl implements IGeoCoding {
 

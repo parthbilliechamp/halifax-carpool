@@ -1,7 +1,7 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
-import com.halifaxcarpool.customer.business.beans.LatLng;
-import com.halifaxcarpool.customer.business.recommendation.PolylineDecoder;
+import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.PolylineDecoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

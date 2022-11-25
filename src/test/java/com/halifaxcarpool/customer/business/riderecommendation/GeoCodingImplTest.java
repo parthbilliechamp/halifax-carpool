@@ -1,8 +1,8 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
-import com.halifaxcarpool.customer.business.beans.LatLng;
-import com.halifaxcarpool.customer.business.recommendation.GeoCodingImpl;
-import com.halifaxcarpool.customer.business.recommendation.IGeoCoding;
+import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.geocoding.GeoCodingImpl;
+import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

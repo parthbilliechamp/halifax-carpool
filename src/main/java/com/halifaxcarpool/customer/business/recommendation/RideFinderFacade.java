@@ -1,6 +1,8 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
-import com.halifaxcarpool.customer.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.geocoding.GeoCodingImpl;
+import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;

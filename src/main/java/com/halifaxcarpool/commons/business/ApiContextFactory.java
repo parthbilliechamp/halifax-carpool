@@ -1,4 +1,4 @@
-package com.halifaxcarpool.customer.business.recommendation;
+package com.halifaxcarpool.commons.business;
 
 import com.google.maps.GeoApiContext;
 

@@ -1,6 +1,6 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
-import com.halifaxcarpool.customer.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.LatLng;
 
 /**
  * finds the distance between two get coordinates
