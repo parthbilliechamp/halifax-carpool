@@ -28,9 +28,9 @@ public class RidesDaoImpl implements IRidesDao {
             Statement statement = connection.createStatement();
             // TODO Get method which return date time.
             // TODO: Research on calling this method better
-            System.out.println(ride.getEndLocation());
-            System.out.println(ride.getDateTime().toString());
+
             ride.setDateTime(ride.getDateTime().replace("T", " "));
+
             statement.executeQuery("CALL create_new_ride(" + ride.getRideId() + "," + ride.getDriverId() + ", '" +
                     ride.getStartLocation() + "', '" + ride.getEndLocation() + "', " + ride.getSeatsOffered() + ", "
                     + ride.getRideStatus() + ", '"

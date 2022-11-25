@@ -2,21 +2,21 @@ package com.halifaxcarpool.customer.controller;
 
 import com.halifaxcarpool.customer.business.RideRequestImpl;
 import com.halifaxcarpool.customer.business.authentication.*;
+import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.IRideRequest;
+import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
+import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 public class CustomerController {
     private static final String VIEW_RIDE_REQUESTS = "view_ride_requests";
+    private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
 
     @GetMapping("/customer/login")
     @ResponseBody
@@ -27,6 +27,19 @@ public class CustomerController {
         AuthenticationFacade authenticationFacade = new AuthenticationFacade();
         boolean isValidCustomer = authenticationFacade.authenticate(userName, password);
         return "";
+    }
+
+    @GetMapping("/customer/register")
+    String registerCustomer(Model model) {
+        model.addAttribute("customer", new Customer());
+        return CUSTOMER_REGISTRATION_FORM;
+    }
+
+    @PostMapping("/customer/register/save")
+    String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer) {
+        ICustomerRegistration customerRegistration = new CustomerRegistrationImpl();
+        customerRegistration.registerCustomer(customer);
+        return "index.html";
     }
 
     @GetMapping("/customer/view_ride_requests")
