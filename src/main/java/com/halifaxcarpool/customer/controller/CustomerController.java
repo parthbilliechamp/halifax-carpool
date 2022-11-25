@@ -46,7 +46,6 @@ public class CustomerController {
 
     @PostMapping("/customer/create_ride_request")
     public void createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest){
-        System.out.println("helllooo");
         IRideRequest rideRequestForCreation = new RideRequestImpl();
         rideRequestForCreation.createRideRequest(rideRequest);
     }

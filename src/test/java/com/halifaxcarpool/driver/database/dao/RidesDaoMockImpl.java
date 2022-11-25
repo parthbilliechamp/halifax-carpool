@@ -1,5 +1,6 @@
 package com.halifaxcarpool.driver.database.dao;
 
+import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ public class RidesDaoMockImpl implements IRidesDao {
     }
 
     @Override
-    public boolean createRide(Ride ride) {
-        return false;
+    public void createNewRide(Ride ride) {
+        insertRideMockData(ride);
     }
 
     @Override
@@ -36,6 +37,23 @@ public class RidesDaoMockImpl implements IRidesDao {
         rides.add(new Ride(3, driverId, "Citadel", "Gottingen st.", 3, 1, ""));
         rides.add(new Ride(4, driverId, "Halifax Park", "Cunard st.", 4, 1, ""));
         mockData.put(driverId, rides);
+    }
+
+    private static void insertRideMockData(Ride ride){
+        int driverId = ride.getDriverId();
+        List<Ride> rides = new ArrayList<>();
+        rides.add(ride);
+        mockData.put(driverId, rides);
+    }
+
+    public Ride findRide(int rideId, int driverId){
+        List<Ride> rides = mockData.get(driverId);
+        for(Ride ride : rides){
+            if(ride.getRideId() == rideId){
+                return ride;
+            }
+        }
+        return new Ride();
     }
 
 }
