@@ -8,9 +8,11 @@ import java.util.List;
 
 public class RideImpl implements IRide {
 
+    IRidesDao ridesDao = new RidesDaoImpl();
+
     @Override
-    public boolean createRide(Ride ride, IRidesDao ridesDao) {
-        return false;
+    public void createNewRide(Ride ride) {
+        ridesDao.createNewRide(ride);
     }
 
     //TODO add logic of converting ride_status to active or inactive, sql time to local date time

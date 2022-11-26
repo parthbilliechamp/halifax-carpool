@@ -10,12 +10,9 @@ public class RideRequestMockImpl implements IRideRequest {
 
     IRideRequestsDao rideRequestsDao = new RideRequestsDaoMockImpl();
 
-
     @Override
     public void createRideRequest(RideRequest rideRequest) {
-
-        rideRequestsDao.createRideRequest(rideRequest);
-
+        rideRequestsDao.insertRideRequest(rideRequest);
     }
 
     @Override

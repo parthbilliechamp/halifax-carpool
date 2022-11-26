@@ -1,5 +1,8 @@
 package com.halifaxcarpool.driver.database.dao;
 
+import com.halifaxcarpool.customer.business.beans.RideRequest;
+import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
+import com.halifaxcarpool.customer.database.dao.RideRequestsDaoMockImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +23,42 @@ public class RidesDaoImplTest {
         for (Ride ride: rides) {
             assert rideId == ride.rideId;
         }
+    }
+
+    @Test
+    void createNewRideTest(){
+        int driverId = 3;
+        int rideId = 8;
+
+        Ride ride = new Ride();
+        ride.setDriverId(driverId);
+        ride.setRideId(rideId);
+
+        IRidesDao rideMock = new RidesDaoMockImpl();
+
+        rideMock.createNewRide(ride);
+        Ride rideNew = ((RidesDaoMockImpl) rideMock).findRide(rideId, ride.getDriverId());
+
+        assert rideNew.getDriverId() == driverId;
+    }
+
+    @Test
+    void createNewRideValuesNotInsertedTest(){
+        int driverId = 3;
+        int rideId = 9;
+
+        int expectedRideId = 4;
+
+        Ride ride = new Ride();
+        ride.setDriverId(driverId);
+        ride.setRideId(rideId);
+
+        IRidesDao rideMock = new RidesDaoMockImpl();
+        rideMock.createNewRide(ride);
+
+        Ride rideNew = ((RidesDaoMockImpl) rideMock).findRide(rideId, ride.getDriverId());
+
+        assert rideNew.getRideId() != expectedRideId;
     }
 
 }

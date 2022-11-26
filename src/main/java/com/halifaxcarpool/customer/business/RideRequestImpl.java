@@ -12,7 +12,7 @@ public class RideRequestImpl implements IRideRequest {
 
     @Override
     public void createRideRequest(RideRequest rideRequest) {
-
+        rideRequestsDao.insertRideRequest(rideRequest);
     }
 
     @Override

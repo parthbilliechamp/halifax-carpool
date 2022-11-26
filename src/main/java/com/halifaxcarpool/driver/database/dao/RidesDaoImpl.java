@@ -5,7 +5,11 @@ import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RidesDaoImpl implements IRidesDao {
@@ -19,8 +23,29 @@ public class RidesDaoImpl implements IRidesDao {
     }
 
     @Override
-    public boolean createRide(Ride ride) {
-        return false;
+    public void createNewRide(Ride ride) {
+        try {
+            Statement statement = connection.createStatement();
+            // TODO Get method which return date time.
+            // TODO: Research on calling this method better
+
+            ride.setDateTime(ride.getDateTime().replace("T", " "));
+
+            statement.executeQuery("CALL create_new_ride(" + ride.getRideId() + "," + ride.getDriverId() + ", '" +
+                    ride.getStartLocation() + "', '" + ride.getEndLocation() + "', " + ride.getSeatsOffered() + ", "
+                    + ride.getRideStatus() + ", '"
+                    + new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("YYYY-MM-dd HH:mm").parse(ride.getDateTime().toString())) + "')");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

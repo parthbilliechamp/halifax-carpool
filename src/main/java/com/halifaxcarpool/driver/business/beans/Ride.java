@@ -1,5 +1,8 @@
 package com.halifaxcarpool.driver.business.beans;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class Ride {
 
     public int rideId;
@@ -14,6 +17,62 @@ public class Ride {
 
     public String dateTime;
 
+    public int getRideId() {
+        return rideId;
+    }
+
+    public int getDriverId() {
+        return driverId;
+    }
+
+    public String getStartLocation() {
+        return startLocation;
+    }
+
+    public String getEndLocation() {
+        return endLocation;
+    }
+
+    public int getSeatsOffered() {
+        return seatsOffered;
+    }
+
+    public int getRideStatus() {
+        return rideStatus;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setRideId(int rideId) {
+        this.rideId = rideId;
+    }
+
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
+    }
+
+    public void setStartLocation(String startLocation) {
+        this.startLocation = startLocation;
+    }
+
+    public void setEndLocation(String endLocation) {
+        this.endLocation = endLocation;
+    }
+
+    public void setSeatsOffered(int seatsOffered) {
+        this.seatsOffered = seatsOffered;
+    }
+
+    public void setRideStatus(int rideStatus) {
+        this.rideStatus = rideStatus;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public Ride(int rideId, int driverId, String startLocation, String endLocation, int seatsOffered,
                 int rideStatus, String dateTime) {
         this.rideId = rideId;
@@ -23,6 +82,12 @@ public class Ride {
         this.seatsOffered = seatsOffered;
         this.rideStatus = rideStatus;
         this.dateTime = dateTime;
+    }
+
+    public Ride(){
+        this.rideId = 3;
+        this.driverId = 2;
+        this.rideStatus = 1;
     }
 
 }
