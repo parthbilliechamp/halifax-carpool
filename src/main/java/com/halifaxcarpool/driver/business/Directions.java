@@ -6,6 +6,7 @@ import com.halifaxcarpool.commons.business.ApiContextFactory;
 
 public class Directions {
 
+    //TODO remove
     public static void main(String[] args) {
         String origin = "McDonald's, 6324 Quinpool Rd, Halifax, NS B3L 1A5";
         String destination = "Goldberg Computer Science Building, 6056 University Ave, Halifax, NS B3H 1W5";

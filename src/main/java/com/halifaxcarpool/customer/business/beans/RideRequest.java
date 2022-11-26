@@ -4,7 +4,6 @@ package com.halifaxcarpool.customer.business.beans;
 public class RideRequest {
 
     public int rideRequestId;
-
     public int customerId;
     public String startLocation;
     public String endLocation;
@@ -14,6 +13,11 @@ public class RideRequest {
         this.customerId = customerId;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
+    }
+
+    public RideRequest() {
+        this.rideRequestId = 6;
+        this.customerId = 1;
     }
 
     public int getRideRequestId() {
@@ -58,8 +62,4 @@ public class RideRequest {
                 '}';
     }
 
-    public RideRequest() {
-        this.rideRequestId = 6;
-        this.customerId = 1;
-    }
 }

@@ -25,6 +25,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
     @Override
     public void insertRideRequest(RideRequest rideRequest) {
         try {
+            connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
             System.out.println("CALL insert_ride_request(" + rideRequest.rideRequestId + "," + rideRequest.startLocation + "," +
                                        rideRequest.endLocation + "," + rideRequest.customerId + "," + "2022-11-17" + ")");
@@ -34,12 +35,8 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
                     rideRequest.endLocation + "', " + rideRequest.customerId + ", '" + new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()) + "')");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } finally {
+            //database.closeDatabaseConnection();
         }
     }
 
@@ -54,7 +51,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            database.closeDatabaseConnection();
+            //database.closeDatabaseConnection();
         }
         return new ArrayList<>();
     }

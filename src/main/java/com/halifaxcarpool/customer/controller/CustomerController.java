@@ -10,6 +10,7 @@ import com.halifaxcarpool.customer.business.recommendation.MultiRouteRideFinderD
 import com.halifaxcarpool.customer.business.recommendation.RideFinder;
 import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
+import com.halifaxcarpool.driver.business.beans.Ride;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,19 +57,23 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/view_recommended_rides")
-    String viewRecommendedRides(Model model) {
-        String rideRequestsAttribute = "recommendedRides";
-
-        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+    String viewRecommendedRides(@RequestParam("rideRequestId") int rideRequestId,
+                                @RequestParam("startLocation") String startLocation,
+                                @RequestParam("endLocation") String endLocation,
+                                Model model) {
+        //TODO get customer id from session
+        int customerId = 1;
+        RideRequest rideRequest = new RideRequest(rideRequestId, customerId, startLocation, endLocation);
+        String recommendedRidesAttribute = "recommendedRides";
         RideFinder rideFinder = new DirectRouteRideFinder();
-        rideFinder = new MultiRouteRideFinderDecorator(rideFinder);
-        rideFinder.findMatchingRides(rideRequest);
-        //model.addAttribute(rideRequestsAttribute, rideRequests);
+        //rideFinder = new MultiRouteRideFinderDecorator(rideFinder);
+        List<Ride> rideList = rideFinder.findMatchingRides(rideRequest);
+        model.addAttribute(recommendedRidesAttribute, rideList);
         return VIEW_RECOMMENDED_RIDES;
     }
 
     @GetMapping("/customer/create_ride_request")
-    public String showRideCreation(Model model){
+    public String showRideCreation(Model model) {
         model.addAttribute("rideRequest", new RideRequest());
         return "create_ride_request";
     }

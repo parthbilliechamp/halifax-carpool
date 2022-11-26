@@ -7,33 +7,33 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
     <title class="header">
-        View Ride Requests
+        Recommended Rides
     </title>
 </head>
 <body>
 <br />
 <div class="container">
-    <h3>View Ride Requests</h3>
+    <h3>Recommended Rides</h3>
     <hr>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
-            <th>Request Id</th>
-            <th>Start location</th>
+            <th>Ride Id</th>
+            <th>Driver Id</th>
+            <th>Start Location</th>
             <th>End Location</th>
-            <th>View Ride Recommendation</th>
+            <th>Seats Available</th>
+            <th>Ride start time</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="rideRequest : ${rideRequests}">
-            <td th:text="${rideRequest.rideRequestId}"/>
-            <td th:text="${rideRequest.startLocation}"/>
-            <td th:text="${rideRequest.endLocation}"/>
-            <td>
-                <a class="btn btn-secondary"
-                   th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},
-                   startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Rides</a>
-            </td>
+        <tr th:each="ride: ${recommendedRides}">
+            <td th:text="${ride.rideId}"/>
+            <td th:text="${ride.driverId}"/>
+            <td th:text="${ride.startLocation}"/>
+            <td th:text="${ride.endLocation}"/>
+            <td th:text="${ride.seatsOffered}"/>
+            <td th:text="${ride.dateTime}"/>
         </tr>
         </tbody>
     </table>

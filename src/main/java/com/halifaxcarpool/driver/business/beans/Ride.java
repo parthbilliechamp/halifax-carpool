@@ -6,15 +6,11 @@ import java.util.Date;
 public class Ride {
 
     public int rideId;
-
     public int driverId;
     public String startLocation;
     public String endLocation;
-
     public int seatsOffered;
-
     public int rideStatus;
-
     public String dateTime;
 
     public int getRideId() {

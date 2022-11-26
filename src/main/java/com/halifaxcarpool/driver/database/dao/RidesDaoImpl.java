@@ -65,7 +65,9 @@ public class RidesDaoImpl implements IRidesDao {
 
     @Override
     public Ride getRide(int rideId) {
-        return null;
+        //TODO fetch from database
+        Ride ride = new Ride(rideId, 1, "goldberg", "mcd", 3, 1, "");
+        return ride;
     }
 
     private static List<Ride> buildRideRequestsFrom(ResultSet resultSet) throws SQLException {

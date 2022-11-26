@@ -39,7 +39,7 @@ public class RideNodeDaoImpl implements IRideNodeDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            database.closeDatabaseConnection();
+           // database.closeDatabaseConnection();
         }
         return new ArrayList<>();
     }
