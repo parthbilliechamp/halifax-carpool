@@ -5,14 +5,12 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.List;
 
-public class DirectRouteRideFinder extends RideFinder {
+public class DirectRouteRideFinderStrategy implements RideFinderStrategy {
 
-    RideFinderStrategy rideFinderStrategy = new DirectRouteRideFinderStrategy();
-    RideFinderNavigator navigator = new RideFinderNavigator(rideFinderStrategy);
+    RideFinderFacade rideFinderFacade = new RideFinderFacade();
 
     @Override
     public List<Ride> findMatchingRides(RideRequest rideRequest) {
-        return navigator.findMatchingRides(rideRequest);
+        return rideFinderFacade.findDirectRouteRides(rideRequest);
     }
-
 }

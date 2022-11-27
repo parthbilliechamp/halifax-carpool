@@ -9,7 +9,7 @@ public class RecommendationEngine {
 
     public List<Ride> findRidesFor(RideRequest rideRequest) {
         RideFinder rideFinder = new DirectRouteRideFinder();
-        RideFinderDecorator rideFinderDecorator = new MultiRouteRideFinderDecorator(rideFinder);
+        RideFinderBaseDecorator rideFinderDecorator = new MultiRouteRideFinderDecorator(rideFinder);
         return rideFinderDecorator.findMatchingRides(rideRequest);
     }
 

@@ -5,12 +5,7 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.List;
 
-public abstract class RideFinderDecorator extends RideFinder {
+public interface RideFinderStrategy {
 
-    RideFinder rideFinder;
-
-    public RideFinderDecorator(RideFinder rideFinder) {
-        this.rideFinder = rideFinder;
-    }
-
+    List<Ride> findMatchingRides(RideRequest rideRequest);
 }
