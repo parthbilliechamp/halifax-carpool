@@ -13,6 +13,10 @@ public class Ride {
     public int rideStatus;
     public String dateTime;
 
+    public Ride(){
+        this.rideStatus = 1;
+    }
+
     public int getRideId() {
         return rideId;
     }
@@ -78,12 +82,6 @@ public class Ride {
         this.seatsOffered = seatsOffered;
         this.rideStatus = rideStatus;
         this.dateTime = dateTime;
-    }
-
-    public Ride(){
-        this.rideId = 3;
-        this.driverId = 2;
-        this.rideStatus = 1;
     }
 
 }

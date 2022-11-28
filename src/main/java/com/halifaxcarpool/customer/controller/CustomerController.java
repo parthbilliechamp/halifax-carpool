@@ -82,10 +82,12 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/view_ride_requests")
-    String viewRides(Model model) {
+    String viewRides(Model model,
+                     HttpServletRequest request) {
         String rideRequestsAttribute = "rideRequests";
+        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         IRideRequest viewRideRequests = new RideRequestImpl();
-        List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(1);
+        List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId());
         model.addAttribute(rideRequestsAttribute, rideRequests);
         return VIEW_RIDE_REQUESTS;
     }
@@ -117,16 +119,19 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/create_ride_request")
-    public String showRideCreation(Model model) {
-        int customerId = 1;
+    public String showRideCreation(Model model,
+                                   HttpServletRequest request) {
+        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         RideRequest rideRequest = new RideRequest();
-        rideRequest.customerId = customerId;
         model.addAttribute("rideRequest", rideRequest);
         return "create_ride_request";
     }
 
     @PostMapping("/customer/create_ride_request")
-    public void createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest){
+    public void createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest,
+                                  HttpServletRequest request ){
+        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
+        rideRequest.setCustomerId(customer.customerId);
         IRideRequest rideRequestForCreation = new RideRequestImpl();
         rideRequestForCreation.createRideRequest(rideRequest);
     }

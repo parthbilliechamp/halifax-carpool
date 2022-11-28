@@ -83,11 +83,13 @@ public class DriverController {
     }
 
     @GetMapping("/driver/view_rides")
-    String viewRides(Model model) {
+    String viewRides(Model model,
+                     HttpServletRequest request) {
         String ridesAttribute = "rides";
+        Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         IRidesDao ridesDao = new RidesDaoImpl();
         IRide ride = new RideImpl();
-        List<Ride> rideList = ride.viewRides(1, ridesDao);
+        List<Ride> rideList = ride.viewRides(driver.driver_id, ridesDao);
         model.addAttribute(ridesAttribute, rideList);
         return VIEW_RIDES_UI_FILE;
     }
@@ -110,7 +112,10 @@ public class DriverController {
     }
 
     @PostMapping("/driver/create_new_ride")
-    public void createNewRide(@ModelAttribute("ride") Ride ride){
+    public void createNewRide(@ModelAttribute("ride") Ride ride,
+                              HttpServletRequest request) {
+        Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
+        ride.setDriverId(driver.driver_id);
         IRide rideModel = new RideImpl();
         rideModel.createNewRide(ride);
         rideModel.insertRideNodes(ride);

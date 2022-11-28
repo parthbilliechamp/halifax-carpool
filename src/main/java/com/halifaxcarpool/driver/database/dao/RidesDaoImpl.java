@@ -29,12 +29,11 @@ public class RidesDaoImpl implements IRidesDao {
             // TODO Get method which return date time.
             // TODO: Research on calling this method better
 
-            ride.setDateTime(ride.getDateTime().replace("T", " "));
+            //ride.setDateTime(ride.getDateTime().replace("T", " "));
 
-            statement.executeQuery("CALL create_new_ride(" + ride.getRideId() + "," + ride.getDriverId() + ", '" +
+            statement.executeQuery("CALL create_new_ride(" + ride.getDriverId() + ", '" +
                     ride.getStartLocation() + "', '" + ride.getEndLocation() + "', " + ride.getSeatsOffered() + ", "
-                    + ride.getRideStatus() + ", '"
-                    + null + "')");
+                    + ride.getRideStatus() + ")");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -63,7 +62,7 @@ public class RidesDaoImpl implements IRidesDao {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL view_rides(" + rideId + ")");
+            ResultSet resultSet = statement.executeQuery("CALL view_ride(" + rideId + ")");
             ride = buildRidesFrom(resultSet).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
