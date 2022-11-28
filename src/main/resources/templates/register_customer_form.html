@@ -52,22 +52,22 @@
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="customerName">Your Name</label>
                                     <input type="text" th:field="*{customerName}" id="customerName"
-                                           class="form-control form-control-lg"/>
+                                           class="form-control form-control-lg" required/>
                                 </div>
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="customerContact">Your Contact</label>
                                     <input type="text" th:field="*{customerContact}" id="customerContact"
-                                           class="form-control form-control-lg"/>
+                                           class="form-control form-control-lg" required/>
                                 </div>
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="customerEmail">Your Email</label>
                                     <input type="email" th:field="*{customerEmail}" id="customerEmail"
-                                           class="form-control form-control-lg"/>
+                                           class="form-control form-control-lg" required/>
                                 </div>
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="customerPassword">Password</label>
                                     <input type="password" th:field="*{customerPassword}" id="customerPassword"
-                                           class="form-control form-control-lg"/>
+                                           class="form-control form-control-lg" required/>
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <button type="submit" value="Request"
@@ -75,7 +75,7 @@
                                         Register
                                     </button>
                                 </div>
-                                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
+                                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a th:href="@{/customer/login}"
                                                                                                         class="fw-bold text-body"><u>Login
                                     here</u></a></p>
                             </form>
