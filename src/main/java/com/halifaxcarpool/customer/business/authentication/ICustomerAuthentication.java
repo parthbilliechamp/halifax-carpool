@@ -1,7 +1,9 @@
 package com.halifaxcarpool.customer.business.authentication;
 
+import com.halifaxcarpool.customer.business.beans.Customer;
+
 public interface ICustomerAuthentication {
 
-    boolean authenticate(String userName, String password);
+    Customer authenticate(String userName, String password);
 
 }
