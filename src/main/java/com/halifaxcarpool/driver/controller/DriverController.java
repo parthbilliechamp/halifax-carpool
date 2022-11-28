@@ -1,5 +1,10 @@
 package com.halifaxcarpool.driver.controller;
 
+import com.halifaxcarpool.commons.business.IRideToRequestMapper;
+import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
+import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
+import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.beans.Driver;
@@ -10,11 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.halifaxcarpool.driver.business.registration.DriverRegistrationImpl;
 import com.halifaxcarpool.driver.business.registration.IDriverRegistration;
-import com.halifaxcarpool.driver.presentation.DriverUI;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -23,8 +27,7 @@ public class DriverController {
 
     private static final String VIEW_RIDES_UI_FILE = "view_rides";
     private static final String DRIVER_REGISTRATION_FORM = "register_driver_form";
-
-    DriverUI driverUI = new DriverUI();
+    private static final String VIEW_RECEIVED_REQUESTS = "view_received_requests";
 
     @GetMapping("/driver/register")
     String registerDriver(Model model) {
@@ -49,6 +52,17 @@ public class DriverController {
         return VIEW_RIDES_UI_FILE;
     }
 
+    @GetMapping("/driver/view_received_requests")
+    String viewReceivedRequests(@RequestParam("rideId") int rideId,
+                                Model model) {
+        IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
+        IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+        List<RideRequest> receivedRideRequests =
+                rideToRequestMapper.viewReceivedRequest(rideId, rideToRequestMapperDao);
+        model.addAttribute("receivedRideRequests", receivedRideRequests);
+        return VIEW_RECEIVED_REQUESTS;
+    }
+
     @GetMapping("/driver/create_new_ride")
     public String showNewRideCreation(Model model){
         model.addAttribute("ride", new Ride());
@@ -57,8 +71,9 @@ public class DriverController {
 
     @PostMapping("/driver/create_new_ride")
     public void createNewRide(@ModelAttribute("ride") Ride ride){
-        IRide newRideCreation = new RideImpl();
-        newRideCreation.createNewRide(ride);
+        IRide rideModel = new RideImpl();
+        rideModel.createNewRide(ride);
+        rideModel.insertRideNodes(ride);
     }
 
 }

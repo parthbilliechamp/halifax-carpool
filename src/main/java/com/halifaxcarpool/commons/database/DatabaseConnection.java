@@ -8,7 +8,8 @@ import java.sql.DriverManager;
 
 public class DatabaseConnection {
 
-    private static Connection connection = null;
+    private static DatabaseConnection databaseConnection = null;
+    private Connection connection;
 
     @Value("${spring.datasource.password}")
     private static String password;
@@ -23,14 +24,29 @@ public class DatabaseConnection {
 
     }
 
-    public static Connection getConnectionInstance() {
-        if (null == connection) {
+    public static DatabaseConnection getDatabaseConnectionInstance() {
+        if (null == databaseConnection) {
+            databaseConnection = new DatabaseConnection();
+        }
+        return databaseConnection;
+    }
+
+    public Connection openDbConnection() {
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_12_DEVINT", "CSCI5308_12_DEVINT_USER", "beRuqMq7cG");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+
+    public void closeDbConnection() {
+        if (null != connection) {
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_12_DEVINT", "CSCI5308_12_DEVINT_USER", "beRuqMq7cG");
+                connection.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return connection;
     }
 }

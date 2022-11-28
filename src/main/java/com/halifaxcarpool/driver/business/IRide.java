@@ -13,4 +13,6 @@ public interface IRide {
 
     Ride getRide(int rideId, IRidesDao ridesDao);
 
+    void insertRideNodes(Ride ride);
+
 }

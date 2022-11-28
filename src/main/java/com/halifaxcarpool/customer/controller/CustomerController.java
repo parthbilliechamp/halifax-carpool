@@ -1,15 +1,18 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.commons.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
+import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.customer.business.authentication.*;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.IRideRequest;
 import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
-import com.halifaxcarpool.customer.business.recommendation.MultiRouteRideFinderDecorator;
 import com.halifaxcarpool.customer.business.recommendation.RideFinder;
 import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
+import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
+import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,12 +72,25 @@ public class CustomerController {
         //rideFinder = new MultiRouteRideFinderDecorator(rideFinder);
         List<Ride> rideList = rideFinder.findMatchingRides(rideRequest);
         model.addAttribute(recommendedRidesAttribute, rideList);
+        model.addAttribute("rideRequestId", rideRequestId);
+        return VIEW_RECOMMENDED_RIDES;
+    }
+
+    @GetMapping("/customer/send_ride_request")
+    String sendRideRequest(@RequestParam("rideId") int rideId,
+                           @RequestParam("rideRequestId") int rideRequestId) {
+        IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
+        IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+        rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
         return VIEW_RECOMMENDED_RIDES;
     }
 
     @GetMapping("/customer/create_ride_request")
     public String showRideCreation(Model model) {
-        model.addAttribute("rideRequest", new RideRequest());
+        int customerId = 1;
+        RideRequest rideRequest = new RideRequest();
+        rideRequest.customerId = customerId;
+        model.addAttribute("rideRequest", rideRequest);
         return "create_ride_request";
     }
 

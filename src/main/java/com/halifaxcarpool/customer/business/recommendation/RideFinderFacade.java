@@ -18,8 +18,8 @@ import java.util.*;
 
 public class RideFinderFacade {
 
-    private final IGeoCoding reverseGeoCoding = new GeoCodingImpl();
-    private static final double MAXIMUM_RIDE_THRESHOLD = 0.5;
+    private final IGeoCoding geoCoding = new GeoCodingImpl();
+    private static final double MAXIMUM_RIDE_THRESHOLD_KM = 0.5;
 
     private final IRide ride;
     private final IRidesDao ridesDao;
@@ -33,8 +33,8 @@ public class RideFinderFacade {
 
     public List<Ride> findDirectRouteRides(RideRequest rideRequest) {
 
-        LatLng startLocationPoint = reverseGeoCoding.getLatLng(rideRequest.startLocation);
-        LatLng endLocationPoint = reverseGeoCoding.getLatLng(rideRequest.endLocation);
+        LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.startLocation);
+        LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.endLocation);
 
         List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
         List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);
@@ -71,7 +71,7 @@ public class RideFinderFacade {
         for (RideNode rideNode: rideNodesNearToStartLocation) {
             double distanceFromStartNode = DistanceFinder.findDistance(startNode.latitude, rideNode.latitude,
                     startNode.longitude, rideNode.longitude);
-            if (distanceFromStartNode < MAXIMUM_RIDE_THRESHOLD && !validRidesForStartNode.contains(rideNode)) {
+            if (distanceFromStartNode < MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForStartNode.contains(rideNode)) {
                 validRidesForStartNode.add(rideNode);
             }
         }
@@ -81,7 +81,7 @@ public class RideFinderFacade {
         for (RideNode rideNode: rideNodesNearToEndLocation) {
             double distanceFromEndNode = DistanceFinder.findDistance(endNode.latitude, rideNode.latitude,
                     endNode.longitude, rideNode.longitude);
-            if (distanceFromEndNode <= MAXIMUM_RIDE_THRESHOLD && !validRidesForEndNode.containsKey(rideNode)) {
+            if (distanceFromEndNode <= MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForEndNode.containsKey(rideNode)) {
                 validRidesForEndNode.put(rideNode, rideNode);
             }
         }

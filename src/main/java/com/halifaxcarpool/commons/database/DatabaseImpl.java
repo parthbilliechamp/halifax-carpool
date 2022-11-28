@@ -1,30 +1,23 @@
 package com.halifaxcarpool.commons.database;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class DatabaseImpl implements IDatabase {
 
-    private final Connection connection;
+    private final DatabaseConnection databaseConnection;
 
     public DatabaseImpl() {
-        connection = DatabaseConnection.getConnectionInstance();
+        databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
     }
 
     @Override
     public Connection openDatabaseConnection() {
-        return connection;
+        return databaseConnection.openDbConnection();
     }
 
     @Override
     public void closeDatabaseConnection() {
-        try {
-            if (null != connection) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        databaseConnection.closeDbConnection();
     }
 
 }
