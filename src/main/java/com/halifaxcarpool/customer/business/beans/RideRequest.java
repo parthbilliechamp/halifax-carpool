@@ -16,8 +16,8 @@ public class RideRequest {
     }
 
     public RideRequest() {
-        this.rideRequestId = 6;
-        this.customerId = 1;
+        //this.rideRequestId = 6;
+        //this.customerId = 1;
     }
 
     public int getRideRequestId() {

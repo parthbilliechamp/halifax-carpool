@@ -27,8 +27,6 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-            System.out.println("CALL insert_ride_request(" + rideRequest.rideRequestId + "," + rideRequest.startLocation + "," +
-                                       rideRequest.endLocation + "," + rideRequest.customerId + "," + "2022-11-17" + ")");
             // TODO Get method which return date time.
             // TODO: Research on calling this method better
             statement.executeQuery("CALL insert_ride_request(" + rideRequest.rideRequestId + ", '" + rideRequest.startLocation + "', '" +

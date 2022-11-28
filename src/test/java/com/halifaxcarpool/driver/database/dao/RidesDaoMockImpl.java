@@ -1,6 +1,6 @@
 package com.halifaxcarpool.driver.database.dao;
 
-import com.halifaxcarpool.customer.business.beans.RideRequest;
+import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.ArrayList;
@@ -29,6 +29,11 @@ public class RidesDaoMockImpl implements IRidesDao {
     @Override
     public Ride getRide(int rideId) {
         return null;
+    }
+
+    @Override
+    public void insertRideNodes(List<RideNode> rideNodes) {
+
     }
 
     private static void populateMockData() {
