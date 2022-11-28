@@ -24,6 +24,7 @@
             <th>Seats Offered </th>
             <th>Ride Status</th>
             <th>Ride Time</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,10 @@
             <td th:text="${ride.seatsOffered}"/>
             <td th:text="${ride.rideStatus}"/>
             <td th:text="${ride.dateTime}"/>
+            <td>
+                <a class="btn btn-secondary"
+                   th:href="@{/driver/view_received_requests(rideId=${ride.rideId})}">View Requests</a>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -7,37 +7,36 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
     <title class="header">
-        Recommended Rides
+        Received Requests
     </title>
 </head>
 <body>
 <br />
 <div class="container">
-    <h3>Recommended Rides</h3>
+    <h3>Received Requests</h3>
     <hr>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
-            <th>Driver Id</th>
+            <th>Ride Request Id</th>
+            <th>Customer Id</th>
             <th>Start Location</th>
             <th>End Location</th>
-            <th>Seats Available</th>
-            <th>Ride start time</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="ride: ${recommendedRides}">
-            <td th:text="${ride.driverId}"/>
+        <tr th:each="ride: ${receivedRideRequests}">
+            <td th:text="${ride.rideRequestId}"/>
+            <td th:text="${ride.customerId}"/>
             <td th:text="${ride.startLocation}"/>
             <td th:text="${ride.endLocation}"/>
-            <td th:text="${ride.seatsOffered}"/>
-            <td th:text="${ride.dateTime}"/>
             <td>
                 <a class="btn btn-secondary"
-                   th:href="@{/customer/send_ride_request(rideId=${ride.rideId},rideRequestId=${rideRequestId})}">Send Request</a>
+                   th:href="@{/driver/updateStatus(status='accept')}">Accept</a>
             </td>
             <td>
-                Status : Pending / Accepted / Request not sent
+                <a class="btn btn-secondary"
+                   th:href="@{/driver/updateStatus(status='reject')}">Reject</a>
             </td>
         </tr>
         </tbody>
