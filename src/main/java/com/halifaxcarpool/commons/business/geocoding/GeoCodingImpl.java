@@ -9,9 +9,6 @@ import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 
 public class GeoCodingImpl implements IGeoCoding {
 
-//    @Value("${apikey}")
-//    private String welcomeMsg;
-
     @Override
     public LatLng getLatLng(String location) {
         LatLng latLng = null;
