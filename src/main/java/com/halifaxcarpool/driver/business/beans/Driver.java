@@ -119,4 +119,21 @@ public class Driver {
     public void setDriver_approval_status(Integer driver_approval_status) {
         this.driver_approval_status = driver_approval_status;
     }
+
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "driver_id=" + driver_id +
+                ", driver_email='" + driver_email + '\'' +
+                ", driver_password='" + driver_password + '\'' +
+                ", driver_license='" + driver_license + '\'' +
+                ", driver_name='" + driver_name + '\'' +
+                ", registered_vehicle_number='" + registered_vehicle_number + '\'' +
+                ", license_expiry_date='" + license_expiry_date + '\'' +
+                ", vehicle_name='" + vehicle_name + '\'' +
+                ", vehicle_model='" + vehicle_model + '\'' +
+                ", vehicle_color='" + vehicle_color + '\'' +
+                ", driver_approval_status=" + driver_approval_status +
+                '}';
+    }
 }

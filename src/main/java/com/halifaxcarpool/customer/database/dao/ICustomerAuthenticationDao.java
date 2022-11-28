@@ -1,7 +1,9 @@
 package com.halifaxcarpool.customer.database.dao;
 
+import com.halifaxcarpool.customer.business.beans.Customer;
+
 public interface ICustomerAuthenticationDao {
 
-    boolean authenticate(String username, String password);
+    Customer authenticate(String username, String password);
 
 }
