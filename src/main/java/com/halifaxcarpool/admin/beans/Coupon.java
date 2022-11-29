@@ -10,5 +10,13 @@ public class Coupon {
         this.discountPercentage = discountPercentage;
         this.expiry = expiry;
     }
+    @Override
+    public String toString(){
+        return "Coupon{" +
+                "couponId="+ this.couponId+
+                "discountPercentage="+this.discountPercentage+
+                "expiry="+this.expiry.toString()+
+                "}";
+    }
 
 }
