@@ -1,19 +1,21 @@
 package com.halifaxcarpool.admin.business;
-import com.halifaxcarpool.admin.beans.Coupon;
-import com.halifaxcarpool.admin.business.ICoupon;
+import com.halifaxcarpool.admin.business.beans.Coupon;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CouponImpl implements ICoupon{
     @Override
-    public void createCoupon(Coupon coupon) {
-
+    public boolean createCoupon(Coupon coupon) {
+    return false;
     }
 
     @Override
-    public List<Coupon> viewCoupons() {
-        return null;
+    public List<Coupon> viewCoupons(ICouponDao iCouponDao) {
+
+        return iCouponDao.viewCoupons();
     }
 
     @Override
