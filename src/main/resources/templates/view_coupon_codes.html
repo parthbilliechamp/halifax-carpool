@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        View Coupons
+    </title>
+</head>
+<body>
+<br />
+<div class="container">
+    <h3>View Coupons </h3>
+    <hr>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Coupon Id</th>
+            <th>Discount Percentage %</th>
+            <th>Expiry</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="coupon : ${coupons}">
+            <td th:text="${coupon.couponId}"/>
+            <td th:text="${coupon.discountPercentage}" />
+            <td th:text="${coupon.expiry}"/>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
