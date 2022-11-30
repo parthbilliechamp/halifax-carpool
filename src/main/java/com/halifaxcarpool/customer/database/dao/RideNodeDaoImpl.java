@@ -4,12 +4,14 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.customer.business.beans.RideNode;
+import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RideNodeDaoImpl implements IRideNodeDao {
@@ -19,6 +21,26 @@ public class RideNodeDaoImpl implements IRideNodeDao {
 
     public RideNodeDaoImpl() {
         database = new DatabaseImpl();
+    }
+
+    @Override
+    public void insertRideNodes(List<RideNode> rideNodes) {
+        try {
+            connection = database.openDatabaseConnection();
+            Statement statement = connection.createStatement();
+            Iterator<RideNode> iterator = rideNodes.iterator();
+            while (iterator.hasNext()) {
+                RideNode rideNode = iterator.next();
+                statement.addBatch("CALL insert_ride_nodes(" + rideNode.rideId +
+                        "," + rideNode.latitude + "," + rideNode.longitude +
+                        "," + rideNode.sequence + ")");
+            }
+            statement.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.closeDatabaseConnection();
+        }
     }
 
     @Override
@@ -39,7 +61,7 @@ public class RideNodeDaoImpl implements IRideNodeDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-           // database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
         return new ArrayList<>();
     }

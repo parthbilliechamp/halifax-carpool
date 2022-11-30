@@ -26,7 +26,7 @@ public class RidesDaoImplTest {
     }
 
     @Test
-    void createNewRideTest(){
+    void createNewRideTest() {
         int driverId = 3;
         int rideId = 8;
 

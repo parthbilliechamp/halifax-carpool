@@ -1,10 +1,16 @@
 package com.halifaxcarpool.driver.controller;
 
+import com.halifaxcarpool.commons.business.IRideNode;
 import com.halifaxcarpool.commons.business.IRideToRequestMapper;
+import com.halifaxcarpool.commons.business.RideNodeImpl;
 import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
+import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
+import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
+import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.authentication.AuthenticationFacade;
@@ -117,8 +123,12 @@ public class DriverController {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         ride.setDriverId(driver.driver_id);
         IRide rideModel = new RideImpl();
-        rideModel.createNewRide(ride);
-        rideModel.insertRideNodes(ride);
+        IRidesDao ridesDao = new RidesDaoImpl();
+        rideModel.createNewRide(ride, ridesDao);
+        IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderImpl();
+        IRideNode rideNode = new RideNodeImpl();
+        IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
+        rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
     }
 
 }

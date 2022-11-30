@@ -7,12 +7,10 @@ import java.util.List;
 
 public interface IRide {
 
-    void createNewRide(Ride ride);
+    void createNewRide(Ride ride, IRidesDao ridesDao);
 
     List<Ride> viewRides(int driverId, IRidesDao ridesDao);
 
     Ride getRide(int rideId, IRidesDao ridesDao);
-
-    void insertRideNodes(Ride ride);
 
 }

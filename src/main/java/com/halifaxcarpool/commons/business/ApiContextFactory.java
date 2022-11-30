@@ -8,6 +8,10 @@ public class ApiContextFactory {
 
     private static GeoApiContext context = null;
 
+    private ApiContextFactory() {
+
+    }
+
     public static GeoApiContext getGeoApiContextInstance() {
         if (null == context) {
             context = new GeoApiContext.Builder()

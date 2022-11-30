@@ -34,7 +34,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
     }
 
@@ -49,7 +49,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
         return new ArrayList<>();
     }

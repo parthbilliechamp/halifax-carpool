@@ -6,8 +6,6 @@ import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +35,7 @@ public class RidesDaoImpl implements IRidesDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
     }
 
@@ -51,7 +49,7 @@ public class RidesDaoImpl implements IRidesDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //connection.close();
+            database.closeDatabaseConnection();
         }
         return new ArrayList<>();
     }
@@ -67,29 +65,9 @@ public class RidesDaoImpl implements IRidesDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //connection.close();
+            database.closeDatabaseConnection();
         }
         return ride;
-    }
-
-    @Override
-    public void insertRideNodes(List<RideNode> rideNodes) {
-        try {
-            connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            Iterator<RideNode> iterator = rideNodes.iterator();
-            while (iterator.hasNext()) {
-                RideNode rideNode = iterator.next();
-                statement.addBatch("CALL insert_ride_nodes(" + rideNode.rideId +
-                        "," + rideNode.latitude + "," + rideNode.longitude +
-                        "," + rideNode.sequence + ")");
-            }
-            statement.executeBatch();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            //database.closeDatabaseConnection();
-        }
     }
 
     private static List<Ride> buildRidesFrom(ResultSet resultSet) throws SQLException {

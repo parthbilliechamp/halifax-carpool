@@ -39,6 +39,8 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         rideRequests.add(new RideRequest(3, customerId, "Citadel", "Gottingen st."));
         rideRequests.add(new RideRequest(4, customerId, "Dalhousie", "Park lane"));
         mockData.put(customerId, rideRequests);
+        customerId = 5;
+        mockData.put(customerId, new ArrayList<>());
     }
 
     private static void insertRideRequestMockData(RideRequest rideRequest){

@@ -1,13 +1,11 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
 import com.halifaxcarpool.commons.business.beans.LatLng;
-import com.halifaxcarpool.commons.business.geocoding.GeoCodingImpl;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
-import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
@@ -17,21 +15,15 @@ import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 import java.util.*;
 
 public class RideFinderFacade {
-
-    private final IGeoCoding geoCoding = new GeoCodingImpl();
     private static final double MAXIMUM_RIDE_THRESHOLD_KM = 0.5;
-
     private final IRide ride;
-    private final IRidesDao ridesDao;
-    private final IRideNodeDao rideNodeDao;
 
     public RideFinderFacade() {
         ride = new RideImpl();
-        ridesDao = new RidesDaoImpl();
-        rideNodeDao = new RideNodeDaoImpl();
     }
 
-    public List<Ride> findDirectRouteRides(RideRequest rideRequest) {
+    public List<Ride> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
+                                           IGeoCoding geoCoding, IRidesDao ridesDao) {
 
         LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.startLocation);
         LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.endLocation);
@@ -55,7 +47,7 @@ public class RideFinderFacade {
 
         validRidesForStartNode.retainAll(validRidesForEndNode.keySet());
 
-        return getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode);
+        return getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao);
     }
 
     public List<Ride> findMultiRouteRides(RideRequest rideRequest) {
@@ -87,7 +79,9 @@ public class RideFinderFacade {
         }
     }
 
-    private List<Ride> getRidesBasedOnDirection(Set<RideNode> validRidesForStartNode, Map<RideNode, RideNode> validRidesForEndNode) {
+    private List<Ride> getRidesBasedOnDirection(Set<RideNode> validRidesForStartNode,
+                                                Map<RideNode, RideNode> validRidesForEndNode,
+                                                IRidesDao ridesDao) {
         List<Ride> recommendedRides = new ArrayList<>();
         for (RideNode rideNode: validRidesForStartNode) {
             RideNode temp = validRidesForEndNode.get(rideNode);

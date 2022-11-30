@@ -13,10 +13,11 @@ import java.util.List;
 @ActiveProfiles("test")
 public class RideImplTest {
 
+    private IRidesDao ridesDao = new RidesDaoMockImpl();
+    IRide ride = new RideImpl();
+
     @Test
     public void testViewRides() {
-        IRidesDao ridesDao = new RidesDaoMockImpl();
-        IRide ride = new RideImpl();
         int driverId = 1;
         List<Ride> rideList = ride.viewRides(driverId, ridesDao);
         assert 2 == rideList.size();

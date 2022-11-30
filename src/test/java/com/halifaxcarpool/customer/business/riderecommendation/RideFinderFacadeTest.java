@@ -1,11 +1,19 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
+import com.halifaxcarpool.commons.business.RideNodeDaoMockImpl;
 import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.geocoding.GeoCodingMockImpl;
+import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.beans.RideNode;
+import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
 import com.halifaxcarpool.customer.business.recommendation.DistanceFinder;
 import com.halifaxcarpool.commons.business.PolylineDecoder;
 import com.halifaxcarpool.customer.business.recommendation.RideFinderFacade;
+import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.driver.business.beans.Ride;
+import com.halifaxcarpool.driver.database.dao.IRidesDao;
+import com.halifaxcarpool.driver.database.dao.RidesDaoMockImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,79 +22,87 @@ import java.util.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-//TODO update all the inputs
 public class RideFinderFacadeTest {
 
     RideFinderFacade rideFinderFacade = new RideFinderFacade();
+    IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
+    IGeoCoding geoCoding = new GeoCodingMockImpl();
+    
+    IRidesDao ridesDao = new RidesDaoMockImpl();
 
     @Test
     public void findDirectRouteRidesSameStartPointSameEndPointTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        String startLocation = "6056 University Ave, Halifax, NS B3H 1W5";
+        String endLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
+        RideRequest rideRequest = new RideRequest(1, 1, startLocation, endLocation);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
+        Ride ride = rides.get(0);
+        assert Objects.equals(ride.startLocation, startLocation);
+        assert Objects.equals(ride.endLocation, endLocation);
     }
 
     @Test
     public void findDirectRouteRidesInWayStartPointSameEndPointTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesSameStartPointInWayEndPointTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesInWayStartPointInWayEndPointTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesDifferentStartPointSameEndPointTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesSameStartPointDifferentEndPointTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesDifferentStartPointDifferentEndPointTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesSelectOnlyMatchingRidesTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesDoNotSelectRidesInOppositeDirectionTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
     public void findDirectRouteRidesSelectSameDirectionAndDoNotSelectRideInOppositeDirectionTest() {
-        String input = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uDE]";
-        rideFinderFacade.findDirectRouteRides(null);
-        //add validation
+        RideRequest rideRequest = new RideRequest(1, 1, "", "");
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        assert 1 == rides.size();
     }
 
     @Test
@@ -151,6 +167,8 @@ public class RideFinderFacadeTest {
             rideNodeList.add(new RideNode(point.latitude, point.longitude, 5, counter--));
         }
         counter = 0;
+        String startLocation = "2585 Robie St, Halifax, NS B3K 4N5"; // 44.65462 -63.59480
+        String endLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5"; // 44.64486 -63.59926
         input = "krpoGnzccKgBjCcExGeCnEoBdD{AvCmAtBmCtEcJtOm@dAKr@lAdB|AxB_A`E{@pDoBjJk@rCYz@mBvDUr@Kt@ApAFv@Pt@lApEf@nBHb@FtACrAObA";
         points = PolylineDecoder.decodePolyline(input);
         for (LatLng point: points) {

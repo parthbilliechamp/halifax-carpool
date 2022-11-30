@@ -14,6 +14,8 @@ import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImp
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
+import com.halifaxcarpool.customer.database.dao.RideRequestsDaoImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,7 +89,8 @@ public class CustomerController {
         String rideRequestsAttribute = "rideRequests";
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         IRideRequest viewRideRequests = new RideRequestImpl();
-        List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId());
+        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+        List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId(), rideRequestsDao);
         model.addAttribute(rideRequestsAttribute, rideRequests);
         return VIEW_RIDE_REQUESTS;
     }
@@ -133,7 +136,8 @@ public class CustomerController {
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         rideRequest.setCustomerId(customer.customerId);
         IRideRequest rideRequestForCreation = new RideRequestImpl();
-        rideRequestForCreation.createRideRequest(rideRequest);
+        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+        rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
     }
 
 }
