@@ -1,4 +1,4 @@
-package com.halifaxcarpool.admin.database.dao;
+package com.halifaxcarpool.admin.database.dao.dao;
 import com.halifaxcarpool.admin.business.beans.Coupon;
 import java.util.List;
 public interface ICouponDao {

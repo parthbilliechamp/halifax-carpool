@@ -1,6 +1,5 @@
-package com.halifaxcarpool.admin.database.dao;
+package com.halifaxcarpool.admin.database.dao.dao;
 import com.halifaxcarpool.admin.business.beans.Coupon;
-import com.halifaxcarpool.admin.database.dao.ICouponDao;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import java.sql.Connection;
