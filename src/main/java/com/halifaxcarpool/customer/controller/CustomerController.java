@@ -131,13 +131,14 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/create_ride_request")
-    public void createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest,
+    public String createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest,
                                   HttpServletRequest request ){
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         rideRequest.setCustomerId(customer.customerId);
         IRideRequest rideRequestForCreation = new RideRequestImpl();
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
         rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
+        return VIEW_RECOMMENDED_RIDES;
     }
 
 }
