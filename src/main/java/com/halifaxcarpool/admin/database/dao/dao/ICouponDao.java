@@ -4,4 +4,6 @@ import java.util.List;
 public interface ICouponDao {
     boolean createCoupon(Coupon coupon);
     List<Coupon> viewCoupons();
+
+    boolean deleteCoupon(int couponId);
 }

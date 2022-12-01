@@ -6,11 +6,11 @@ import java.util.List;
 import java.time.LocalDate;
 public interface ICoupon {
 
-    boolean createCoupon(Coupon coupon);
+    void createCoupon(Coupon coupon, ICouponDao couponDao);
 
     List<Coupon> viewCoupons(ICouponDao couponDao);
 
-    void deleteCoupon(int couponId);
+    void deleteCoupon(int couponId, ICouponDao couponDao);
 
     Coupon updateCoupon(double discountPercentage, LocalDate expiry);
 

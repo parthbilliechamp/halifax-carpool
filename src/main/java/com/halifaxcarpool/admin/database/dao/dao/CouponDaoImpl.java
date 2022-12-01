@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,28 @@ public class CouponDaoImpl implements ICouponDao {
 
     @Override
     public boolean createCoupon(Coupon coupon) {
+        try{
+            Statement statement = connection.createStatement();
+            System.out.println("CALL insert_coupon_details(" + coupon.getCouponId()+ ","+
+                    coupon.getDiscountPercentage()+ ","
+                    + coupon.getExpiry() +")");
+            statement.executeQuery("CALL insert_coupon_details(" + coupon.getCouponId()+ ","+
+                    coupon.getDiscountPercentage()+ ","
+                    + new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(coupon.getExpiry()) +")");
+            return true;
+        }
+
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                connection.close();
+            }catch(SQLException e){
+                e.printStackTrace();
+
+            }
+        }
         return false;
     }
 
@@ -37,9 +60,37 @@ public class CouponDaoImpl implements ICouponDao {
             e.printStackTrace();
         }
         finally {
-            //connection close
+            try {
+                connection.close();
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
         }
         return new ArrayList<>();
+    }
+
+
+    @Override
+    public boolean deleteCoupon(int couponId) {
+        try{
+            Statement statement = connection.createStatement();
+            statement.executeQuery("CALL delete_coupon("+ couponId+ ")");
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                connection.close();
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+
+        return false;
     }
 
     public static List<Coupon> buildCouponRequestsForm(ResultSet resultSet) throws SQLException{

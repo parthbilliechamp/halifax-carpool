@@ -7,8 +7,8 @@ import java.util.List;
 
 public class CouponImpl implements ICoupon {
     @Override
-    public boolean createCoupon(Coupon coupon) {
-    return false;
+    public void createCoupon(Coupon coupon, ICouponDao couponDao) {
+        couponDao.createCoupon(coupon);
     }
 
     @Override
@@ -18,8 +18,8 @@ public class CouponImpl implements ICoupon {
     }
 
     @Override
-    public void deleteCoupon(int couponId) {
-
+    public void deleteCoupon(int couponId, ICouponDao couponDao) {
+        couponDao.deleteCoupon(couponId);
     }
 
     @Override
