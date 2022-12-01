@@ -75,7 +75,7 @@ public class RideNodeDaoImpl implements IRideNodeDao {
             String SQL_STRING = "CALL get_max_ride_id()";
             ResultSet resultSet = statement.executeQuery(SQL_STRING);
             while (resultSet.next()) {
-                rideId = resultSet.getInt(0);
+                rideId = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
