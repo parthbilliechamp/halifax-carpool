@@ -118,7 +118,7 @@ public class DriverController {
     }
 
     @PostMapping("/driver/create_new_ride")
-    public void createNewRide(@ModelAttribute("ride") Ride ride,
+    public String createNewRide(@ModelAttribute("ride") Ride ride,
                               HttpServletRequest request) {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         ride.setDriverId(driver.driver_id);
@@ -129,6 +129,7 @@ public class DriverController {
         IRideNode rideNode = new RideNodeImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
         rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
+        return "redirect:/driver/view_rides";
     }
 
 }

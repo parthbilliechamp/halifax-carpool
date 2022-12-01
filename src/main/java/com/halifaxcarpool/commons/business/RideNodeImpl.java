@@ -18,8 +18,8 @@ public class RideNodeImpl implements IRideNode {
         List<LatLng> ridePoints =
                 directionPointsProvider.getPointsBetweenSourceAndDestination(startLocation, endLocation);
 
-        List<RideNode> rideNodes = buildRideNodesFrom(ridePoints, ride.rideId);
-        rideNodeDao.insertRideNodes(rideNodes);
+        List<RideNode> rideNodes = buildRideNodesFrom(ridePoints, rideNodeDao.getLatestRideId());
+        rideNodeDao.insertRideNodes(rideNodes); 
     }
 
     @Override
