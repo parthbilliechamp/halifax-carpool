@@ -13,7 +13,7 @@ import java.util.List;
 @ActiveProfiles("test")
 public class RideImplTest {
 
-    private IRidesDao ridesDao = new RidesDaoMockImpl();
+    private final IRidesDao ridesDao = new RidesDaoMockImpl();
     IRide ride = new RideImpl();
 
     @Test
