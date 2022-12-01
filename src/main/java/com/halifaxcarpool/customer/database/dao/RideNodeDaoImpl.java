@@ -66,6 +66,25 @@ public class RideNodeDaoImpl implements IRideNodeDao {
         return new ArrayList<>();
     }
 
+    @Override
+    public int getLatestRideId() {
+        int rideId = 0;
+        try {
+            connection = database.openDatabaseConnection();
+            Statement statement = connection.createStatement();
+            String SQL_STRING = "CALL get_max_ride_id()";
+            ResultSet resultSet = statement.executeQuery(SQL_STRING);
+            while (resultSet.next()) {
+                rideId = resultSet.getInt(0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.closeDatabaseConnection();
+        }
+        return rideId;
+    }
+
     private static List<RideNode> buildRideNodesFrom(ResultSet resultSet) throws SQLException {
 
         List<RideNode> rideNodes = new ArrayList<>();

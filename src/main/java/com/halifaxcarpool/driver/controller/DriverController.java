@@ -63,7 +63,7 @@ public class DriverController {
         }
         httpServletRequest.getSession().setAttribute("loggedInDriver", validDriver);
         System.out.println(httpServletRequest.getSession().getAttribute("loggedInDriver"));
-        return "redirect:/driver/view_rides";
+        return "redirect:/driver/create_new_ride";
     }
 
     @GetMapping ("/driver/logout")

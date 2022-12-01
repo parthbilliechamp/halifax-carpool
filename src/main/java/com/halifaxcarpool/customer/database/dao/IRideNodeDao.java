@@ -11,4 +11,6 @@ public interface IRideNodeDao {
     void insertRideNodes(List<RideNode> rideNodes);
     List<RideNode> getRideNodes(LatLng latLng);
 
+    int getLatestRideId();
+
 }
