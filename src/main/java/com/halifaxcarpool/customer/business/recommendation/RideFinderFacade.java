@@ -85,7 +85,7 @@ public class RideFinderFacade {
         List<Ride> recommendedRides = new ArrayList<>();
         for (RideNode rideNode: validRidesForStartNode) {
             RideNode temp = validRidesForEndNode.get(rideNode);
-            if (rideNode.sequence < temp.sequence) {
+            if (rideNode.sequence <= temp.sequence) {
                 Ride currentRide = ride.getRide(rideNode.rideId, ridesDao);
                 recommendedRides.add(currentRide);
             }

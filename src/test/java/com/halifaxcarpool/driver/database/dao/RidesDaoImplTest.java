@@ -1,8 +1,5 @@
 package com.halifaxcarpool.driver.database.dao;
 
-import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
-import com.halifaxcarpool.customer.database.dao.RideRequestsDaoMockImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,12 +13,12 @@ public class RidesDaoImplTest {
 
     @Test
     void viewRidesTest() {
-        int rideId = 1;
+        int driverId = 1;
         IRidesDao ridesDao = new RidesDaoMockImpl();
-        List<Ride> rides = ridesDao.getRides(rideId);
+        List<Ride> rides = ridesDao.getRides(driverId);
         assert 2 == rides.size();
         for (Ride ride: rides) {
-            assert rideId == ride.rideId;
+            assert driverId == ride.driverId;
         }
     }
 
