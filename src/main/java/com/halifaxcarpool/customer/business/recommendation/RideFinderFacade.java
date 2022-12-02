@@ -27,6 +27,9 @@ public class RideFinderFacade {
 
         LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.startLocation);
         LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.endLocation);
+        if (null == startLocationPoint || null == endLocationPoint) {
+            throw new RuntimeException("Error finding coordinates of the ride request : " + rideRequest.rideRequestId);
+        }
 
         List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
         List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);
@@ -42,7 +45,6 @@ public class RideFinderFacade {
         Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
 
         filterValidRidesForStartNode(rideNodesNearToStartLocation, startNode, validRidesForStartNode);
-
         filterValidRidesForEndNode(rideNodesNearToEndLocation, endNode, validRidesForEndNode);
 
         validRidesForStartNode.retainAll(validRidesForEndNode.keySet());

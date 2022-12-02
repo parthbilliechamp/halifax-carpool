@@ -19,7 +19,7 @@ public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
                             .await();
             overviewPolyline = directionsResult.routes[0].overviewPolyline.getEncodedPath();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("Polyline not generated between : " + source + " and " + destination);
         }
         return PolylineDecoder.decodePolyline(overviewPolyline);
     }

@@ -16,8 +16,8 @@ import java.util.List;
 public class RideImpl implements IRide {
 
     @Override
-    public void createNewRide(Ride ride, IRidesDao ridesDao) {
-        ridesDao.createNewRide(ride);
+    public boolean createNewRide(Ride ride, IRidesDao ridesDao) {
+        return ridesDao.createNewRide(ride);
     }
 
     //TODO add logic of converting ride_status to active or inactive, sql time to local date time

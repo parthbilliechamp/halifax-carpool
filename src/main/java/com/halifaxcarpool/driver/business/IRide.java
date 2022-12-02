@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IRide {
 
-    void createNewRide(Ride ride, IRidesDao ridesDao);
+    boolean createNewRide(Ride ride, IRidesDao ridesDao);
 
     List<Ride> viewRides(int driverId, IRidesDao ridesDao);
 

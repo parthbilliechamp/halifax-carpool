@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IRidesDao {
 
-    void createNewRide(Ride ride);
+    boolean createNewRide(Ride ride);
 
     List<Ride> getRides(int driverId);
 

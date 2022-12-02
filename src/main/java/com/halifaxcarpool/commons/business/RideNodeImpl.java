@@ -12,14 +12,18 @@ import java.util.List;
 
 public class RideNodeImpl implements IRideNode {
     @Override
-    public void insertRideNodes(Ride ride, IRideNodeDao rideNodeDao, IDirectionPointsProvider directionPointsProvider) {
+    public boolean insertRideNodes(Ride ride, IRideNodeDao rideNodeDao, IDirectionPointsProvider directionPointsProvider) {
         String startLocation = ride.startLocation;
         String endLocation = ride.endLocation;
-        List<LatLng> ridePoints =
-                directionPointsProvider.getPointsBetweenSourceAndDestination(startLocation, endLocation);
-
-        List<RideNode> rideNodes = buildRideNodesFrom(ridePoints, rideNodeDao.getLatestRideId());
-        rideNodeDao.insertRideNodes(rideNodes); 
+        try {
+            List<LatLng> ridePoints =
+                    directionPointsProvider.getPointsBetweenSourceAndDestination(startLocation, endLocation);
+            List<RideNode> rideNodes = buildRideNodesFrom(ridePoints, rideNodeDao.getLatestRideId());
+            return rideNodeDao.insertRideNodes(rideNodes);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
