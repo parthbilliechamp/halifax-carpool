@@ -35,6 +35,7 @@ public class DirectionTestSuiteData {
     private static void populateRideData1() {
         String startLocation = "6056 University Ave, Halifax, NS B3H 1W5";
         String endLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
+        int rideId = 1;
         LatLng latLngStartLocation = new LatLng(44.637673535803295, -63.58742788841804);
         LatLng latLngEndLocation = new LatLng(44.64486, -63.59926);
 
@@ -43,9 +44,9 @@ public class DirectionTestSuiteData {
 
         String encodedPolyline =
                 "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uD";
+
         latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
         latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
-        int rideId = 1;
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
         polyLineToRideNodesMap.put(encodedPolyline, rideNodes);
         Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
@@ -55,6 +56,7 @@ public class DirectionTestSuiteData {
     private static void populateRideData2() {
         String startLocation = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
         String endLocation = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
+        int rideId = 2;
         LatLng latLngStartLocation = new LatLng(44.64680117511276, -63.5907166156215);
         LatLng latLngEndLocation = new LatLng(44.64293655131684, -63.581769750341834);
 
@@ -64,7 +66,7 @@ public class DirectionTestSuiteData {
         String encodedPolyline = "}~noGn`ccKYcB`@QdBu@tGoCjAg@jB{@GWa@eCcAiG[oB]oB@Q@Y@KHWhCkA^EpCkArAo@EOA@";
         latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
         latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
-        int rideId = 2;
+
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
         polyLineToRideNodesMap.put(encodedPolyline, rideNodes);
         Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
@@ -101,6 +103,7 @@ public class DirectionTestSuiteData {
         String endLocation = "Dalplex, 6260 South St, Halifax, NS B3H 4R2";
         LatLng latLngStartLocation = new LatLng(44.63153705993981, -63.581374822026966);
         LatLng latLngEndLocation = new LatLng(44.63468262060707, -63.59255426856054);
+        int rideId = 12;
 
         locationToLatLngMap.put(startLocation, latLngStartLocation);
         locationToLatLngMap.put(endLocation, latLngEndLocation);
@@ -108,7 +111,7 @@ public class DirectionTestSuiteData {
         String encodedPolyline = "shloG~racKbChPFz@FjDBf@Pt@LXvAjCt@x@{@|BiAbDiAbDgBrFu@tCs@bCoAzD]h@WPYJy@VSiAsAqIEYRIZI";
         latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
         latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
-        int rideId = 12;
+
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
         polyLineToRideNodesMap.put(encodedPolyline, rideNodes);
         Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
@@ -120,13 +123,15 @@ public class DirectionTestSuiteData {
         String endLocation = "6056 University Ave, Halifax, NS B3H";
         LatLng latLngStartLocation = new LatLng(44.64486, -63.59926);
         LatLng latLngEndLocation = new LatLng(44.6376735358032, -63.587427888418);
+
         String encodedPolyline =
                 "eunoGhwdcKe@mCm@_DYqBg@iBSgAm@cD{@_F}@cFd@I`@OdAe@pCoAlDwAlEeBrAi@W_BWwAfBo@hDsA|HcDdGiCrFyBOaA";
+        int rideId = 11;
+
         latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
         latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
         locationToLatLngMap.put(startLocation, latLngStartLocation);
         locationToLatLngMap.put(endLocation, latLngEndLocation);
-        int rideId = 11;
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
         String oppositeRidePolyline = "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uD";
         rideNodes.addAll(polyLineToRideNodesMap.get(oppositeRidePolyline));
