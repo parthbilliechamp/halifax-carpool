@@ -10,13 +10,18 @@ import java.util.List;
 
 public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
 
+    IDirectionResult directionResult;
+
+    public DirectionPointsProviderImpl() {
+        directionResult = new DirectionResultImpl();
+    }
+
     @Override
-    public List<LatLng> getPointsBetweenSourceAndDestination(String source, String destination) {
+    public List<LatLng> getPointsBetweenSourceAndDestination(String source,
+                                                             String destination) {
         String overviewPolyline = "";
         try {
-            DirectionsResult directionsResult =
-                    DirectionsApi.getDirections(ApiContextFactory.getGeoApiContextInstance(), source, destination)
-                            .await();
+            DirectionsResult directionsResult = directionResult.getDirectionsResult(source, destination);
             overviewPolyline = directionsResult.routes[0].overviewPolyline.getEncodedPath();
         } catch (Exception e) {
             throw new RuntimeException("Polyline not generated between : " + source + " and " + destination);

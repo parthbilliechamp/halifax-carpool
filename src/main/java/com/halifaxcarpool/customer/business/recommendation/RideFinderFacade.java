@@ -22,7 +22,7 @@ public class RideFinderFacade {
         ride = new RideImpl();
     }
 
-    public List<Ride> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
+    public List<List<Ride>> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
                                            IGeoCoding geoCoding, IRidesDao ridesDao) {
 
         LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.startLocation);
@@ -49,10 +49,12 @@ public class RideFinderFacade {
 
         validRidesForStartNode.retainAll(validRidesForEndNode.keySet());
 
-        return getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao);
+        List<List<Ride>> recommendedRides = new ArrayList<>();
+        recommendedRides.add(getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao));
+        return recommendedRides;
     }
 
-    public List<Ride> findMultiRouteRides(RideRequest rideRequest) {
+    public List<List<Ride>> findMultiRouteRides(RideRequest rideRequest) {
         /**
          * integration with Maps API to find the recommended route
          */

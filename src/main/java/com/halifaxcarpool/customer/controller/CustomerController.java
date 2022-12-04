@@ -107,7 +107,7 @@ public class CustomerController {
         String recommendedRidesAttribute = "recommendedRides";
         RideFinder rideFinder = new DirectRouteRideFinder();
         //rideFinder = new MultiRouteRideFinderDecorator(rideFinder);
-        List<Ride> rideList = rideFinder.findMatchingRides(rideRequest);
+        List<List<Ride>> rideList = rideFinder.findMatchingRides(rideRequest);
         model.addAttribute(recommendedRidesAttribute, rideList);
         model.addAttribute("rideRequestId", rideRequestId);
         return VIEW_RECOMMENDED_RIDES;
