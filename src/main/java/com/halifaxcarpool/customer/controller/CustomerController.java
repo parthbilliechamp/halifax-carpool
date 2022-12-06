@@ -57,7 +57,7 @@ public class CustomerController {
         }
         httpServletRequest.getSession().setAttribute("loggedInCustomer", validCustomer);
         System.out.println(httpServletRequest.getSession().getAttribute("loggedInCustomer"));
-        return "redirect:/customer/view_ride_requests";
+        return "redirect:/customer/create_ride_request";
     }
 
     @GetMapping ("/customer/logout")
@@ -88,6 +88,7 @@ public class CustomerController {
                      HttpServletRequest request) {
         String rideRequestsAttribute = "rideRequests";
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
+        System.out.println(customer);
         IRideRequest viewRideRequests = new RideRequestImpl();
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
         List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId(), rideRequestsDao);
@@ -126,6 +127,7 @@ public class CustomerController {
                                    HttpServletRequest request) {
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         RideRequest rideRequest = new RideRequest();
+        rideRequest.setCustomerId(customer.getCustomerId());
         model.addAttribute("rideRequest", rideRequest);
         return "create_ride_request";
     }
@@ -138,7 +140,7 @@ public class CustomerController {
         IRideRequest rideRequestForCreation = new RideRequestImpl();
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
         rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
-        return VIEW_RECOMMENDED_RIDES;
+        return "redirect:/customer/view_ride_requests";
     }
 
 }

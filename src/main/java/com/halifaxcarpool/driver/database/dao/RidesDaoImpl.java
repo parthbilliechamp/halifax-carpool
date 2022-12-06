@@ -29,9 +29,11 @@ public class RidesDaoImpl implements IRidesDao {
 
             //ride.setDateTime(ride.getDateTime().replace("T", " "));
 
-            statement.executeQuery("CALL create_new_ride(" + ride.getDriverId() + ", '" +
-                    ride.getStartLocation() + "', '" + ride.getEndLocation() + "', " + ride.getSeatsOffered() + ", "
-                    + ride.getRideStatus() + ")");
+            String sqlString = "CALL create_new_ride(" + ride.getDriverId() + ", \"" +
+                    ride.getStartLocation() + "\", \"" + ride.getEndLocation() + "\", " + ride.getSeatsOffered() + ", "
+                    + ride.getRideStatus() + ")";
+
+            statement.executeQuery(sqlString);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

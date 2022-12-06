@@ -4,10 +4,7 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,8 +26,14 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
             Statement statement = connection.createStatement();
             // TODO Get method which return date time.
             // TODO: Research on calling this method better
-            statement.executeQuery("CALL insert_ride_request(" + rideRequest.rideRequestId + ", '" + rideRequest.startLocation + "', '" +
-                    rideRequest.endLocation + "', " + rideRequest.customerId + ", '" + new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()) + "')");
+            String SQL_STRING = "{CALL insert_ride_request(?,?,?,?,?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, rideRequest.rideRequestId);
+            stmt.setString(2, rideRequest.startLocation);
+            stmt.setString(3, rideRequest.endLocation);
+            stmt.setInt(4, rideRequest.customerId);
+            stmt.setString(5, new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+            stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -28,4 +28,10 @@ public class RideNodeDaoMockImpl implements IRideNodeDao {
         }
     }
 
+    @Override
+    public int getLatestRideId() {
+        //TODO implement this method
+        return 0;
+    }
+
 }

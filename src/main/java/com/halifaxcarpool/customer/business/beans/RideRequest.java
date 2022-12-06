@@ -8,16 +8,14 @@ public class RideRequest {
     public String startLocation;
     public String endLocation;
 
+    public RideRequest() {
+
+    }
     public RideRequest(int rideRequestId, int customerId, String startLocation, String endLocation) {
         this.rideRequestId = rideRequestId;
         this.customerId = customerId;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
-    }
-
-    public RideRequest() {
-        //this.rideRequestId = 6;
-        //this.customerId = 1;
     }
 
     public int getRideRequestId() {
