@@ -79,7 +79,7 @@ public class RidesDaoImpl implements IRidesDao {
             connection = database.openDatabaseConnection();
             String SQL_STRING = "{CALL cancel_ride(?)}";
             CallableStatement statement = connection.prepareCall(SQL_STRING);
-            statement.setInt(rideId, 1);
+            statement.setInt(1, rideId);
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
