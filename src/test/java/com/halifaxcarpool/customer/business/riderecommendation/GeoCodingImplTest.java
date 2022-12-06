@@ -14,11 +14,19 @@ public class GeoCodingImplTest {
 
     @Disabled("Disabled to save incurring cost caused by calling the REST API ")
     @Test
-    void test() {
+    void getLatLngTest() {
         IGeoCoding geoCoding = new GeoCodingImpl();
         LatLng latLng = geoCoding.getLatLng("Sydney");
         assert  -33.8688197 == latLng.latitude;
         assert  151.2092955 == latLng.longitude;
+    }
+
+    @Disabled("Disabled to save incurring cost caused by calling the REST API ")
+    @Test
+    void getLatLngInvalidLocation() {
+        IGeoCoding geoCoding = new GeoCodingImpl();
+        LatLng latLng = geoCoding.getLatLng("abc");
+        assert  null == latLng;
     }
 
 }

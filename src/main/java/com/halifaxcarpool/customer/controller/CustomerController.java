@@ -11,6 +11,7 @@ import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.IRideRequest;
 import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
+import com.halifaxcarpool.customer.business.recommendation.MultiRouteRideFinderDecorator;
 import com.halifaxcarpool.customer.business.recommendation.RideFinder;
 import com.halifaxcarpool.customer.business.recommendation.RideFinderFacade;
 import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
@@ -112,20 +113,8 @@ public class CustomerController {
         RideRequest rideRequest = new RideRequest(rideRequestId, customer.customerId, startLocation, endLocation);
         String recommendedRidesAttribute = "recommendedRides";
         RideFinder rideFinder = new DirectRouteRideFinder();
-        List<Ride> rideList = rideFinder.findMatchingRides(rideRequest);
-
-//        if (rideList.size() == 0) {
-        System.out.println("Worked");
-        IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
-        IGeoCoding geoCoding = new GeoCodingImpl();
-        IRidesDao ridesDao = new RidesDaoImpl();
-
-        RideFinderFacade rideFinderFacade = new RideFinderFacade();
-        List<List<Ride>> multipleRouteRides = rideFinderFacade.findMultipleRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
-//        }
-
-        model.addAttribute("recommendedMultiRidesAttribute", multipleRouteRides);
-
+        rideFinder = new MultiRouteRideFinderDecorator(rideFinder);
+        List<List<Ride>> rideList = rideFinder.findMatchingRides(rideRequest);
         model.addAttribute(recommendedRidesAttribute, rideList);
         model.addAttribute("rideRequestId", rideRequestId);
         return VIEW_RECOMMENDED_RIDES;

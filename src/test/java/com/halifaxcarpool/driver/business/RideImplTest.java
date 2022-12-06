@@ -1,8 +1,9 @@
 package com.halifaxcarpool.driver.business;
 
+import com.halifaxcarpool.customer.CustomerObjectFactoryTest;
+import com.halifaxcarpool.customer.business.ICustomerObjectFactory;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
-import com.halifaxcarpool.driver.database.dao.RidesDaoMockImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,7 +14,8 @@ import java.util.List;
 @ActiveProfiles("test")
 public class RideImplTest {
 
-    private final IRidesDao ridesDao = new RidesDaoMockImpl();
+    private final ICustomerObjectFactory customerObjectFactory = new CustomerObjectFactoryTest();
+    private final IRidesDao ridesDao = customerObjectFactory.getRidesDao();
     IRide ride = new RideImpl();
 
     @Test

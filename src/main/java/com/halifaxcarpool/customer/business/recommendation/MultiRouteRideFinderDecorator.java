@@ -16,11 +16,11 @@ public class MultiRouteRideFinderDecorator extends RideFinderBaseDecorator {
     }
 
     @Override
-    public List<Ride> findMatchingRides(RideRequest rideRequest) {
-        List<Ride> rideList = new ArrayList<>(super.rideFinder.findMatchingRides(rideRequest));
-        List<Ride> multiRouteRides = navigator.findMatchingRides(rideRequest);
-        rideList.addAll(multiRouteRides);
-        return rideList;
+    public List<List<Ride>> findMatchingRides(RideRequest rideRequest) {
+        List<List<Ride>> recommendedRides = new ArrayList<>(super.rideFinder.findMatchingRides(rideRequest));
+        List<List<Ride>> multiRouteRides = navigator.findMatchingRides(rideRequest);
+        recommendedRides.addAll(multiRouteRides);
+        return recommendedRides;
     }
 
 }

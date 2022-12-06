@@ -24,11 +24,14 @@ public class RideFinderFacade {
         ride = new RideImpl();
     }
 
-    public List<Ride> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
+    public List<List<Ride>> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
                                            IGeoCoding geoCoding, IRidesDao ridesDao) {
 
         LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.startLocation);
         LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.endLocation);
+        if (null == startLocationPoint || null == endLocationPoint) {
+            throw new RuntimeException("Error finding coordinates of the ride request : " + rideRequest.rideRequestId);
+        }
 
         List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
         List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);
@@ -44,12 +47,13 @@ public class RideFinderFacade {
         Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
 
         filterValidRidesForStartNode(rideNodesNearToStartLocation, startNode, validRidesForStartNode);
-
         filterValidRidesForEndNode(rideNodesNearToEndLocation, endNode, validRidesForEndNode);
 
         validRidesForStartNode.retainAll(validRidesForEndNode.keySet());
 
-        return getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao);
+        List<List<Ride>> recommendedRides = new ArrayList<>();
+        recommendedRides.add(getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao));
+        return recommendedRides;
     }
 
     public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
@@ -102,7 +106,7 @@ public class RideFinderFacade {
 
         return rideListToBeRecommended;
     }
-    
+
     private List<Ride> getRidesForRoute1(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng startPointofRideRequest, LatLng middleSearchPoint, List<LatLng> rideReqPoints) {
 
         List<RideNode> rideNodesNearToStartPoint = rideNodeDao.getRideNodes(startPointofRideRequest);
