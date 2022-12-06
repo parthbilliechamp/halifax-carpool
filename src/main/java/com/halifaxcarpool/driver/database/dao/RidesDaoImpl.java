@@ -2,12 +2,11 @@ package com.halifaxcarpool.driver.database.dao;
 
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
-import com.halifaxcarpool.customer.business.beans.RideNode;
+import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RidesDaoImpl implements IRidesDao {
@@ -72,6 +71,21 @@ public class RidesDaoImpl implements IRidesDao {
             database.closeDatabaseConnection();
         }
         return ride;
+    }
+
+    @Override
+    public void cancelRide(int rideId) {
+        try {
+            connection = database.openDatabaseConnection();
+            String SQL_STRING = "{CALL cancel_ride(?)}";
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(rideId, 1);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            database.closeDatabaseConnection();
+        }
     }
 
     private static List<Ride> buildRidesFrom(ResultSet resultSet) throws SQLException {

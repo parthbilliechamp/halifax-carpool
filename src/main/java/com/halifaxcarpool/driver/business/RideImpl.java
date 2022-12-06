@@ -1,16 +1,8 @@
 package com.halifaxcarpool.driver.business;
 
-import com.halifaxcarpool.commons.business.beans.LatLng;
-import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
-import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
-import com.halifaxcarpool.customer.business.beans.RideNode;
-import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
-import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RideImpl implements IRide {
@@ -21,7 +13,6 @@ public class RideImpl implements IRide {
     }
 
     //TODO add logic of converting ride_status to active or inactive, sql time to local date time
-    //ASK do we need to create a new entity bean for this
     @Override
     public List<Ride> viewRides(int driverId, IRidesDao ridesDao) {
         return ridesDao.getRides(driverId);
@@ -30,6 +21,11 @@ public class RideImpl implements IRide {
     @Override
     public Ride getRide(int rideId, IRidesDao ridesDao) {
         return ridesDao.getRide(rideId);
+    }
+
+    @Override
+    public void cancelRide(int rideId, IRidesDao ridesDao) {
+        ridesDao.cancelRide(rideId);
     }
 
 }

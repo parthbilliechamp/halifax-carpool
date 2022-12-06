@@ -6,8 +6,6 @@ import com.halifaxcarpool.customer.business.beans.RideRequest;
 import java.util.List;
 
 public class RideToRequestMapperImpl implements IRideToRequestMapper {
-
-    //the status will always be pending initially when the data nodes are inserted first time.
     private static final String STATUS = "PENDING";
 
     @Override

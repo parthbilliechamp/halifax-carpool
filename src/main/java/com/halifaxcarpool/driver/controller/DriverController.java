@@ -100,6 +100,14 @@ public class DriverController {
         return VIEW_RIDES_UI_FILE;
     }
 
+    @GetMapping("/driver/cancel_ride")
+    String cancelRide(@RequestParam("rideId") int rideId) {
+        IRidesDao ridesDao = new RidesDaoImpl();
+        IRide ride = new RideImpl();
+        ride.cancelRide(rideId, ridesDao);
+        return VIEW_RIDES_UI_FILE;
+    }
+
     @GetMapping("/driver/view_received_requests")
     String viewReceivedRequests(@RequestParam("rideId") int rideId,
                                 Model model) {
