@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        Driver Statistics
+    </title>
+</head>
+<br />
+<div class="container">
+    <h3>Driver Statistics</h3>
+    <hr>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Number of Drivers</th>
+            <th>Total rides completed</th>
+            <th>Number of seats offered</th>
+            <th>Average seats offered</th>
+            <th>Average ride distance</th>
+            <th>CO2 Emissions saved</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ride: ${recommendedRides}">
+            <td th:text="${ride.driverId}"/>
+            <td th:text="${ride.startLocation}"/>
+            <td th:text="${ride.endLocation}"/>
+            <td th:text="${ride.seatsOffered}"/>
+            <td th:text="${ride.dateTime}"/>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
