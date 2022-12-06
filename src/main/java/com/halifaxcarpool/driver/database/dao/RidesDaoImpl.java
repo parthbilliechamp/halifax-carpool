@@ -20,7 +20,7 @@ public class RidesDaoImpl implements IRidesDao {
     }
 
     @Override
-    public void createNewRide(Ride ride) {
+    public boolean createNewRide(Ride ride) {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
@@ -34,8 +34,10 @@ public class RidesDaoImpl implements IRidesDao {
                     + ride.getRideStatus() + ")";
 
             statement.executeQuery(sqlString);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         } finally {
             database.closeDatabaseConnection();
         }

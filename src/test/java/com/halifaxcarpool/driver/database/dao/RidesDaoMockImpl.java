@@ -17,8 +17,9 @@ public class RidesDaoMockImpl implements IRidesDao {
     }
 
     @Override
-    public void createNewRide(Ride ride) {
+    public boolean createNewRide(Ride ride) {
         insertRideMockData(ride);
+        return true;
     }
 
     @Override

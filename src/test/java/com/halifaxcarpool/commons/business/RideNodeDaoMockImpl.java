@@ -14,8 +14,9 @@ public class RideNodeDaoMockImpl implements IRideNodeDao {
 
     private static final List<RideNode> resultList = new ArrayList<>();
     @Override
-    public void insertRideNodes(List<RideNode> rideNodes) {
+    public boolean insertRideNodes(List<RideNode> rideNodes) {
         resultList.addAll(rideNodes);
+        return true;
     }
 
     @Override
@@ -30,8 +31,13 @@ public class RideNodeDaoMockImpl implements IRideNodeDao {
 
     @Override
     public int getLatestRideId() {
-        //TODO implement this method
-        return 0;
+        int latestRideId = -1;
+        for (RideNode rideNode: resultList) {
+            if (rideNode.rideId > latestRideId) {
+                latestRideId = rideNode.rideId;
+            }
+        }
+        return latestRideId;
     }
 
 }

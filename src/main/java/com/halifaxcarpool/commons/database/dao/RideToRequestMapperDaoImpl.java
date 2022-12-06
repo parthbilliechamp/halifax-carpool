@@ -2,9 +2,7 @@ package com.halifaxcarpool.commons.database.dao;
 
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
-import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -30,9 +28,9 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
                     rideRequestId + ", '" + status + "' )";
             statement.executeUpdate(SQL_STRING);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Ride Request already sent!!");
         } finally {
-            //database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
     }
 
@@ -48,7 +46,7 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
         return receivedRideRequestList;
     }
