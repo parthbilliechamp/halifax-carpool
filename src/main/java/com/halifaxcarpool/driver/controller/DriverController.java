@@ -62,7 +62,6 @@ public class DriverController {
             return "redirect:/driver/login";
         }
         httpServletRequest.getSession().setAttribute("loggedInDriver", validDriver);
-        System.out.println(httpServletRequest.getSession().getAttribute("loggedInDriver"));
         return "redirect:/driver/create_new_ride";
     }
 

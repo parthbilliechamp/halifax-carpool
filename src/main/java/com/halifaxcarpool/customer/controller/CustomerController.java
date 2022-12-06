@@ -1,6 +1,8 @@
 package com.halifaxcarpool.customer.controller;
 
 import com.halifaxcarpool.commons.business.IRideToRequestMapper;
+import com.halifaxcarpool.commons.business.geocoding.GeoCodingImpl;
+import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
 import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.customer.business.authentication.*;
@@ -10,13 +12,18 @@ import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.IRideRequest;
 import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
 import com.halifaxcarpool.customer.business.recommendation.RideFinder;
+import com.halifaxcarpool.customer.business.recommendation.RideFinderFacade;
 import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
+import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
 import com.halifaxcarpool.customer.database.dao.RideRequestsDaoImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
+import com.halifaxcarpool.driver.database.dao.IRidesDao;
+import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +37,15 @@ public class CustomerController {
     private static final String VIEW_RECOMMENDED_RIDES = "view_recommended_rides";
     private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
+    private RideFinderFacade rideFinderFacade;
 
 
     @GetMapping("/customer/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
         model.addAttribute("customer", new Customer());
-        if(httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
+        if (httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
             model.addAttribute("loggedInError", "noError");
-        }
-        else if(httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 0) {
+        } else if (httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 0) {
             model.addAttribute("loggedInError", "error");
             httpServletRequest.getSession().setAttribute("loggedInCustomer", 1);
         }
@@ -56,14 +63,13 @@ public class CustomerController {
             return "redirect:/customer/login";
         }
         httpServletRequest.getSession().setAttribute("loggedInCustomer", validCustomer);
-        System.out.println(httpServletRequest.getSession().getAttribute("loggedInCustomer"));
         return "redirect:/customer/create_ride_request";
     }
 
-    @GetMapping ("/customer/logout")
+    @GetMapping("/customer/logout")
     String logoutCustomer(@ModelAttribute("customer") Customer customer, HttpServletRequest
             httpServletRequest, Model model) {
-        if(httpServletRequest.getSession().getAttribute("loggedInCustomer") != (Object) 0) {
+        if (httpServletRequest.getSession().getAttribute("loggedInCustomer") != (Object) 0) {
             httpServletRequest.getSession().setAttribute("loggedInCustomer", 1);
         }
         return "redirect:/customer/login";
@@ -88,7 +94,6 @@ public class CustomerController {
                      HttpServletRequest request) {
         String rideRequestsAttribute = "rideRequests";
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
-        System.out.println(customer);
         IRideRequest viewRideRequests = new RideRequestImpl();
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
         List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId(), rideRequestsDao);
@@ -100,14 +105,27 @@ public class CustomerController {
     String viewRecommendedRides(@RequestParam("rideRequestId") int rideRequestId,
                                 @RequestParam("startLocation") String startLocation,
                                 @RequestParam("endLocation") String endLocation,
+                                HttpServletRequest httpServletRequest,
                                 Model model) {
         //TODO get customer id from session
-        int customerId = 1;
-        RideRequest rideRequest = new RideRequest(rideRequestId, customerId, startLocation, endLocation);
+        Customer customer = (Customer) httpServletRequest.getSession().getAttribute("loggedInCustomer");
+        RideRequest rideRequest = new RideRequest(rideRequestId, customer.customerId, startLocation, endLocation);
         String recommendedRidesAttribute = "recommendedRides";
         RideFinder rideFinder = new DirectRouteRideFinder();
-        //rideFinder = new MultiRouteRideFinderDecorator(rideFinder);
         List<Ride> rideList = rideFinder.findMatchingRides(rideRequest);
+
+//        if (rideList.size() == 0) {
+        System.out.println("Worked");
+        IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
+        IGeoCoding geoCoding = new GeoCodingImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+
+        RideFinderFacade rideFinderFacade = new RideFinderFacade();
+        List<List<Ride>> multipleRouteRides = rideFinderFacade.findMultipleRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+//        }
+
+        model.addAttribute("recommendedMultiRidesAttribute", multipleRouteRides);
+
         model.addAttribute(recommendedRidesAttribute, rideList);
         model.addAttribute("rideRequestId", rideRequestId);
         return VIEW_RECOMMENDED_RIDES;
@@ -134,7 +152,7 @@ public class CustomerController {
 
     @PostMapping("/customer/create_ride_request")
     public String createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest,
-                                  HttpServletRequest request ){
+                                    HttpServletRequest request) {
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         rideRequest.setCustomerId(customer.customerId);
         IRideRequest rideRequestForCreation = new RideRequestImpl();

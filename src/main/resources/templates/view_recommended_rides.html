@@ -11,7 +11,7 @@
     </title>
 </head>
 <body>
-<br />
+<br/>
 <div class="container">
     <h3>Recommended Rides</h3>
     <hr>
@@ -34,11 +34,36 @@
             <td th:text="${ride.dateTime}"/>
             <td>
                 <a class="btn btn-secondary"
-                   th:href="@{/customer/send_ride_request(rideId=${ride.rideId},rideRequestId=${rideRequestId})}">Send Request</a>
+                   th:href="@{/customer/send_ride_request(rideId=${ride.rideId},rideRequestId=${rideRequestId})}">Send
+                    Request</a>
             </td>
             <td>
                 Status : Pending / Accepted / Request not sent
             </td>
+        </tr>
+        </tbody>
+        <thead class="thead-dark">
+        <tr>
+            <th>Driver Id 1</th>
+            <th>Start Location 1</th>
+            <th>End Location 1</th>
+            <th>Seats Available</th>
+            <th>Driver Id 2</th>
+            <th>Start Location 2</th>
+            <th>End Location 2</th>
+            <th>Seats Available</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rideList: ${recommendedMultiRidesAttribute}">
+            <td th:text="${rideList.get(0).driverId}"/>
+            <td th:text="${rideList.get(0).startLocation}"/>
+            <td th:text="${rideList.get(0).endLocation}"/>
+            <td th:text="${rideList.get(0).seatsOffered}"/>
+            <td th:text="${rideList.get(1).driverId}"/>
+            <td th:text="${rideList.get(1).startLocation}"/>
+            <td th:text="${rideList.get(1).endLocation}"/>
+            <td th:text="${rideList.get(1).seatsOffered}"/>
         </tr>
         </tbody>
     </table>

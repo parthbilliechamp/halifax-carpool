@@ -18,6 +18,7 @@ public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
                     DirectionsApi.getDirections(ApiContextFactory.getGeoApiContextInstance(), source, destination)
                             .await();
             overviewPolyline = directionsResult.routes[0].overviewPolyline.getEncodedPath();
+            System.out.println(overviewPolyline);
         } catch (Exception e) {
             e.printStackTrace();
         }

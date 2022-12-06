@@ -11,7 +11,8 @@ public class MultiRouteRideFinderStrategy implements RideFinderStrategy {
 
     @Override
     public List<Ride> findMatchingRides(RideRequest rideRequest) {
-        return rideFinderFacade.findMultiRouteRides(rideRequest);
+//        return rideFinderFacade.findMultiRouteRides(rideRequest);
+        return null;
     }
 
 }
