@@ -1,12 +1,12 @@
 package com.halifaxcarpool.commons.business.directions;
 
-import com.google.maps.DirectionsApi;
 import com.google.maps.model.DirectionsResult;
-import com.halifaxcarpool.commons.business.ApiContextFactory;
 import com.halifaxcarpool.commons.business.PolylineDecoder;
 import com.halifaxcarpool.commons.business.beans.LatLng;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
 
@@ -28,6 +28,16 @@ public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
             throw new RuntimeException("Polyline not generated between : " + source + " and " + destination);
         }
         return PolylineDecoder.decodePolyline(overviewPolyline);
+    }
+
+    @Override
+    public long getDistanceBetweenSourceAndDestination(String source, String destination) {
+        try {
+            DirectionsResult directionsResult = directionResult.getDirectionsResult(source, destination);
+            return directionsResult.routes[0].legs[0].distance.inMeters;
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching Ride distance between : " + source + "and " + destination);
+        }
     }
 
 }
