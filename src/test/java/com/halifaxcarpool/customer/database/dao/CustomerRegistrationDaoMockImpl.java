@@ -35,13 +35,17 @@ public class CustomerRegistrationDaoMockImpl implements ICustomerRegistrationDao
         customer_id = 5;
         mockCustomerData.put(customer_id, customer);
     }
-
+    
     public Customer findCustomerDetailsFromHashMap(int customer_id) {
 
         if (mockCustomerData.containsKey(customer_id)) {
             return mockCustomerData.get(customer_id);
         }
         return new Customer();
+    }
+
+    public void updateCustomerDetails(Customer customer) {
+
     }
 }
 

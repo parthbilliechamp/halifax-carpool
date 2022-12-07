@@ -1,13 +1,13 @@
 package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.customer.business.authentication.ICustomerAuthentication;
-import com.halifaxcarpool.customer.business.authentication.ICustomerLogin;
+import com.halifaxcarpool.customer.business.authentication.ICustomer;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import org.junit.jupiter.api.Test;
 
-public class CustomerLoginImplTest {
+public class CustomerImplTest {
 
-    ICustomerLogin customerLoginMock;
+    ICustomer customerLoginMock;
     ICustomerAuthentication customerAuthenticationMock;
 
     @Test
@@ -18,7 +18,7 @@ public class CustomerLoginImplTest {
         int expected_customer_id = 4;
         Customer extractedCustomer;
 
-        customerLoginMock = new CustomerLoginMockImpl();
+        customerLoginMock = new CustomerMockImpl();
         customerAuthenticationMock = new CustomerAuthenticationMockImpl();
 
         extractedCustomer = customerLoginMock.login(username, password, customerAuthenticationMock);
@@ -34,7 +34,7 @@ public class CustomerLoginImplTest {
         String password = "kllk90@3";
         Customer extractedCustomer;
 
-        customerLoginMock = new CustomerLoginMockImpl();
+        customerLoginMock = new CustomerMockImpl();
         customerAuthenticationMock = new CustomerAuthenticationMockImpl();
 
         extractedCustomer = customerLoginMock.login(username, password, customerAuthenticationMock);

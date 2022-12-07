@@ -6,14 +6,14 @@ import com.halifaxcarpool.customer.database.dao.ICustomerRegistrationDao;
 
 public class CustomerRegistrationImpl implements ICustomerRegistration {
 
-    ICustomerRegistrationDao customerRegistrationDao;
+    ICustomerRegistrationDao customerDao;
 
     public CustomerRegistrationImpl() {
-        customerRegistrationDao = new CustomerRegistrationDaoImpl();
+        customerDao = new CustomerRegistrationDaoImpl();
     }
 
     public void registerCustomer(Customer customer) {
-        customerRegistrationDao.registerCustomer(customer);
+        customerDao.registerCustomer(customer);
     }
 
 }

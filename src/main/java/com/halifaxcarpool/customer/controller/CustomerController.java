@@ -3,8 +3,9 @@ package com.halifaxcarpool.customer.controller;
 import com.halifaxcarpool.commons.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
 import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
-import com.halifaxcarpool.customer.business.authentication.*;
 import com.halifaxcarpool.customer.business.authentication.AuthenticationFacade;
+import com.halifaxcarpool.customer.business.authentication.CustomerImpl;
+import com.halifaxcarpool.customer.business.authentication.ICustomer;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.IRideRequest;
@@ -14,6 +15,8 @@ import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImp
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.customer.database.dao.CustomerDaoImpl;
+import com.halifaxcarpool.customer.database.dao.ICustomerDao;
 import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 import com.halifaxcarpool.customer.database.dao.RideRequestsDaoImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
@@ -26,10 +29,13 @@ import java.util.List;
 
 @Controller
 public class CustomerController {
+
+    private static final String INDEX_PAGE = "index";
     private static final String VIEW_RIDE_REQUESTS = "view_ride_requests";
     private static final String VIEW_RECOMMENDED_RIDES = "view_recommended_rides";
     private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
+    private static final String CUSTOMER_PROFILE_FORM = "update_customer_profile";
 
 
     @GetMapping("/customer/login")
@@ -80,7 +86,34 @@ public class CustomerController {
     String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer) {
         ICustomerRegistration customerRegistration = new CustomerRegistrationImpl();
         customerRegistration.registerCustomer(customer);
-        return "index.html";
+        return INDEX_PAGE;
+    }
+
+    @GetMapping("/customer/view_profile")
+    String getCustomerProfile(Model model,
+                              HttpServletRequest request) {
+        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
+        model.addAttribute("customerProfile", customer);
+        return CUSTOMER_PROFILE_FORM;
+    }
+
+//    @GetMapping("/customer/update_profile")
+//    String updateProfile(Model model) {
+//        model.addAttribute("customerProfile", new Customer());
+//        return CUSTOMER_PROFILE_FORM;
+//    }
+
+    @PostMapping("/customer/update_profile")
+    String updateCustomerProfile(@ModelAttribute("customerProfile") Customer customerProfile, HttpServletRequest request) {
+
+        ICustomer customer = new CustomerImpl();
+        Customer customerLoggedIn = (Customer) request.getSession().getAttribute("loggedInCustomer");
+        customerProfile.setCustomerId(customerLoggedIn.getCustomerId());
+        customerProfile.setCustomerPassword(customerLoggedIn.getCustomerPassword());
+        ICustomerDao customerDao = new CustomerDaoImpl();
+        customer.updateCustomer(customerProfile, customerDao);
+        request.getSession().setAttribute("loggedInCustomer", customerProfile);
+        return "redirect:/customer/view_ride_requests";
     }
 
     @GetMapping("/customer/view_ride_requests")

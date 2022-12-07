@@ -6,7 +6,7 @@ public class AuthenticationFacade {
 
     public Customer authenticate(String userName, String password) {
 
-        ICustomerLogin customerLogin = new CustomerLoginImpl();
+        ICustomer customerLogin = new CustomerImpl();
         ICustomerAuthentication customerAuthentication = new CustomerAuthenticationImpl();
         return customerLogin.login(userName, password, customerAuthentication);
     }
