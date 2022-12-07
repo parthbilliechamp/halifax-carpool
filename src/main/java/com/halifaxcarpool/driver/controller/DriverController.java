@@ -1,21 +1,19 @@
 package com.halifaxcarpool.driver.controller;
 
-import com.halifaxcarpool.commons.business.IRideNode;
 import com.halifaxcarpool.commons.business.IRideToRequestMapper;
-import com.halifaxcarpool.commons.business.RideNodeImpl;
 import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
-import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
-import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
-import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.authentication.AuthenticationFacade;
+import com.halifaxcarpool.driver.business.authentication.DriverImpl;
+import com.halifaxcarpool.driver.business.authentication.IDriver;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
+import com.halifaxcarpool.driver.database.dao.DriverDaoImpl;
+import com.halifaxcarpool.driver.database.dao.IDriverDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 import org.springframework.stereotype.Controller;
@@ -36,8 +34,8 @@ public class DriverController {
     private static final String VIEW_RIDES_UI_FILE = "view_rides";
     private static final String DRIVER_REGISTRATION_FORM = "register_driver_form";
     private static final String VIEW_RECEIVED_REQUESTS = "view_received_requests";
-
     private static final String DRIVER_LOGIN_FROM = "login_driver_form";
+    private static final String DRIVER_PROFILE = "driver_profile";
 
     @GetMapping("/driver/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
@@ -120,7 +118,7 @@ public class DriverController {
     }
 
     @GetMapping("/driver/create_new_ride")
-    public String showNewRideCreation(Model model){
+    public String showNewRideCreation(Model model) {
         model.addAttribute("ride", new Ride());
         return "create_new_ride";
     }
@@ -132,8 +130,33 @@ public class DriverController {
         ride.setDriverId(driver.driver_id);
         IRide rideModel = new RideImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
-        boolean isRideCreated = rideModel.createNewRide(ride, ridesDao);
-        return "redirect:/driver/view_rides";
+        return rideModel.createNewRide(ride, ridesDao);
+    }
+
+    @GetMapping("/driver/view_profile")
+    public String viewProfile(Model model,
+                              HttpServletRequest request) {
+        Driver driverProfile = (Driver) request.getSession().getAttribute("loggedInDriver");
+        model.addAttribute("driverProfile", driverProfile);
+        return DRIVER_PROFILE;
+    }
+
+    @GetMapping("/driver/update_profile")
+    public String updateProfile(Model model) {
+        model.addAttribute("driverProfile", new Driver());
+        return DRIVER_PROFILE;
+    }
+
+    @PostMapping("/driver/update_profile")
+    public String updateDriverProfile(@ModelAttribute("driverProfile") Driver driverProfile,
+                                      HttpServletRequest request) {
+        IDriver driver = new DriverImpl();
+        Driver currentDriverProfile = (Driver) request.getSession().getAttribute("loggedInDriver");
+        driverProfile.setDriver_id(currentDriverProfile.getDriver_id());
+        IDriverDao driverDao = new DriverDaoImpl();
+        driver.update(driverProfile, driverDao);
+        request.getSession().setAttribute("loggedInDriver", driverProfile);
+        return "redirect:/driver/view_profile";
     }
 
 }

@@ -6,7 +6,7 @@ public class AuthenticationFacade {
 
     public Driver authenticate(String userName, String password) {
 
-        IDriverLogin driverLogin = new DriverLoginImpl();
+        IDriver driverLogin = new DriverImpl();
         IDriverAuthentication driverAuthentication = new DriverAuthenticationImpl();
         return driverLogin.login(userName, password, driverAuthentication);
     }

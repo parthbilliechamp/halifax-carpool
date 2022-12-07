@@ -1,13 +1,13 @@
 package com.halifaxcarpool.driver.business;
 
 import com.halifaxcarpool.driver.business.authentication.IDriverAuthentication;
-import com.halifaxcarpool.driver.business.authentication.IDriverLogin;
+import com.halifaxcarpool.driver.business.authentication.IDriver;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import org.junit.jupiter.api.Test;
 
 public class DriverLoginImplTest {
 
-    IDriverLogin driverLoginMock;
+    IDriver driverLoginMock;
     IDriverAuthentication driverAuthenticationMock;
 
     @Test
@@ -18,7 +18,7 @@ public class DriverLoginImplTest {
         int expected_driver_id = 21;
         Driver extractedDriver;
 
-        driverLoginMock = new DriverLoginMockImpl();
+        driverLoginMock = new DriverMockImpl();
         driverAuthenticationMock = new DriverAuthenticationMockImpl();
 
         extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
@@ -35,7 +35,7 @@ public class DriverLoginImplTest {
         int expected_driver_id = 21;
         Driver extractedDriver;
 
-        driverLoginMock = new DriverLoginMockImpl();
+        driverLoginMock = new DriverMockImpl();
         driverAuthenticationMock = new DriverAuthenticationMockImpl();
 
         extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
