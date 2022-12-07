@@ -60,4 +60,10 @@ public class RideRequestImplTest {
         }
     }
 
+    @Test
+    void cancelRideRequestSuccessTest() {
+        int rideRequestId = 4;
+        rideRequest.cancelRideRequest(rideRequestId, rideRequestsDao);
+    }
+
 }

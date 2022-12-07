@@ -143,4 +143,14 @@ public class CustomerController {
         return "redirect:/customer/view_ride_requests";
     }
 
+    @GetMapping ("/customer/cancel_ride_request")
+    public String cancelRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest, HttpServletRequest request) {
+        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
+        rideRequest.setCustomerId(customer.customerId);
+        IRideRequest rideRequestObj = new RideRequestImpl();
+        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+        rideRequestObj.cancelRideRequest(rideRequest.rideRequestId, rideRequestsDao);
+        return "redirect:/customer/view_ride_requests";
+    }
+
 }

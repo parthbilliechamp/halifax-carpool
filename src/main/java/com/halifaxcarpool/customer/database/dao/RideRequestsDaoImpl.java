@@ -57,6 +57,18 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         return new ArrayList<>();
     }
 
+    public void cancelRideRequest(int rideRequestId) {
+        try {
+            connection = database.openDatabaseConnection();
+            String SQL_STRING = "{CALL cancel_ride_request(?)}";
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(1, rideRequestId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static List<RideRequest> buildRideRequestsFrom(ResultSet resultSet) throws SQLException {
 
         List<RideRequest> rideRequests = new ArrayList<>();

@@ -41,6 +41,7 @@
             <th>Start location</th>
             <th>End Location</th>
             <th>View Ride Recommendation</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -52,6 +53,10 @@
                 <a class="btn btn-secondary"
                    th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},
                    startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended Rides</a>
+            </td>
+            <td>
+                <a class="btn btn-secondary btn-alert"
+                   th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel</a>
             </td>
         </tr>
         </tbody>
