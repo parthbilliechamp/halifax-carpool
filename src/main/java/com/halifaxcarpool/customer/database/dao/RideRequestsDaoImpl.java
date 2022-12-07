@@ -57,6 +57,25 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         return new ArrayList<>();
     }
 
+
+    @Override
+    public int getRideRequestCount(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("CALL get_ride_requests_count("+rideId+")");
+            resultSet.next();
+            return Integer.parseInt(resultSet.getString(1));
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return 0;
+    }
+
     private static List<RideRequest> buildRideRequestsFrom(ResultSet resultSet) throws SQLException {
 
         List<RideRequest> rideRequests = new ArrayList<>();

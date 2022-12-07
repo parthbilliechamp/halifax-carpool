@@ -36,6 +36,11 @@
                 <a class="btn btn-secondary"
                    th:href="@{/customer/send_ride_request(rideId=${ride.rideId},rideRequestId=${rideRequestId})}">Send Request</a>
             </td>
+
+            <td>
+                <a class="btn btn-secondary"
+                   th:href="@{/customer/view_payment_fare(rideId=${ride.rideId},rideRequestId=${rideRequestId})}">View Fare</a>
+            </td>
             <td>
                 Status : Pending / Accepted / Request not sent
             </td>
