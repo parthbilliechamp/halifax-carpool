@@ -5,7 +5,7 @@ import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 
 import java.util.List;
 
-public class RideRequestMockImpl implements IRideRequest{
+public class RideRequestMockImpl implements IRideRequest {
     @Override
     public void createRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao) {
 
@@ -17,7 +17,7 @@ public class RideRequestMockImpl implements IRideRequest{
     }
 
     @Override
-    public void cancelRideRequest(int rideRequestId, IRideRequestsDao rideRequestsDao) {
-            rideRequestsDao.cancelRideRequest(rideRequestId);
+    public void cancelRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao) {
+        rideRequestsDao.cancelRideRequest(rideRequest);
     }
 }

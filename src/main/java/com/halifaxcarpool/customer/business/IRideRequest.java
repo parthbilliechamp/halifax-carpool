@@ -11,6 +11,6 @@ public interface IRideRequest {
 
     List<RideRequest> viewRideRequests(int customerId, IRideRequestsDao rideRequestsDao);
 
-    void cancelRideRequest(int rideId, IRideRequestsDao rideRequestsDao);
+    void cancelRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao);
 
 }

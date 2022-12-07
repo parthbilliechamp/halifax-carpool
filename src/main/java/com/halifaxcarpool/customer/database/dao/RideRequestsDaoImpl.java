@@ -57,12 +57,13 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
         return new ArrayList<>();
     }
 
-    public void cancelRideRequest(int rideRequestId) {
+    public void cancelRideRequest(RideRequest rideRequest) {
         try {
             connection = database.openDatabaseConnection();
-            String SQL_STRING = "{CALL cancel_ride_request(?)}";
+            String SQL_STRING = "{CALL cancel_ride_request(?, ?)}";
             CallableStatement statement = connection.prepareCall(SQL_STRING);
-            statement.setInt(1, rideRequestId);
+            statement.setInt(1, rideRequest.rideRequestId);
+            statement.setInt(2, rideRequest.customerId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

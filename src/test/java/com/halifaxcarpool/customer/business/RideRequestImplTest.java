@@ -23,7 +23,7 @@ public class RideRequestImplTest {
         int customerId = 1;
         List<RideRequest> rideRequests = rideRequest.viewRideRequests(customerId, rideRequestsDao);
         assert 2 == rideRequests.size();
-        for (RideRequest ride: rideRequests) {
+        for (RideRequest ride : rideRequests) {
             assert customerId == ride.customerId;
         }
     }
@@ -36,7 +36,7 @@ public class RideRequestImplTest {
     }
 
     @Test
-    void insertRideRequestTest(){
+    void insertRideRequestTest() {
         int customerId = 1;
         int rideId = 8;
         RideRequest rideRequestObject = new RideRequest(rideId, customerId, "Spring Garden", "Downtown");
@@ -44,18 +44,18 @@ public class RideRequestImplTest {
         try {
             rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
             assertTrue(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             assertTrue(false);
         }
     }
 
     @Test
-    void insertRideRequestValuesMissingTest(){
+    void insertRideRequestValuesMissingTest() {
         RideRequest rideRequestObject = new RideRequest();
         try {
             rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
             assertTrue(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             assertTrue(false);
         }
     }
@@ -63,7 +63,33 @@ public class RideRequestImplTest {
     @Test
     void cancelRideRequestSuccessTest() {
         int rideRequestId = 4;
-        rideRequest.cancelRideRequest(rideRequestId, rideRequestsDao);
+        int customerId = 2;
+        RideRequest rideRequestObj = new RideRequest();
+        rideRequestObj.setRideRequestId(rideRequestId);
+        rideRequestObj.setCustomerId(customerId);
+        try {
+            rideRequest.cancelRideRequest(rideRequestObj, rideRequestsDao);
+            assertTrue(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+    }
+
+    @Test
+    void cancelRideRequestFailureTest() {
+        int rideRequestId = 9;
+        int customerId = 6;
+        RideRequest rideRequestObj = new RideRequest();
+        rideRequestObj.setRideRequestId(rideRequestId);
+        rideRequestObj.setCustomerId(customerId);
+        try {
+            rideRequest.cancelRideRequest(rideRequestObj, rideRequestsDao);
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(true);
+        }
     }
 
 }

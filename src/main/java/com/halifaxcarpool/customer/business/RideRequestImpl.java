@@ -18,8 +18,8 @@ public class RideRequestImpl implements IRideRequest {
     }
 
 
-    public void cancelRideRequest(int rideRequestId, IRideRequestsDao rideRequestsDao) {
-        rideRequestsDao.cancelRideRequest(rideRequestId);
+    public void cancelRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao) {
+        rideRequestsDao.cancelRideRequest(rideRequest);
     }
 
 }

@@ -149,7 +149,7 @@ public class CustomerController {
         rideRequest.setCustomerId(customer.customerId);
         IRideRequest rideRequestObj = new RideRequestImpl();
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
-        rideRequestObj.cancelRideRequest(rideRequest.rideRequestId, rideRequestsDao);
+        rideRequestObj.cancelRideRequest(rideRequest, rideRequestsDao);
         return "redirect:/customer/view_ride_requests";
     }
 

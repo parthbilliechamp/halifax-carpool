@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class RideRequestsDaoMockImpl implements IRideRequestsDao {
 
     private static Map<Integer, List<RideRequest>> mockData = new HashMap<>();
@@ -50,11 +52,12 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         mockData.put(customerId, rideRequests);
     }
 
-    public void cancelRideRequest(int rideRequestId) {
-        int customerId = 2;
-        for(int i = 0; i < mockData.get(2).size(); i++) {
-            if(mockData.get(2).get(i).rideRequestId == rideRequestId) {
-                mockData.get(2).remove(i);
+
+    public void cancelRideRequest(RideRequest rideRequest) {
+        int customerId = rideRequest.customerId;
+        for(int i = 0; i < mockData.get(customerId).size(); i++) {
+            if(mockData.get(customerId).get(i).rideRequestId == rideRequest.rideRequestId) {
+                mockData.get(customerId).remove(i);
             }
         }
     }
