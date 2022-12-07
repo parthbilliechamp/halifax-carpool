@@ -28,6 +28,12 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         return mockData.get(customerId);
     }
 
+    
+    @Override
+    public int getRideRequestCount(int rideId) {
+        return 0;
+    }
+
     private static void populateMockData() {
         int customerId = 1;
         List<RideRequest> rideRequests = new ArrayList<>();
