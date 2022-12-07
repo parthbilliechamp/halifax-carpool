@@ -1,7 +1,6 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
 import com.halifaxcarpool.commons.business.beans.LatLng;
-import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.beans.RideNode;
@@ -56,23 +55,20 @@ public class RideFinderFacade {
         return recommendedRides;
     }
 
-    public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
-                                                   IGeoCoding geoCoding, IRidesDao ridesDao) {
+    public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest, IDirectionPointsProvider directionPointsProvider, IRideNodeDao rideNodeDao, IRidesDao ridesDao) {
         List<List<Integer>> finalRideRecommendationsList = new ArrayList<>();
-
-        IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderImpl();
 
         List<LatLng> rideReqPoints = directionPointsProvider.getPointsBetweenSourceAndDestination(rideRequest.startLocation, rideRequest.endLocation);
 
-        LatLng startPointofRideRequest = rideReqPoints.get(0);
+        LatLng startPointOfRideRequest = rideReqPoints.get(0);
 
-        LatLng endPointofRideRequest = rideReqPoints.get(rideReqPoints.size() - 1);
+        LatLng endPointOfRideRequest = rideReqPoints.get(rideReqPoints.size() - 1);
 
         for (int i = 1; i < rideReqPoints.size() - 1; i++) {
             LatLng middleSearchPoint = rideReqPoints.get(i);
 
-            List<Ride> ridesForFirstRoute = getRidesForRoute1(rideRequest, rideNodeDao, ridesDao, startPointofRideRequest, middleSearchPoint, rideReqPoints);
-            List<Ride> ridesForSecondRoute = getRidesForRoute2(rideRequest, rideNodeDao, ridesDao, middleSearchPoint, endPointofRideRequest, rideReqPoints);
+            List<Ride> ridesForFirstRoute = getRidesForRoute1(rideRequest, rideNodeDao, ridesDao, startPointOfRideRequest, middleSearchPoint, rideReqPoints);
+            List<Ride> ridesForSecondRoute = getRidesForRoute2(rideRequest, rideNodeDao, ridesDao, middleSearchPoint, endPointOfRideRequest, rideReqPoints);
 
             if (ridesForFirstRoute.size() != 0 && ridesForSecondRoute.size() != 0) {
                 for (Ride ride1 : ridesForFirstRoute) {
@@ -107,12 +103,12 @@ public class RideFinderFacade {
         return rideListToBeRecommended;
     }
 
-    private List<Ride> getRidesForRoute1(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng startPointofRideRequest, LatLng middleSearchPoint, List<LatLng> rideReqPoints) {
+    private List<Ride> getRidesForRoute1(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng startPointOfRideRequest, LatLng middleSearchPoint, List<LatLng> rideReqPoints) {
 
-        List<RideNode> rideNodesNearToStartPoint = rideNodeDao.getRideNodes(startPointofRideRequest);
+        List<RideNode> rideNodesNearToStartPoint = rideNodeDao.getRideNodes(startPointOfRideRequest);
         List<RideNode> rideNodesNearToMiddlePoint = rideNodeDao.getRideNodes(middleSearchPoint);
         RideRequestNode startNodeOfRideRequest =
-                new RideRequestNode(startPointofRideRequest.latitude, startPointofRideRequest.longitude,
+                new RideRequestNode(startPointOfRideRequest.latitude, startPointOfRideRequest.longitude,
                         rideRequest.rideRequestId);
         RideRequestNode middleNodeOfRideRequest =
                 new RideRequestNode(middleSearchPoint.latitude, middleSearchPoint.longitude,
@@ -126,15 +122,15 @@ public class RideFinderFacade {
         return ridesForFirstRoute;
     }
 
-    private List<Ride> getRidesForRoute2(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng middleSearchPoint, LatLng endPointofRideRequest, List<LatLng> rideReqPoints) {
+    private List<Ride> getRidesForRoute2(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng middleSearchPoint, LatLng endPointOfRideRequest, List<LatLng> rideReqPoints) {
 
         List<RideNode> rideNodesNearToMiddlePoint = rideNodeDao.getRideNodes(middleSearchPoint);
-        List<RideNode> rideNodesNearToEndPoint = rideNodeDao.getRideNodes(endPointofRideRequest);
+        List<RideNode> rideNodesNearToEndPoint = rideNodeDao.getRideNodes(endPointOfRideRequest);
         RideRequestNode middleNodeOfRideRequest =
                 new RideRequestNode(middleSearchPoint.latitude, middleSearchPoint.longitude,
                         rideRequest.rideRequestId);
         RideRequestNode endNodeOfRideRequest =
-                new RideRequestNode(endPointofRideRequest.latitude, endPointofRideRequest.longitude,
+                new RideRequestNode(endPointOfRideRequest.latitude, endPointOfRideRequest.longitude,
                         rideRequest.rideRequestId);
         Set<RideNode> validRidesForMiddleNode2 = new HashSet<>();
         Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();

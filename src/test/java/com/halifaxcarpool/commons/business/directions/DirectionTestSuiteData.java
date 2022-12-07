@@ -30,6 +30,7 @@ public class DirectionTestSuiteData {
         populateRideData5();
         populateRideData6();
         populateRideData7();
+        populateMultipleRideData1();
     }
 
     private static void populateRideData1() {
@@ -143,6 +144,44 @@ public class DirectionTestSuiteData {
         polylineToPointsMap.put(encodedPolyline, latLngs);
     }
 
+    private static void populateMultipleRideData1() {
+
+        String startLocation = "THE TEN SPOT halifax, South Street, Halifax, NS";
+        String middleLocation = "The Vuze, Fenwick Tower, Fenwick Street, Halifax, Nova Scotia";
+        String endLocation = "Dalplex, South Street, Halifax, Nova Scotia";
+
+        String polyLineForRideRequest = "mxmoG||~bKl@dE`AjFxAhI`@bC|A|Jb@pCfAxHlBzNl@zDvA`Kz@zFX~A`@~Bj@~Dz@vGnAbJpBfOHf@n@S";
+        String polyLineForRide1 = "mxmoG||~bKl@dE`AjFxAhITrAfBs@jBo@d@xC\\rBPpA";
+        String polyLineForRide2 = "chmoGh_`cK|AvLiDjA_@LJv@ThBlBjNpDzVr@~DTtAv@xFp@jFjAtInAvJd@tCREZI";
+
+        int rideId1 = 34;
+        int rideId2 = 36;
+
+        LatLng latLngStartLocation = new LatLng(44.64023, -63.56959);
+        LatLng latLngMiddleLocation = new LatLng(44.63762, -63.57509);
+        LatLng latLngEndLocation = new LatLng(44.63444, -63.59291);
+
+        Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
+
+        locationToPolyLineMap.put(tuple2, polyLineForRideRequest);
+
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(latLngStartLocation);
+        latLngs.add(latLngMiddleLocation);
+        latLngs.add(latLngEndLocation);
+        polylineToPointsMap.put(polyLineForRideRequest, latLngs);
+
+        latLngToPolylineMap.put(latLngStartLocation, polyLineForRide1);
+        latLngToPolylineMap.put(latLngMiddleLocation, polyLineForRide1);
+        List<RideNode> rideNodesOn1 = prepareRideNodesFrom(polyLineForRide1, rideId1);
+        polyLineToRideNodesMap.put(polyLineForRide1, rideNodesOn1);
+
+        //Cant add another polyline for the same middle node
+        latLngToPolylineMap.put(latLngEndLocation, polyLineForRide2);
+        List<RideNode> rideNodesOn2 = prepareRideNodesFrom(polyLineForRide2, rideId2);
+        polyLineToRideNodesMap.put(polyLineForRide2, rideNodesOn2);
+
+    }
 
     private static List<RideNode> prepareRideNodesFrom(String encodedPolyLine, int rideId) {
         List<LatLng> points = PolylineDecoder.decodePolyline(encodedPolyLine);

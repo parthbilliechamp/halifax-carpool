@@ -71,7 +71,7 @@ public class DriverController {
         if(httpServletRequest.getSession().getAttribute("loggedInDriver") != (Object) 0) {
             httpServletRequest.getSession().setAttribute("loggedInDriver", 1);
         }
-        return "redirect:/driver/login";
+        return "redirect:/";
     }
 
     @GetMapping("/driver/register")
@@ -84,7 +84,7 @@ public class DriverController {
     String saveRegisteredCustomer(@ModelAttribute("driver") Driver driver) {
         IDriverRegistration driverRegistration = new DriverRegistrationImpl();
         driverRegistration.registerDriver(driver);
-        return "index.html";
+        return "redirect:/driver/login";
     }
 
     @GetMapping("/driver/view_rides")

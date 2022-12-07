@@ -22,7 +22,6 @@ public class RideFinderFacadeTest {
     RideFinderFacade rideFinderFacade = new RideFinderFacade();
     IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
     IGeoCoding geoCoding = new GeoCodingMockImpl();
-    
     IRidesDao ridesDao = new RidesDaoMockImpl();
 
     @Test

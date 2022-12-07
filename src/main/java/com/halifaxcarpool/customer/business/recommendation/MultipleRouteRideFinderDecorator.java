@@ -6,21 +6,22 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiRouteRideFinderDecorator extends RideFinderBaseDecorator {
+public class MultipleRouteRideFinderDecorator extends RideFinderBaseDecorator {
 
-    RideFinderStrategy rideFinderStrategy = new DirectRouteRideFinderStrategy();
+    RideFinderStrategy rideFinderStrategy = new MultipleRouteRideFinderStrategy();
     RideFinderNavigator navigator = new RideFinderNavigator(rideFinderStrategy);
 
-    public MultiRouteRideFinderDecorator(RideFinder rideFinder) {
+    public MultipleRouteRideFinderDecorator(RideFinder rideFinder) {
         super(rideFinder);
     }
 
     @Override
     public List<List<Ride>> findMatchingRides(RideRequest rideRequest) {
         List<List<Ride>> recommendedRides = new ArrayList<>(super.rideFinder.findMatchingRides(rideRequest));
-        List<List<Ride>> multiRouteRides = navigator.findMatchingRides(rideRequest);
-        recommendedRides.addAll(multiRouteRides);
+        List<List<Ride>> multipleRouteRides = navigator.findMatchingRides(rideRequest);
+        recommendedRides.addAll(multipleRouteRides);
         return recommendedRides;
     }
+
 
 }

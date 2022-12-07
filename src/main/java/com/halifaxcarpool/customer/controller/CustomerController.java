@@ -10,10 +10,7 @@ import com.halifaxcarpool.customer.business.authentication.AuthenticationFacade;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.IRideRequest;
-import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
-import com.halifaxcarpool.customer.business.recommendation.MultiRouteRideFinderDecorator;
-import com.halifaxcarpool.customer.business.recommendation.RideFinder;
-import com.halifaxcarpool.customer.business.recommendation.RideFinderFacade;
+import com.halifaxcarpool.customer.business.recommendation.*;
 import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
@@ -40,6 +37,7 @@ public class CustomerController {
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
     private RideFinderFacade rideFinderFacade;
 
+    HttpServletRequest httpServletRequest;
 
     @GetMapping("/customer/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
@@ -73,9 +71,8 @@ public class CustomerController {
         if (httpServletRequest.getSession().getAttribute("loggedInCustomer") != (Object) 0) {
             httpServletRequest.getSession().setAttribute("loggedInCustomer", 1);
         }
-        return "redirect:/customer/login";
+        return "redirect:/";
     }
-
 
     @GetMapping("/customer/register")
     String registerCustomer(Model model) {
@@ -87,12 +84,15 @@ public class CustomerController {
     String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer) {
         ICustomerRegistration customerRegistration = new CustomerRegistrationImpl();
         customerRegistration.registerCustomer(customer);
-        return "index.html";
+        return "redirect:/customer/login";
     }
 
     @GetMapping("/customer/view_ride_requests")
     String viewRides(Model model,
                      HttpServletRequest request) {
+        if(request.getSession().getAttribute("loggedInCustomer") == null || request.getSession().getAttribute("loggedInCustomer") == (Object)1) {
+            return "redirect:/customer/login";
+        }
         String rideRequestsAttribute = "rideRequests";
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         IRideRequest viewRideRequests = new RideRequestImpl();
@@ -108,12 +108,14 @@ public class CustomerController {
                                 @RequestParam("endLocation") String endLocation,
                                 HttpServletRequest httpServletRequest,
                                 Model model) {
-        //TODO get customer id from session
+        if(httpServletRequest.getSession().getAttribute("loggedInCustomer") == null || httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object)1) {
+            return "redirect:/customer/login";
+        }
         Customer customer = (Customer) httpServletRequest.getSession().getAttribute("loggedInCustomer");
         RideRequest rideRequest = new RideRequest(rideRequestId, customer.customerId, startLocation, endLocation);
         String recommendedRidesAttribute = "recommendedRides";
         RideFinder rideFinder = new DirectRouteRideFinder();
-        rideFinder = new MultiRouteRideFinderDecorator(rideFinder);
+        rideFinder = new MultipleRouteRideFinderDecorator(rideFinder);
         List<List<Ride>> rideList = rideFinder.findMatchingRides(rideRequest);
         model.addAttribute(recommendedRidesAttribute, rideList);
         model.addAttribute("rideRequestId", rideRequestId);
@@ -122,7 +124,10 @@ public class CustomerController {
 
     @GetMapping("/customer/send_ride_request")
     String sendRideRequest(@RequestParam("rideId") int rideId,
-                           @RequestParam("rideRequestId") int rideRequestId) {
+                           @RequestParam("rideRequestId") int rideRequestId, HttpServletRequest httpServletRequest) {
+        if(httpServletRequest.getSession().getAttribute("loggedInCustomer") == null || httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object)1) {
+            return "redirect:/customer/login";
+        }
         IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
         IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
         rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
@@ -132,6 +137,9 @@ public class CustomerController {
     @GetMapping("/customer/create_ride_request")
     public String showRideCreation(Model model,
                                    HttpServletRequest request) {
+        if(request.getSession().getAttribute("loggedInCustomer") == null || request.getSession().getAttribute("loggedInCustomer") == (Object)1) {
+            return "redirect:/customer/login";
+        }
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         RideRequest rideRequest = new RideRequest();
         rideRequest.setCustomerId(customer.getCustomerId());
@@ -142,6 +150,9 @@ public class CustomerController {
     @PostMapping("/customer/create_ride_request")
     public String createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest,
                                     HttpServletRequest request) {
+        if(request.getSession().getAttribute("loggedInCustomer") == null || request.getSession().getAttribute("loggedInCustomer") == (Object)1) {
+            return "redirect:/customer/login";
+        }
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         rideRequest.setCustomerId(customer.customerId);
         IRideRequest rideRequestForCreation = new RideRequestImpl();
