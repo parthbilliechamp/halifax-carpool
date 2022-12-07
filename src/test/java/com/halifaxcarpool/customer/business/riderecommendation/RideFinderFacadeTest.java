@@ -22,7 +22,6 @@ public class RideFinderFacadeTest {
     RideFinderFacade rideFinderFacade = new RideFinderFacade();
     IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
     IGeoCoding geoCoding = new GeoCodingMockImpl();
-    
     IRidesDao ridesDao = new RidesDaoMockImpl();
 
     @Test
@@ -30,7 +29,7 @@ public class RideFinderFacadeTest {
         String startLocation = "6056 University Ave, Halifax, NS B3H 1W5";
         String endLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
         RideRequest rideRequest = new RideRequest(1, 1, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
         assert Objects.equals(ride.startLocation, startLocation);
@@ -43,7 +42,7 @@ public class RideFinderFacadeTest {
         String endLocation = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
         String rideStartsFrom = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
         assert Objects.equals(ride.startLocation, rideStartsFrom);
@@ -56,7 +55,7 @@ public class RideFinderFacadeTest {
         String endLocation = "Camp Hill Veterans Memorial Building @ QEII Health Sciences Centre";
         String rideEndsAt = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
         assert Objects.equals(ride.startLocation, startLocation);
@@ -70,7 +69,7 @@ public class RideFinderFacadeTest {
         String rideStartsFrom = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
         String rideEndsAt = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
         assert Objects.equals(ride.startLocation, rideStartsFrom);
@@ -88,7 +87,7 @@ public class RideFinderFacadeTest {
          * point is far off the ride start location, the algorithm does not recommend this ride.
          */
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 0 == rides.size();
     }
 
@@ -103,7 +102,7 @@ public class RideFinderFacadeTest {
          * point is far off the ride start location, the algorithm does not recommend this ride.
          */
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 0 == rides.size();
     }
 
@@ -118,7 +117,7 @@ public class RideFinderFacadeTest {
          * point and the end point is far off the ride start location, the algorithm does not recommend this ride.
          */
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 0 == rides.size();
     }
 
@@ -127,7 +126,7 @@ public class RideFinderFacadeTest {
         String startLocation = "Dalplex, 6260 South St, Halifax, NS B3H 4R2";;
         String endLocation = "Saint Mary's University, Robie Street, Halifax, NS";
         RideRequest rideRequest = new RideRequest(10, 6, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 0 == rides.size();
     }
 
@@ -136,7 +135,7 @@ public class RideFinderFacadeTest {
         String startLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L";
         String endLocation = "6056 University Ave, Halifax, NS B3H";
         RideRequest rideRequest = new RideRequest(1, 1, startLocation, endLocation);
-        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
+        List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
         assert Objects.equals(ride.startLocation, startLocation);

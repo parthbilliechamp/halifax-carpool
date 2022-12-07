@@ -1,5 +1,7 @@
 package com.halifaxcarpool.driver.business;
 
+import com.halifaxcarpool.customer.CustomerObjectFactoryTest;
+import com.halifaxcarpool.customer.business.ICustomerObjectFactory;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RidesDaoMockImpl;
@@ -13,7 +15,8 @@ import java.util.List;
 @ActiveProfiles("test")
 public class RideImplTest {
 
-    private final IRidesDao ridesDao = new RidesDaoMockImpl();
+    private final ICustomerObjectFactory customerObjectFactory = new CustomerObjectFactoryTest();
+    private final IRidesDao ridesDao = customerObjectFactory.getRidesDao();
     IRide ride = new RideImpl();
 
     @Test
@@ -26,5 +29,16 @@ public class RideImplTest {
         }
     }
 
+    @Test
+    void createNewRideTest() {
+        int driverId = 3;
+        int rideId = 8;
+
+        Ride rideObject = new Ride();
+        rideObject.setDriverId(driverId);
+        rideObject.setRideId(rideId);
+
+        assert ride.createNewRide(rideObject, ridesDao);;
+    }
 
 }

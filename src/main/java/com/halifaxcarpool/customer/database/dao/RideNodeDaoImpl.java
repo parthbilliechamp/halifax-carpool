@@ -24,7 +24,7 @@ public class RideNodeDaoImpl implements IRideNodeDao {
     }
 
     @Override
-    public void insertRideNodes(List<RideNode> rideNodes) {
+    public boolean insertRideNodes(List<RideNode> rideNodes) {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
@@ -36,8 +36,10 @@ public class RideNodeDaoImpl implements IRideNodeDao {
                         "," + rideNode.sequence + ")");
             }
             statement.executeBatch();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         } finally {
             database.closeDatabaseConnection();
         }

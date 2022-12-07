@@ -62,7 +62,6 @@ public class DriverController {
             return "redirect:/driver/login";
         }
         httpServletRequest.getSession().setAttribute("loggedInDriver", validDriver);
-        System.out.println(httpServletRequest.getSession().getAttribute("loggedInDriver"));
         return "redirect:/driver/create_new_ride";
     }
 
@@ -72,7 +71,7 @@ public class DriverController {
         if(httpServletRequest.getSession().getAttribute("loggedInDriver") != (Object) 0) {
             httpServletRequest.getSession().setAttribute("loggedInDriver", 1);
         }
-        return "redirect:/driver/login";
+        return "redirect:/";
     }
 
     @GetMapping("/driver/register")
@@ -85,7 +84,7 @@ public class DriverController {
     String saveRegisteredCustomer(@ModelAttribute("driver") Driver driver) {
         IDriverRegistration driverRegistration = new DriverRegistrationImpl();
         driverRegistration.registerDriver(driver);
-        return "index.html";
+        return "redirect:/driver/login";
     }
 
     @GetMapping("/driver/view_rides")
@@ -124,11 +123,19 @@ public class DriverController {
         ride.setDriverId(driver.driver_id);
         IRide rideModel = new RideImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
-        rideModel.createNewRide(ride, ridesDao);
+        boolean isRideCreated = rideModel.createNewRide(ride, ridesDao);
+        if (Boolean.FALSE.equals(isRideCreated)) {
+            return "create_new_ride";
+            //TODO add error message to model and display to user
+        }
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderImpl();
         IRideNode rideNode = new RideNodeImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
-        rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
+        boolean isRideNodeInserted = rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
+        if (Boolean.FALSE.equals(isRideNodeInserted)) {
+            return "create_new_ride";
+            //TODO cancel the latest ride
+        }
         return "redirect:/driver/view_rides";
     }
 

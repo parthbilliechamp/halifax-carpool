@@ -5,7 +5,6 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.halifaxcarpool.commons.business.ApiContextFactory;
 import com.halifaxcarpool.commons.business.beans.LatLng;
-import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 
 public class GeoCodingImpl implements IGeoCoding {
 

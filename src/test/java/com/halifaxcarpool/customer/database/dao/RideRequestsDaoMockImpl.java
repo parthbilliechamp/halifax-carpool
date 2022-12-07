@@ -56,14 +56,4 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         mockData.put(customerId, rideRequests);
     }
 
-    public RideRequest findRideRequest(int rideId){
-        List<RideRequest> rideRequests = mockData.get(1);
-        for(RideRequest rideRequest : rideRequests){
-            if(rideRequest.getRideRequestId() == rideId){
-                return rideRequest;
-            }
-        }
-        return new RideRequest();
-    }
-
 }
