@@ -3,7 +3,7 @@ package com.halifaxcarpool.customer.business.payment;
 import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
-public class FareCalculator implements IFareCalculator{
+public class FareCalculatorImpl implements IFareCalculator{
     public static final int THRESHOLD_REQUESTS = 5;
     public static final double BASE_MULTIPLICATION_FACTOR = 10;
     public static final double  INFLATION_MULTIPLICATION_FACTOR= 20;
