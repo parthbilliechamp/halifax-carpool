@@ -114,11 +114,23 @@ public class CustomerController {
         }
         Customer customer = (Customer) httpServletRequest.getSession().getAttribute("loggedInCustomer");
         RideRequest rideRequest = new RideRequest(rideRequestId, customer.customerId, startLocation, endLocation);
-        String recommendedRidesAttribute = "recommendedRides";
+        String recommendedSingleRidesAttribute = "recommendedSingleRides";
+        String recommendedMultiRidesAttribute = "recommendedMultiRides";
         RideFinder rideFinder = new DirectRouteRideFinder();
         rideFinder = new MultipleRouteRideFinderDecorator(rideFinder);
-        List<List<Ride>> rideList = rideFinder.findMatchingRides(rideRequest);
-        model.addAttribute(recommendedRidesAttribute, rideList);
+        List<List<Ride>> ListOfRideList = rideFinder.findMatchingRides(rideRequest);
+        List<List<Ride>> singleRidesList = new ArrayList<>();
+        List<List<Ride>> multiRidesList = new ArrayList<>();
+        for (List<Ride> rideList: ListOfRideList) {
+            if(rideList.size() == 1) {
+                singleRidesList.add(rideList);
+            }
+            else {
+                multiRidesList.add(rideList);
+            }
+        }
+        model.addAttribute(recommendedSingleRidesAttribute, singleRidesList);
+        model.addAttribute(recommendedMultiRidesAttribute, multiRidesList);
         model.addAttribute("rideRequestId", rideRequestId);
         return VIEW_RECOMMENDED_RIDES;
     }

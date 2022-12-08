@@ -15,7 +15,29 @@ import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import java.util.*;
 
 public class RideFinderFacade {
-    private static final double MAXIMUM_RIDE_THRESHOLD_KM = 0.5;
+
+    private static class RideLookup {
+        int firstRideId;
+        int secondRideId;
+        RideLookup(int firstRideId, int secondRideId) {
+            this.firstRideId = firstRideId;
+            this.secondRideId = secondRideId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            RideLookup that = (RideLookup) o;
+            return firstRideId == that.firstRideId && secondRideId == that.secondRideId;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(firstRideId, secondRideId);
+        }
+    }
+    private static final double MAXIMUM_RIDE_THRESHOLD_KM = 0.2;
     private static final double MAXIMUM_RIDE_THRESHOLD_KM_FOR_TWO_RIDES = 0.2;
     private final IRide ride;
 
@@ -57,15 +79,13 @@ public class RideFinderFacade {
     }
 
     public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest, IDirectionPointsProvider directionPointsProvider, IRideNodeDao rideNodeDao, IRidesDao ridesDao) {
-        List<List<Integer>> finalRideRecommendationsList = new ArrayList<>();
-
         List<LatLng> rideReqPoints = directionPointsProvider.getPointsBetweenSourceAndDestination(rideRequest.startLocation, rideRequest.endLocation);
 
         LatLng startPointOfRideRequest = rideReqPoints.get(0);
 
         LatLng endPointOfRideRequest = rideReqPoints.get(rideReqPoints.size() - 1);
-
-        for (int i = 1; i < rideReqPoints.size() - 1; i++) {
+        Map<RideLookup, List<Ride>> ridesCache = new HashMap<>();
+        for (int i = 1; i < rideReqPoints.size() - 1 && ridesCache.size() <= 3; i+=3) {
             LatLng middleSearchPoint = rideReqPoints.get(i);
 
             List<Ride> ridesForFirstRoute = getRidesForRoute1(rideRequest, rideNodeDao, ridesDao, startPointOfRideRequest, middleSearchPoint, rideReqPoints);
@@ -74,34 +94,20 @@ public class RideFinderFacade {
             if (ridesForFirstRoute.size() != 0 && ridesForSecondRoute.size() != 0) {
                 for (Ride ride1 : ridesForFirstRoute) {
                     for (Ride ride2 : ridesForSecondRoute) {
-                        if (ride1.rideId != ride2.rideId) {
-                            List<Integer> rideCombinationsOnEachNode = new ArrayList<>();
-
-                            rideCombinationsOnEachNode.add(ride1.rideId);
-                            rideCombinationsOnEachNode.add(ride2.rideId);
-
-                            if (finalRideRecommendationsList.isEmpty()) {
-                                finalRideRecommendationsList.add(rideCombinationsOnEachNode);
-                            }
-
-                            if (!finalRideRecommendationsList.contains(rideCombinationsOnEachNode)) {
-                                finalRideRecommendationsList.add(rideCombinationsOnEachNode);
-                            }
+                        if (ride1.rideId == ride2.rideId) {
+                            continue;
                         }
+                        RideLookup rideLookup = new RideLookup(ride1.rideId, ride2.rideId);
+                        List<Ride> combinedRides = new ArrayList<>();
+                        combinedRides.add(ride1);
+                        combinedRides.add(ride2);
+                        ridesCache.put(rideLookup, combinedRides);
                     }
                 }
             }
         }
-        List<List<Ride>> rideListToBeRecommended = new ArrayList<>();
-        for (List<Integer> rideIdList : finalRideRecommendationsList) {
-            List<Ride> ridesListExtracted = new ArrayList<>();
-            for (int ride_id : rideIdList) {
-                ridesListExtracted.add(ride.getRide(ride_id, ridesDao));
-            }
-            rideListToBeRecommended.add(ridesListExtracted);
-        }
 
-        return rideListToBeRecommended;
+        return new ArrayList<>(ridesCache.values());
     }
 
     private List<Ride> getRidesForRoute1(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng startPointOfRideRequest, LatLng middleSearchPoint, List<LatLng> rideReqPoints) {
@@ -119,8 +125,7 @@ public class RideFinderFacade {
         filterValidRidesForStartNodeForTwoRides(rideNodesNearToStartPoint, startNodeOfRideRequest, validRidesForStartNode);
         filterValidRidesForEndNodeForTwoRides(rideNodesNearToMiddlePoint, middleNodeOfRideRequest, validRidesForMiddleNode);
         validRidesForStartNode.retainAll(validRidesForMiddleNode.keySet());
-        List<Ride> ridesForFirstRoute = getRidesBasedOnDirection(validRidesForStartNode, validRidesForMiddleNode, ridesDao);
-        return ridesForFirstRoute;
+        return getRidesBasedOnDirection(validRidesForStartNode, validRidesForMiddleNode, ridesDao);
     }
 
     private List<Ride> getRidesForRoute2(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng middleSearchPoint, LatLng endPointOfRideRequest, List<LatLng> rideReqPoints) {
@@ -138,8 +143,7 @@ public class RideFinderFacade {
         filterValidRidesForStartNodeForTwoRides(rideNodesNearToMiddlePoint, middleNodeOfRideRequest, validRidesForMiddleNode2);
         filterValidRidesForEndNodeForTwoRides(rideNodesNearToEndPoint, endNodeOfRideRequest, validRidesForEndNode);
         validRidesForMiddleNode2.retainAll(validRidesForEndNode.keySet());
-        List<Ride> ridesForSecondRoute = getRidesBasedOnDirection(validRidesForMiddleNode2, validRidesForEndNode, ridesDao);
-        return ridesForSecondRoute;
+        return getRidesBasedOnDirection(validRidesForMiddleNode2, validRidesForEndNode, ridesDao);
     }
 
     private static void filterValidRidesForStartNodeForTwoRides(List<RideNode> rideNodesNearToStartLocation,
