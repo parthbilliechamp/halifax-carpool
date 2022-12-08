@@ -60,6 +60,10 @@ public class RidesDaoMockImpl implements IRidesDao {
         String endLocationRide3 = "Dalplex, 6260 South St, Halifax, NS B3H 4R2";
         populateRide(12, 10, startLocationRide3, endLocationRide3);
 
+        String startLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L";
+        String endLocation = "6056 University Ave, Halifax, NS B3H";
+        populateRide(11, 11, startLocation, endLocation);
+
         String startLocationRide4 = "6328-6276 Quinpool Rd, Halifax, NS B3L";
         String endLocationRide4 = "6056 University Ave, Halifax, NS B3H";
         populateRide(11, 11, startLocationRide4, endLocationRide4);
@@ -67,6 +71,14 @@ public class RidesDaoMockImpl implements IRidesDao {
         String startLocationRide5 = "6328-6276 Quinpool Rd, Halifax, NS B3L";
         String endLocationRide5 = "6056 University Ave, Halifax, NS B3H";
         populateRide(13, 11, startLocationRide5, endLocationRide5);
+
+        String startLocationRide6 = "THE TEN SPOT halifax, South Street, Halifax, NS";
+        String endLocationRide6 = "The Vuze, Fenwick Tower, Fenwick Street, Halifax, Nova Scotia";
+        populateRide(34, 42, startLocationRide6, endLocationRide6);
+
+        String startLocationRide7 = "The Vuze, Fenwick Tower, Fenwick Street, Halifax, Nova Scotia";
+        String endLocationRide7 = "Dalplex, South Street, Halifax, Nova Scotia";
+        populateRide(36, 46, startLocationRide7, endLocationRide7);
     }
 
     private static void populateDriverToListData() {

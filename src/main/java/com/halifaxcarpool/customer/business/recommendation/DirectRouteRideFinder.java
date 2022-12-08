@@ -11,7 +11,7 @@ public class DirectRouteRideFinder extends RideFinder {
     RideFinderNavigator navigator = new RideFinderNavigator(rideFinderStrategy);
 
     @Override
-    public List<Ride> findMatchingRides(RideRequest rideRequest) {
+    public List<List<Ride>> findMatchingRides(RideRequest rideRequest) {
         return navigator.findMatchingRides(rideRequest);
     }
 

@@ -6,6 +6,10 @@ import java.util.*;
 
 public class DirectionPointsProviderMockImpl implements IDirectionPointsProvider {
 
+    public DirectionPointsProviderMockImpl() {
+
+    }
+
 
     @Override
     public List<LatLng> getPointsBetweenSourceAndDestination(String source, String destination) {

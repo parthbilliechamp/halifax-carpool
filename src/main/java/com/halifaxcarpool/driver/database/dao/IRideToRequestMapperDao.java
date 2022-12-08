@@ -1,4 +1,4 @@
-package com.halifaxcarpool.commons.database.dao;
+package com.halifaxcarpool.driver.database.dao;
 
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 

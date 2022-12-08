@@ -1,12 +1,13 @@
 package com.halifaxcarpool.driver.controller;
 
-import com.halifaxcarpool.commons.business.IRideToRequestMapper;
-import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
-import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
-import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
+import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
+import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
+import com.halifaxcarpool.driver.business.*;
+import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
+import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.driver.business.IRide;
-import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.authentication.AuthenticationFacade;
 import com.halifaxcarpool.driver.business.authentication.DriverImpl;
 import com.halifaxcarpool.driver.business.authentication.IDriver;
@@ -36,6 +37,7 @@ public class DriverController {
     private static final String VIEW_RECEIVED_REQUESTS = "view_received_requests";
     private static final String DRIVER_LOGIN_FROM = "login_driver_form";
     private static final String DRIVER_PROFILE = "driver_profile";
+    private static final String CREATE_NEW_RIDE_PAGE = "create_new_ride";
 
     @GetMapping("/driver/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
@@ -53,14 +55,13 @@ public class DriverController {
     String authenticateLoggedInCustomer(@ModelAttribute("driver") Driver driver, HttpServletRequest
             httpServletRequest, Model model) {
         AuthenticationFacade authenticationFacade = new AuthenticationFacade();
-        Driver validDriver = authenticationFacade.authenticate(driver.getDriverEmail(), driver.getDriverPassword());
+        Driver validDriver = authenticationFacade.authenticate(driver.getDriver_email(), driver.getDriver_password());
         model.addAttribute("driver", driver);
         if (validDriver == null) {
             httpServletRequest.getSession().setAttribute("loggedInDriver", 0);
             return "redirect:/driver/login";
         }
         httpServletRequest.getSession().setAttribute("loggedInDriver", validDriver);
-        System.out.println(httpServletRequest.getSession().getAttribute("loggedInDriver"));
         return "redirect:/driver/create_new_ride";
     }
 
@@ -70,7 +71,7 @@ public class DriverController {
         if(httpServletRequest.getSession().getAttribute("loggedInDriver") != (Object) 0) {
             httpServletRequest.getSession().setAttribute("loggedInDriver", 1);
         }
-        return "redirect:/driver/login";
+        return "redirect:/";
     }
 
     @GetMapping("/driver/register")
@@ -83,7 +84,7 @@ public class DriverController {
     String saveRegisteredCustomer(@ModelAttribute("driver") Driver driver) {
         IDriverRegistration driverRegistration = new DriverRegistrationImpl();
         driverRegistration.registerDriver(driver);
-        return "index.html";
+        return "redirect:/driver/login";
     }
 
     @GetMapping("/driver/view_rides")
@@ -93,7 +94,7 @@ public class DriverController {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         IRidesDao ridesDao = new RidesDaoImpl();
         IRide ride = new RideImpl();
-        List<Ride> rideList = ride.viewRides(driver.getDriverId(), ridesDao);
+        List<Ride> rideList = ride.viewRides(driver.getDriver_id(), ridesDao);
         model.addAttribute(ridesAttribute, rideList);
         return VIEW_RIDES_UI_FILE;
     }
@@ -127,10 +128,17 @@ public class DriverController {
     public String createNewRide(@ModelAttribute("ride") Ride ride,
                               HttpServletRequest request) {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
-        ride.setDriverId(driver.getDriverId());
+        ride.setDriverId(driver.getDriver_id());
         IRide rideModel = new RideImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
-        return rideModel.createNewRide(ride, ridesDao);
+        IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
+        IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderImpl();
+        boolean isRideCreated = rideModel.createNewRide(ride, ridesDao, rideNodeDao, directionPointsProvider);
+        if (isRideCreated) {
+            return "redirect:/driver/view_rides";
+        } else {
+            return CREATE_NEW_RIDE_PAGE;
+        }
     }
 
     @GetMapping("/driver/view_profile")
@@ -152,7 +160,7 @@ public class DriverController {
                                       HttpServletRequest request) {
         IDriver driver = new DriverImpl();
         Driver currentDriverProfile = (Driver) request.getSession().getAttribute("loggedInDriver");
-        driverProfile.setDriverId(currentDriverProfile.getDriverId());
+        driverProfile.setDriver_id(currentDriverProfile.getDriver_id());
         IDriverDao driverDao = new DriverDaoImpl();
         driver.update(driverProfile, driverDao);
         request.getSession().setAttribute("loggedInDriver", driverProfile);

@@ -52,12 +52,12 @@
                             <form th:action="@{/driver/login/check}" method="post" th:object="${driver}">
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="driver_email">Your Email</label>
-                                    <input type="email" th:field="*{driverEmail}" id="driver_email"
+                                    <input type="email" th:field="*{driver_email}" id="driver_email"
                                            class="form-control form-control-lg" required/>
                                 </div>
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="driver_password">Password</label>
-                                    <input type="password" th:field="*{driverPassword}" id="driver_password"
+                                    <input type="password" th:field="*{driver_password}" id="driver_password"
                                            class="form-control form-control-lg" required/>
                                 </div>
                                 <div class="d-flex justify-content-center">

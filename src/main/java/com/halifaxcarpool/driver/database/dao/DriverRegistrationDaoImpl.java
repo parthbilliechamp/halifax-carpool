@@ -22,7 +22,7 @@ public class DriverRegistrationDaoImpl implements IDriverRegistrationDao {
 
     private Date getLicenseDate(Driver driver) {
         String licenseExpiryDate;
-        licenseExpiryDate = driver.getLicenseExpiryDate();
+        licenseExpiryDate = driver.getLicense_expiry_date();
         Date date;
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,12 +40,12 @@ public class DriverRegistrationDaoImpl implements IDriverRegistrationDao {
             database = new DatabaseImpl();
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-            statement.executeQuery("CALL insert_driver_details('" + driver.getDriverEmail() + "', '" +
-                    driver.getDriverPassword() + "', '" + driver.getDriverLicense() + "', '" +
-                    driver.getDriverName() + "', '" + driver.getRegisteredVehicleNumber() + "', '" +
+            statement.executeQuery("CALL insert_driver_details('" + driver.getDriver_email() + "', '" +
+                    driver.getDriver_password() + "', '" + driver.getDriver_license() + "', '" +
+                    driver.getDriver_name() + "', '" + driver.getRegistered_vehicle_number() + "', '" +
                     new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)) + "', '" +
-                    driver.getVehicleName() + "', '" + driver.getVehicleModel() + "', '" + driver.getVehicleColor() +
-                    "', " + driver.getDriverApprovalStatus() + ")");
+                    driver.getVehicle_name() + "', '" + driver.getVehicle_model() + "', '" + driver.getVehicle_color() +
+                    "', " + driver.getDriver_approval_status() + ")");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

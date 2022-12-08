@@ -1,7 +1,11 @@
 package com.halifaxcarpool.driver.business;
 
+import com.halifaxcarpool.commons.business.RideNodeDaoMockImpl;
+import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderMockImpl;
+import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.CustomerObjectFactoryTest;
 import com.halifaxcarpool.customer.business.ICustomerObjectFactory;
+import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import org.junit.jupiter.api.Test;
@@ -28,6 +32,40 @@ public class RideImplTest {
         }
     }
 
+    @Test
+    void createNewRideTestSuccess() {
+        int driverId = 3;
+        int rideId = 8;
+
+        Ride rideObject = new Ride();
+        rideObject.setDriverId(driverId);
+        rideObject.setRideId(rideId);
+        String startLocation = "6056 University Ave, Halifax, NS B3H 1W5";
+        String endLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
+        rideObject.setStartLocation(startLocation);
+        rideObject.setEndLocation(endLocation);
+        IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderMockImpl();
+        IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
+        assert ride.createNewRide(rideObject, ridesDao, rideNodeDao, directionPointsProvider);
+    }
+
+    @Test
+    void createNewRideTestFailure() {
+        int driverId = 3;
+        int rideId = 8;
+
+        Ride rideObject = new Ride();
+        rideObject.setDriverId(driverId);
+        rideObject.setRideId(rideId);
+        String startLocation = "Invalid address";
+        String endLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
+        rideObject.setStartLocation(startLocation);
+        rideObject.setEndLocation(endLocation);
+        IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderMockImpl();
+        IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
+        boolean isRideCreated = ride.createNewRide(rideObject, ridesDao, rideNodeDao, directionPointsProvider);
+        assert Boolean.FALSE.equals(isRideCreated);
+    }
     @Test
     public void viewRidesEmptySetTest() {
         int driverId = 43;

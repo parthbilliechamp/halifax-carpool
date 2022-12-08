@@ -98,7 +98,7 @@ public class RidesDaoImpl implements IRidesDao {
             int driverId = Integer.parseInt(resultSet.getString("driver_id"));
             String startLocation = resultSet.getString("start_location");
             String endLocation = resultSet.getString("end_location");
-            int seatsOffered = Integer.parseInt(resultSet.getString("ride_id"));
+            int seatsOffered = Integer.parseInt(resultSet.getString("seats_offered"));
             byte rideStatus = Byte.parseByte(resultSet.getString("ride_status"));
             //TODO convert to local date time
             String dateTime = resultSet.getString("ride_date_time");

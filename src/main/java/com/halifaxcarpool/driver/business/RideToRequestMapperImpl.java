@@ -1,6 +1,6 @@
-package com.halifaxcarpool.commons.business;
+package com.halifaxcarpool.driver.business;
 
-import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
+import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 
 import java.util.List;
