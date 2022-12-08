@@ -1,13 +1,13 @@
 package com.halifaxcarpool.driver.controller;
 
-import com.halifaxcarpool.commons.business.IRideNode;
-import com.halifaxcarpool.commons.business.IRideToRequestMapper;
-import com.halifaxcarpool.commons.business.RideNodeImpl;
-import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
+import com.halifaxcarpool.driver.business.IRideNode;
+import com.halifaxcarpool.driver.business.IRideToRequestMapper;
+import com.halifaxcarpool.driver.business.RideNodeImpl;
+import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
-import com.halifaxcarpool.commons.database.dao.IRideToRequestMapperDao;
-import com.halifaxcarpool.commons.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
+import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;

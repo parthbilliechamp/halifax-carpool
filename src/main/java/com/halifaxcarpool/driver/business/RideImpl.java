@@ -1,16 +1,8 @@
 package com.halifaxcarpool.driver.business;
 
-import com.halifaxcarpool.commons.business.beans.LatLng;
-import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
-import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
-import com.halifaxcarpool.customer.business.beans.RideNode;
-import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
-import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RideImpl implements IRide {
