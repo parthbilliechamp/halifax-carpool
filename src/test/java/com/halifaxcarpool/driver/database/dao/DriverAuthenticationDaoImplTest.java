@@ -19,7 +19,7 @@ public class DriverAuthenticationDaoImplTest {
 
         extractedDriver = driverAuthenticationDaoMockObj.authenticate(username, password);
 
-        assert expected_driver_id == extractedDriver.getDriverId();
+        assert expected_driver_id == extractedDriver.getDriver_id();
 
     }
 
@@ -37,7 +37,7 @@ public class DriverAuthenticationDaoImplTest {
 
         extractedDriver = driverAuthenticationDaoMockObj.authenticate(username, password);
 
-        assert (expectedUsername != extractedDriver.getDriverEmail() && expectedPassword == extractedDriver.getDriverPassword());
+        assert (expectedUsername != extractedDriver.getDriver_email() && expectedPassword == extractedDriver.getDriver_password());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class DriverAuthenticationDaoImplTest {
 
         extractedDriver = driverAuthenticationDaoMockObj.authenticate(username, password);
 
-        assert (expectedUsername == extractedDriver.getDriverEmail() && expectedPassword != extractedDriver.getDriverPassword());
+        assert (expectedUsername.equals(extractedDriver.getDriver_email()) && !expectedPassword.equals(extractedDriver.getDriver_password()));
     }
 
 }
