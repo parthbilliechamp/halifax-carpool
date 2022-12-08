@@ -1,17 +1,16 @@
 package com.halifaxcarpool.commons.database;
 
 
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Objects;
 import java.util.Properties;
 
 public class DatabaseConnection {
 
-    private static final String PROPERTIES_FILE_= "application.properties";
+    private static final String PROPERTIES_FILE_PATH = "application.properties";
     private static DatabaseConnection databaseConnection = null;
     private Connection connection;
     private String password;
@@ -55,9 +54,9 @@ public class DatabaseConnection {
         try {
             Properties properties = new Properties();
             InputStream inputStream =
-                    Files.newInputStream(Paths.get(
-                            Objects.requireNonNull(
-                                    this.getClass().getClassLoader().getResource(PROPERTIES_FILE_)).getPath()));
+                    Files.newInputStream(new File(this.getClass().getClassLoader().getResource(PROPERTIES_FILE_PATH)
+                            .getFile()).toPath());
+
             properties.load(inputStream);
             userName = properties.getProperty(userProperty);
             password = properties.getProperty(passwordProperty);
