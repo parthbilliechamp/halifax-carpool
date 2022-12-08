@@ -12,8 +12,8 @@ public class DriverMockImpl implements IDriver {
     }
 
     @Override
-    public void update(Driver driver, IDriverDao driverDao) {
-
+    public boolean update(Driver driver, IDriverDao driverDao) {
+        return driverDao.updateDriverProfile(driver);
     }
 
 }

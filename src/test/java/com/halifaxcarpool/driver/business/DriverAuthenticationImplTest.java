@@ -20,7 +20,7 @@ public class DriverAuthenticationImplTest {
 
         extractedDriver = driverAuthenticationMockObj.authenticate(username, password);
 
-        assert expected_driver_id == extractedDriver.getDriver_id();
+        assert expected_driver_id == extractedDriver.getDriverId();
 
     }
 

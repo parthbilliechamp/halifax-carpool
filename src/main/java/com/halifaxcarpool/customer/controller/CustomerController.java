@@ -3,7 +3,6 @@ package com.halifaxcarpool.customer.controller;
 import com.halifaxcarpool.commons.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
 import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
-import com.halifaxcarpool.customer.business.authentication.*;
 import com.halifaxcarpool.customer.business.authentication.AuthenticationFacade;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;

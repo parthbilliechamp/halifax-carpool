@@ -74,18 +74,20 @@ public class RidesDaoImpl implements IRidesDao {
     }
 
     @Override
-    public void cancelRide(int rideId) {
+    public boolean cancelRide(int rideId) {
         try {
             connection = database.openDatabaseConnection();
             String SQL_STRING = "{CALL cancel_ride(?)}";
             CallableStatement statement = connection.prepareCall(SQL_STRING);
             statement.setInt(1, rideId);
             statement.executeUpdate();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             database.closeDatabaseConnection();
         }
+        return false;
     }
 
     private static List<Ride> buildRidesFrom(ResultSet resultSet) throws SQLException {

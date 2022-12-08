@@ -4,5 +4,5 @@ import com.halifaxcarpool.driver.business.beans.Driver;
 
 public interface IDriverDao {
 
-    void updateDriverProfile(Driver driver);
+    boolean updateDriverProfile(Driver driver);
 }

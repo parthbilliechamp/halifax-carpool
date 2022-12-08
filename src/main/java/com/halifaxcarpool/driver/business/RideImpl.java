@@ -43,8 +43,8 @@ public class RideImpl implements IRide {
     }
 
     @Override
-    public void cancelRide(int rideId, IRidesDao ridesDao) {
-        ridesDao.cancelRide(rideId);
+    public boolean cancelRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.cancelRide(rideId);
     }
 
 }

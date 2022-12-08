@@ -12,6 +12,6 @@ public interface IRidesDao {
 
     Ride getRide(int rideId);
 
-    void cancelRide(int rideId);
+    boolean cancelRide(int rideId);
 
 }

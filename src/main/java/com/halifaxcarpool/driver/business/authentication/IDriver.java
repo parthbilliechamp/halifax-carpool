@@ -7,6 +7,6 @@ public interface IDriver {
 
     Driver login(String userName, String password, IDriverAuthentication driverAuthentication);
 
-    void update(Driver driver, IDriverDao driverDao);
+    boolean update(Driver driver, IDriverDao driverDao);
 
 }

@@ -13,6 +13,6 @@ public interface IRide {
 
     Ride getRide(int rideId, IRidesDao ridesDao);
 
-    void cancelRide(int rideId, IRidesDao ridesDao);
+    boolean cancelRide(int rideId, IRidesDao ridesDao);
 
 }

@@ -1,11 +1,14 @@
 package com.halifaxcarpool.driver.business;
 
+import com.halifaxcarpool.driver.business.authentication.DriverImpl;
 import com.halifaxcarpool.driver.business.authentication.IDriverAuthentication;
 import com.halifaxcarpool.driver.business.authentication.IDriver;
 import com.halifaxcarpool.driver.business.beans.Driver;
+import com.halifaxcarpool.driver.database.dao.DriverDaoMockImpl;
+import com.halifaxcarpool.driver.database.dao.IDriverDao;
 import org.junit.jupiter.api.Test;
 
-public class DriverLoginImplTest {
+public class DriverImplTest {
 
     IDriver driverLoginMock;
     IDriverAuthentication driverAuthenticationMock;
@@ -23,7 +26,7 @@ public class DriverLoginImplTest {
 
         extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
 
-        assert expected_driver_id == extractedDriver.getDriver_id();
+        assert expected_driver_id == extractedDriver.getDriverId();
 
     }
 
@@ -42,6 +45,30 @@ public class DriverLoginImplTest {
 
         assert extractedDriver == null;
 
+    }
+
+    @Test
+    public void modifyDriverProfileSuccessTest() {
+        IDriver driver = new DriverImpl();
+        IDriverDao driverDao = new DriverDaoMockImpl();
+        Driver driverProfile = new Driver.Builder()
+                .withDriverId(1)
+                .withDriverName("Lis")
+                .withDriverEmail("main@gmail.com")
+                .build();
+        assert driver.update(driverProfile, driverDao);
+    }
+
+    @Test
+    public void modifyDriverProfileFailureTest() {
+        IDriver driver = new DriverImpl();
+        IDriverDao driverDao = new DriverDaoMockImpl();
+        Driver driverProfile = new Driver.Builder()
+                .withDriverId(34)
+                .withDriverName("Lis")
+                .withDriverEmail("main@gmail.com")
+                .build();
+        assert Boolean.FALSE.equals(driver.update(driverProfile, driverDao));
     }
 
 }

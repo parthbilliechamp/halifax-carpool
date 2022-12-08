@@ -1,6 +1,5 @@
 package com.halifaxcarpool.driver.database.dao;
 
-import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +19,7 @@ public class DriverAuthenticationDaoImplTest {
 
         extractedDriver = driverAuthenticationDaoMockObj.authenticate(username, password);
 
-        assert expected_driver_id == extractedDriver.getDriver_id();
+        assert expected_driver_id == extractedDriver.getDriverId();
 
     }
 
@@ -38,7 +37,7 @@ public class DriverAuthenticationDaoImplTest {
 
         extractedDriver = driverAuthenticationDaoMockObj.authenticate(username, password);
 
-        assert (expectedUsername != extractedDriver.getDriver_email() && expectedPassword == extractedDriver.getDriver_password());
+        assert (expectedUsername != extractedDriver.getDriverEmail() && expectedPassword == extractedDriver.getDriverPassword());
     }
 
     @Test
@@ -55,7 +54,7 @@ public class DriverAuthenticationDaoImplTest {
 
         extractedDriver = driverAuthenticationDaoMockObj.authenticate(username, password);
 
-        assert (expectedUsername == extractedDriver.getDriver_email() && expectedPassword != extractedDriver.getDriver_password());
+        assert (expectedUsername == extractedDriver.getDriverEmail() && expectedPassword != extractedDriver.getDriverPassword());
     }
 
 }

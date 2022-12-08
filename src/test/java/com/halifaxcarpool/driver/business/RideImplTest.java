@@ -19,7 +19,7 @@ public class RideImplTest {
     IRide ride = new RideImpl();
 
     @Test
-    public void testViewRides() {
+    public void viewRidesTest() {
         int driverId = 1;
         List<Ride> rideList = ride.viewRides(driverId, ridesDao);
         assert 2 == rideList.size();
@@ -28,5 +28,23 @@ public class RideImplTest {
         }
     }
 
+    @Test
+    public void viewRidesEmptySetTest() {
+        int driverId = 43;
+        List<Ride> rideList = ride.viewRides(driverId, ridesDao);
+        assert rideList.isEmpty();
+    }
+
+    @Test
+    public void cancelRideSuccessTest() {
+        int rideId = 13;
+        assert ride.cancelRide(rideId, ridesDao);
+    }
+
+    @Test
+    public void cancelRideFailureTest() {
+        int rideId = 84;
+        assert Boolean.FALSE.equals(ride.cancelRide(rideId, ridesDao));
+    }
 
 }

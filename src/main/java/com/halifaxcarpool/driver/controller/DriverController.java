@@ -53,7 +53,7 @@ public class DriverController {
     String authenticateLoggedInCustomer(@ModelAttribute("driver") Driver driver, HttpServletRequest
             httpServletRequest, Model model) {
         AuthenticationFacade authenticationFacade = new AuthenticationFacade();
-        Driver validDriver = authenticationFacade.authenticate(driver.getDriver_email(), driver.getDriver_password());
+        Driver validDriver = authenticationFacade.authenticate(driver.getDriverEmail(), driver.getDriverPassword());
         model.addAttribute("driver", driver);
         if (validDriver == null) {
             httpServletRequest.getSession().setAttribute("loggedInDriver", 0);
@@ -93,7 +93,7 @@ public class DriverController {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         IRidesDao ridesDao = new RidesDaoImpl();
         IRide ride = new RideImpl();
-        List<Ride> rideList = ride.viewRides(driver.driver_id, ridesDao);
+        List<Ride> rideList = ride.viewRides(driver.getDriverId(), ridesDao);
         model.addAttribute(ridesAttribute, rideList);
         return VIEW_RIDES_UI_FILE;
     }
@@ -127,7 +127,7 @@ public class DriverController {
     public String createNewRide(@ModelAttribute("ride") Ride ride,
                               HttpServletRequest request) {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
-        ride.setDriverId(driver.driver_id);
+        ride.setDriverId(driver.getDriverId());
         IRide rideModel = new RideImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
         return rideModel.createNewRide(ride, ridesDao);
@@ -152,7 +152,7 @@ public class DriverController {
                                       HttpServletRequest request) {
         IDriver driver = new DriverImpl();
         Driver currentDriverProfile = (Driver) request.getSession().getAttribute("loggedInDriver");
-        driverProfile.setDriver_id(currentDriverProfile.getDriver_id());
+        driverProfile.setDriverId(currentDriverProfile.getDriverId());
         IDriverDao driverDao = new DriverDaoImpl();
         driver.update(driverProfile, driverDao);
         request.getSession().setAttribute("loggedInDriver", driverProfile);

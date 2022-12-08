@@ -11,7 +11,8 @@ public class DriverImpl implements IDriver {
     }
 
     @Override
-    public void update(Driver driver, IDriverDao driverDao) {
-        driverDao.updateDriverProfile(driver);
+    public boolean update(Driver driver, IDriverDao driverDao) {
+        return driverDao.updateDriverProfile(driver);
     }
+
 }
