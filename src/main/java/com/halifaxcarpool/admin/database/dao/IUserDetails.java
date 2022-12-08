@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +66,24 @@ public abstract class IUserDetails {
     }
 
     public Map<Integer, List<String>> getRideLocations(){
-        return null;
+        Map<Integer, List<String>> rideLocations = new HashMap<>();
+        try {
+            connection = database.openDatabaseConnection();
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("CALL get_ride_locations()");
+            while(resultSet.next()){
+                List<String> locations = new ArrayList<>();
+                locations.add(resultSet.getString("start_location"));
+                locations.add(resultSet.getString("end_location"));
+                rideLocations.put(resultSet.getInt("ride_id"), locations);
+            }
+            return rideLocations;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            database.closeDatabaseConnection();
+        }
     }
 
 }

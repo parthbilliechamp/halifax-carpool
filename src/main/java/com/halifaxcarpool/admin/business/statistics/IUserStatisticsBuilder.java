@@ -28,6 +28,7 @@ public abstract class IUserStatisticsBuilder {
     }
     public void calculateAverageRideDistance(){
         Map<Integer, List<String>> rideLocations = userDetails.getRideLocations();
+        //List<Integer> rideDistances =
         userStatistics.setAverageRideDistance(4.5);
     }
     public void calculateCO2Emissions(){
