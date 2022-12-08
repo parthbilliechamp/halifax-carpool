@@ -2,25 +2,24 @@ package com.halifaxcarpool.customer.controller;
 
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
-import com.halifaxcarpool.commons.business.RideToRequestMapperImpl;
+import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.customer.business.authentication.AuthenticationFacade;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.IRideRequest;
-
 import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
 import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
 import com.halifaxcarpool.customer.business.recommendation.RideFinder;
-
 import com.halifaxcarpool.customer.business.recommendation.*;
-
 import com.halifaxcarpool.customer.business.registration.CustomerRegistrationImpl;
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 import com.halifaxcarpool.customer.database.dao.RideRequestsDaoImpl;
+import com.halifaxcarpool.driver.database.dao.IRidesDao;
+import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +34,7 @@ public class CustomerController {
     private static final String VIEW_RECOMMENDED_RIDES = "view_recommended_rides";
     private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
+    private static  final String VIEW_PAYMENT_FARE = "view_fare_price";
     private RideFinderFacade rideFinderFacade;
 
     HttpServletRequest httpServletRequest;
@@ -160,5 +160,17 @@ public class CustomerController {
         rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
         return "redirect:/customer/view_ride_requests";
     }
+
+    @GetMapping("/customer/view_payment_fare")
+    String viewPaymentFare(@RequestParam("rideId")int rideId, @RequestParam("rideRequestId")int rideRequestId, Model model){
+        //payment
+        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        IFareCalculator fareCalculator = new FareCalculatorImpl();
+        double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
+        model.addAttribute("fare",fare);
+        return VIEW_PAYMENT_FARE;
+    }
+
 
 }

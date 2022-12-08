@@ -52,30 +52,12 @@
             <th>Start Location 2</th>
             <th>End Location 2</th>
             <th>Seats Available</th>
+            <th>Fare</th>
         </tr>
         </thead>
         <tbody>
 
-        <tr th:each="ride: ${recommendedRides}">
-            <td th:text="${ride.driverId}"/>
-            <td th:text="${ride.startLocation}"/>
-            <td th:text="${ride.endLocation}"/>
-            <td th:text="${ride.seatsOffered}"/>
-            <td th:text="${ride.dateTime}"/>
-            <td>
-                <a class="btn btn-secondary"
-                   th:href="@{/customer/send_ride_request(rideId=${ride.rideId},rideRequestId=${rideRequestId})}">Send Request</a>
-            </td>
-
-            <td>
-                <a class="btn btn-secondary"
-                   th:href="@{/customer/view_payment_fare(rideId=${ride.rideId},rideRequestId=${rideRequestId})}">View Fare</a>
-            </td>
-            <td>
-                Status : Pending / Accepted / Request not sent
-            </td>
-
-        <tr th:each="rideList: ${recommendedRides}">
+                <tr th:each="rideList: ${recommendedRides}">
             <td th:text="${rideList.get(0).driverId}"/>
             <td th:text="${rideList.get(0).startLocation}"/>
             <td th:text="${rideList.get(0).endLocation}"/>
@@ -84,6 +66,11 @@
             <td th:text="${rideList.get(1).startLocation}"/>
             <td th:text="${rideList.get(1).endLocation}"/>
             <td th:text="${rideList.get(1).seatsOffered}"/>
+            <td>
+                <a class="btn btn-secondary"
+                  th:href="@{/customer/view_payment_fare(rideId=${rideList.get(0).rideId},rideRequestId=${rideRequestId})}">
+                   View Payment</a>
+            </td>.
 
         </tr>
         </tbody>
