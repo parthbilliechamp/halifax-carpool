@@ -1,4 +1,4 @@
-package com.halifaxcarpool.admin.statistics;
+package com.halifaxcarpool.admin.business.statistics;
 
 public class UserStatistics implements IUserStatistics{
 
@@ -6,7 +6,7 @@ public class UserStatistics implements IUserStatistics{
     private int ridesCompleted;
     private int numberOfSeats;
     private int averageNumberOfSeats;
-    private float averageRideDistance;
+    private double averageRideDistance;
     private double cO2Emissions;
 
     @Override
@@ -30,12 +30,36 @@ public class UserStatistics implements IUserStatistics{
     }
 
     @Override
-    public void setAverageRideDistance(float averageRideDistance) {
+    public void setAverageRideDistance(double averageRideDistance) {
         this.averageRideDistance = averageRideDistance;
     }
 
     @Override
     public void setCO2Emissions(double cO2Emissions) {
         this.cO2Emissions = cO2Emissions;
+    }
+
+    public int getNumberOfUsers() {
+        return numberOfUsers;
+    }
+
+    public int getRidesCompleted() {
+        return ridesCompleted;
+    }
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public int getAverageNumberOfSeats() {
+        return averageNumberOfSeats;
+    }
+
+    public double getAverageRideDistance() {
+        return averageRideDistance;
+    }
+
+    public double getcO2Emissions() {
+        return cO2Emissions;
     }
 }

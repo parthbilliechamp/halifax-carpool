@@ -1,32 +1,29 @@
 package com.halifaxcarpool.driver.database.dao;
 
-import com.halifaxcarpool.commons.database.DatabaseImpl;
-import com.halifaxcarpool.commons.database.IDatabase;
+import com.halifaxcarpool.admin.database.dao.IUserDetails;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DriverDetailsDaoImpl implements IDriverDetailsDao{
-
-    private final IDatabase database;
-    private Connection connection;
+public class DriverDetailsDaoImpl extends IUserDetails {
 
     public DriverDetailsDaoImpl(){
-        database = new DatabaseImpl();
+        super();
     }
 
     @Override
-    public int getNumberOfDrivers() {
+    public int getNumberOfUsers() {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("");
+            ResultSet resultSet = statement.executeQuery("CALL get_driver_count()");
+            return resultSet.getInt("count");
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            database.closeDatabaseConnection();
         }
-        return 0;
     }
 }
