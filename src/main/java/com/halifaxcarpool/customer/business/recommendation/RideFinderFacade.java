@@ -50,9 +50,10 @@ public class RideFinderFacade {
 
         validRidesForStartNode.retainAll(validRidesForEndNode.keySet());
 
-        List<List<Ride>> recommendedRides = new ArrayList<>();
-        recommendedRides.add(getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao));
-        return recommendedRides;
+        List<List<Ride>> recommendedRidesWrapper = new ArrayList<>();
+        List<Ride> recommendedRides = getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao);
+        convertListOfRidesToListOfListOfRides(recommendedRidesWrapper, recommendedRides);
+        return recommendedRidesWrapper;
     }
 
     public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest, IDirectionPointsProvider directionPointsProvider, IRideNodeDao rideNodeDao, IRidesDao ridesDao) {
@@ -197,6 +198,14 @@ public class RideFinderFacade {
             }
         }
         return recommendedRides;
+    }
+
+    private void convertListOfRidesToListOfListOfRides(List<List<Ride>> resultList, List<Ride> recommendedRides) {
+        for (Ride ride: recommendedRides) {
+            List<Ride> rides = new ArrayList<>();
+            rides.add(ride);
+            resultList.add(rides);
+        }
     }
 
 
