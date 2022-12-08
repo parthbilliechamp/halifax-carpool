@@ -18,6 +18,12 @@ public class Driver {
         this.driver_approval_status = 0;
     }
 
+    public Driver(Builder builder) {
+        this.driver_email = builder.driverEmail;
+        this.driver_name = builder.driverName;
+        this.driver_id = builder.driverId;
+    }
+
     public Driver(Integer driver_id, String driver_email, String driver_password, String driver_license, String driver_name, String registered_vehicle_number, String license_expiry_date, String vehicle_name, String vehicle_model, String vehicle_color, Integer driver_approval_status) {
         this.driver_id = driver_id;
         this.driver_email = driver_email;
@@ -135,5 +141,30 @@ public class Driver {
                 ", vehicle_color='" + vehicle_color + '\'' +
                 ", driver_approval_status=" + driver_approval_status +
                 '}';
+    }
+
+    public static class Builder {
+        private int driverId;
+        private String driverEmail;
+        private String driverName;
+
+        public Builder withDriverId(int driverId) {
+            this.driverId = driverId;
+            return this;
+        }
+
+        public Builder withDriverEmail(String driverEmail) {
+            this.driverEmail = driverEmail;
+            return this;
+        }
+
+        public Builder withDriverName(String driverName) {
+            this.driverName = driverName;
+            return this;
+        }
+
+        public Driver build() {
+            return new Driver(this);
+        }
     }
 }

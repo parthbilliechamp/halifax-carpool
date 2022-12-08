@@ -21,41 +21,4 @@ public class RidesDaoImplTest {
             assert driverId == ride.driverId;
         }
     }
-
-    @Test
-    void createNewRideTest() {
-        int driverId = 3;
-        int rideId = 8;
-
-        Ride ride = new Ride();
-        ride.setDriverId(driverId);
-        ride.setRideId(rideId);
-
-        IRidesDao rideMock = new RidesDaoMockImpl();
-
-        rideMock.createNewRide(ride);
-        Ride rideNew = ((RidesDaoMockImpl) rideMock).findRide(rideId, ride.getDriverId());
-
-        assert rideNew.getDriverId() == driverId;
-    }
-
-    @Test
-    void createNewRideValuesNotInsertedTest(){
-        int driverId = 3;
-        int rideId = 9;
-
-        int expectedRideId = 4;
-
-        Ride ride = new Ride();
-        ride.setDriverId(driverId);
-        ride.setRideId(rideId);
-
-        IRidesDao rideMock = new RidesDaoMockImpl();
-        rideMock.createNewRide(ride);
-
-        Ride rideNew = ((RidesDaoMockImpl) rideMock).findRide(rideId, ride.getDriverId());
-
-        assert rideNew.getRideId() != expectedRideId;
-    }
-
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RideFinderStrategy {
 
-    List<Ride> findMatchingRides(RideRequest rideRequest);
+    List<List<Ride>> findMatchingRides(RideRequest rideRequest);
 }

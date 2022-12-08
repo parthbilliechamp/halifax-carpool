@@ -40,7 +40,12 @@ public class DriverRegistrationDaoImpl implements IDriverRegistrationDao {
             database = new DatabaseImpl();
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-            statement.executeQuery("CALL insert_driver_details('" + driver.driver_email + "', '" + driver.driver_password + "', '" + driver.driver_license + "', '" + driver.driver_name + "', '" + driver.registered_vehicle_number + "', '" + new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)) + "', '" + driver.vehicle_name + "', '" + driver.vehicle_model + "', '" + driver.vehicle_color + "', " + driver.driver_approval_status + ")");
+            statement.executeQuery("CALL insert_driver_details('" + driver.getDriver_email() + "', '" +
+                    driver.getDriver_password() + "', '" + driver.getDriver_license() + "', '" +
+                    driver.getDriver_name() + "', '" + driver.getRegistered_vehicle_number() + "', '" +
+                    new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)) + "', '" +
+                    driver.getVehicle_name() + "', '" + driver.getVehicle_model() + "', '" + driver.getVehicle_color() +
+                    "', " + driver.getDriver_approval_status() + ")");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

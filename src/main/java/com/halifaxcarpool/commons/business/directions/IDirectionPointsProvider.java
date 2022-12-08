@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IDirectionPointsProvider {
 
-    List<LatLng> getPointsBetweenSourceAndDestination(String source, String destination);
+    List<LatLng> getPointsBetweenSourceAndDestination(String source,
+                                                      String destination);
 }

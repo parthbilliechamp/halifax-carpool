@@ -4,7 +4,7 @@ import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.database.dao.DriverAuthenticationDaoImpl;
 import com.halifaxcarpool.driver.database.dao.IDriverAuthenticationDao;
 
-public class DriverAuthenticationImpl implements IDriverAuthentication{
+public class DriverAuthenticationImpl implements IDriverAuthentication {
 
     IDriverAuthenticationDao driverAuthenticationDao;
 

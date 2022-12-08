@@ -1,27 +1,25 @@
 package com.halifaxcarpool.commons.database;
 
 
-import org.springframework.beans.factory.annotation.Value;
-
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Objects;
+import java.util.Properties;
 
 public class DatabaseConnection {
 
+    private static final String PROPERTIES_FILE_= "application.properties";
     private static DatabaseConnection databaseConnection = null;
     private Connection connection;
-
-    @Value("${spring.datasource.password}")
-    private static String password;
-
-    @Value("${spring.datasource.username}")
-    private static String userName;
-
-    @Value("${spring.datasource.url}")
-    private static String url;
+    private String password;
+    private String userName;
+    private String url;
 
     private DatabaseConnection() {
-
+        populateDataBaseConfiguration();
     }
 
     public static DatabaseConnection getDatabaseConnectionInstance() {
@@ -33,7 +31,7 @@ public class DatabaseConnection {
 
     public Connection openDbConnection() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_12_DEVINT", "CSCI5308_12_DEVINT_USER", "beRuqMq7cG");
+            connection = DriverManager.getConnection(url, userName, password);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +45,25 @@ public class DatabaseConnection {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void populateDataBaseConfiguration() {
+        String userProperty = "spring.datasource.username";
+        String passwordProperty = "spring.datasource.password";
+        String urlProperty = "spring.datasource.url";
+        try {
+            Properties properties = new Properties();
+            InputStream inputStream =
+                    Files.newInputStream(Paths.get(
+                            Objects.requireNonNull(
+                                    this.getClass().getClassLoader().getResource(PROPERTIES_FILE_)).getPath()));
+            properties.load(inputStream);
+            userName = properties.getProperty(userProperty);
+            password = properties.getProperty(passwordProperty);
+            url = properties.getProperty(urlProperty);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
