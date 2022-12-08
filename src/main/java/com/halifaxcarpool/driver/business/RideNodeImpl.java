@@ -1,4 +1,4 @@
-package com.halifaxcarpool.commons.business;
+package com.halifaxcarpool.driver.business;
 
 import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
