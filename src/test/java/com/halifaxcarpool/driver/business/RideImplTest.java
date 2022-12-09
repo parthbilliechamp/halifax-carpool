@@ -3,11 +3,10 @@ package com.halifaxcarpool.driver.business;
 import com.halifaxcarpool.commons.business.RideNodeDaoMockImpl;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderMockImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
-import com.halifaxcarpool.customer.CustomerObjectFactoryTest;
-import com.halifaxcarpool.customer.business.ICustomerObjectFactory;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
+import com.halifaxcarpool.driver.database.dao.RidesDaoMockImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,9 +16,7 @@ import java.util.List;
 @SpringBootTest
 @ActiveProfiles("test")
 public class RideImplTest {
-
-    private final ICustomerObjectFactory customerObjectFactory = new CustomerObjectFactoryTest();
-    private final IRidesDao ridesDao = customerObjectFactory.getRidesDao();
+    private final IRidesDao ridesDao = new RidesDaoMockImpl();
     IRide ride = new RideImpl();
 
     @Test
@@ -46,7 +43,8 @@ public class RideImplTest {
         rideObject.setEndLocation(endLocation);
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderMockImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
-        assert ride.createNewRide(rideObject, ridesDao, rideNodeDao, directionPointsProvider);
+        IRideNode rideNode = new RideNodeImpl();
+        assert ride.createNewRide(rideObject, ridesDao, rideNodeDao, directionPointsProvider, rideNode);
     }
 
     @Test
@@ -63,7 +61,9 @@ public class RideImplTest {
         rideObject.setEndLocation(endLocation);
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderMockImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
-        boolean isRideCreated = ride.createNewRide(rideObject, ridesDao, rideNodeDao, directionPointsProvider);
+        IRideNode rideNode = new RideNodeImpl();
+        boolean isRideCreated = ride.createNewRide(rideObject, ridesDao, rideNodeDao,
+                directionPointsProvider, rideNode);
         assert Boolean.FALSE.equals(isRideCreated);
     }
     @Test

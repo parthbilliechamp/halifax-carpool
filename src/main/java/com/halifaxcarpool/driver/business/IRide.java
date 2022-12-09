@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface IRide {
 
-    boolean createNewRide(Ride ride, IRidesDao ridesDao,
-                          IRideNodeDao rideNodeDao, IDirectionPointsProvider directionPointsProvider);
+    boolean createNewRide(Ride ride, IRidesDao ridesDao, IRideNodeDao rideNodeDao,
+                          IDirectionPointsProvider directionPointsProvider, IRideNode rideNode);
 
     List<Ride> viewRides(int driverId, IRidesDao ridesDao);
 

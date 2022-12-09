@@ -1,10 +1,18 @@
 package com.halifaxcarpool.driver.business;
 
+import com.halifaxcarpool.customer.business.CustomerBusinessObjectFactoryMain;
+import com.halifaxcarpool.customer.business.CustomerDaoObjectFactoryImplTest;
+import com.halifaxcarpool.customer.business.ICustomerBusinessObjectFactory;
+import com.halifaxcarpool.customer.business.ICustomerDaoObjectFactory;
 import com.halifaxcarpool.driver.business.authentication.IDriverAuthentication;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import org.junit.jupiter.api.Test;
 
 public class DriverAuthenticationImplTest {
+
+    //TODO resolve authentication object place
+    ICustomerDaoObjectFactory customerDaoObjectFactory = new CustomerDaoObjectFactoryImplTest();
+    ICustomerBusinessObjectFactory customerObjectFactory = new CustomerBusinessObjectFactoryMain();
 
     IDriverAuthentication driverAuthenticationMockObj;
 

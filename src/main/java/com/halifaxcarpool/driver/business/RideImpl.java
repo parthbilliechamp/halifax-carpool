@@ -14,12 +14,12 @@ public class RideImpl implements IRide {
     @Override
     public boolean createNewRide(Ride ride, IRidesDao ridesDao,
                                  IRideNodeDao rideNodeDao,
-                                 IDirectionPointsProvider directionPointsProvider) {
+                                 IDirectionPointsProvider directionPointsProvider,
+                                 IRideNode rideNode) {
         boolean isRideCreated = ridesDao.createNewRide(ride);
         if (Boolean.FALSE.equals(isRideCreated)) {
             return false;
         }
-        IRideNode rideNode = new RideNodeImpl();
         boolean isRideNodeInserted = rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
         if (Boolean.FALSE.equals(isRideNodeInserted)) {
             cancelRide(ride.rideId, ridesDao);
