@@ -29,10 +29,7 @@ public class CustomerController {
     private static final String VIEW_RECOMMENDED_RIDES = "view_recommended_rides";
     private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
-    private RideFinderFacade rideFinderFacade;
-
-    HttpServletRequest httpServletRequest;
-
+    
     @GetMapping("/customer/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
         model.addAttribute("customer", new Customer());
