@@ -29,6 +29,7 @@ public abstract class IUserDetails {
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("CALL get_ride_count()");
+            resultSet.next();
             return resultSet.getInt("ride_count");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -43,6 +44,7 @@ public abstract class IUserDetails {
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("CALL get_seats_offered()");
+            resultSet.next();
             return resultSet.getInt("seats_offered");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -57,6 +59,7 @@ public abstract class IUserDetails {
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("CALL get_average_seats_offered()");
+            resultSet.next();
             return resultSet.getBigDecimal("avg_seats_offered").intValue();
         } catch (SQLException e) {
             throw new RuntimeException(e);
