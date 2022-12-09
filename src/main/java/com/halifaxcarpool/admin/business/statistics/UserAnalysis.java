@@ -16,7 +16,7 @@ public class UserAnalysis {
         userStatisticsBuilder.calculateCO2Emissions();
     }
 
-    public UserStatistics deriveDriverStatistics(){
+    public UserStatistics deriveUserStatistics(){
         analyze();
         return this.userStatisticsBuilder.getUserStatistics();
     }
