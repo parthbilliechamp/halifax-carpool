@@ -55,7 +55,7 @@ public class DriverStatisticsTest {
         userStatisticsBuilder.calculateAverageRideDistance();
         UserStatistics userStatistics = userStatisticsBuilder.getUserStatistics();
         System.out.println(userStatistics.getAverageRideDistance());
-        assert userStatistics.getAverageRideDistance() == 4.5;
+        assert userStatistics.getAverageRideDistance() == 1.71;
     }
 
     @Test
