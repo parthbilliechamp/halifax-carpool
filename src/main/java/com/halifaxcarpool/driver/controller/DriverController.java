@@ -5,12 +5,10 @@ import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
 import com.halifaxcarpool.driver.business.*;
+import com.halifaxcarpool.driver.business.authentication.*;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.driver.business.authentication.AuthenticationFacade;
-import com.halifaxcarpool.driver.business.authentication.DriverImpl;
-import com.halifaxcarpool.driver.business.authentication.IDriver;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.DriverDaoImpl;
@@ -54,8 +52,13 @@ public class DriverController {
     @PostMapping("/driver/login/check")
     String authenticateLoggedInCustomer(@ModelAttribute("driver") Driver driver, HttpServletRequest
             httpServletRequest, Model model) {
-        AuthenticationFacade authenticationFacade = new AuthenticationFacade();
-        Driver validDriver = authenticationFacade.authenticate(driver.getDriver_email(), driver.getDriver_password());
+        IDriver driverLogin = new DriverImpl();
+        IDriverAuthentication driverAuthentication = new DriverAuthenticationImpl();
+
+        String email = driver.getDriver_email();
+        String password = driver.getDriver_password();
+
+        Driver validDriver = driverLogin.login(email, password, driverAuthentication);
         model.addAttribute("driver", driver);
         if (validDriver == null) {
             httpServletRequest.getSession().setAttribute("loggedInDriver", 0);
@@ -131,9 +134,11 @@ public class DriverController {
         ride.setDriverId(driver.getDriver_id());
         IRide rideModel = new RideImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
+        IRideNode rideNode = new RideNodeImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderImpl();
-        boolean isRideCreated = rideModel.createNewRide(ride, ridesDao, rideNodeDao, directionPointsProvider);
+        boolean isRideCreated = rideModel.createNewRide(ride, ridesDao, rideNodeDao,
+                                                        directionPointsProvider, rideNode);
         if (isRideCreated) {
             return "redirect:/driver/view_rides";
         } else {

@@ -15,7 +15,7 @@ public class DriverDaoMockImpl implements IDriverDao {
 
     @Override
     public boolean updateDriverProfile(Driver driver) {
-        int driverId = driver.getDriverId();
+        int driverId = driver.getDriver_id();
         if (driverIdToDriverMap.containsKey(driverId)) {
             driverIdToDriverMap.put(driverId, driver);
             return true;

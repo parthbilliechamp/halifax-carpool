@@ -26,7 +26,7 @@ public class DriverImplTest {
 
         extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
 
-        assert expected_driver_id == extractedDriver.getDriverId();
+        assert expected_driver_id == extractedDriver.getDriver_id();
 
     }
 

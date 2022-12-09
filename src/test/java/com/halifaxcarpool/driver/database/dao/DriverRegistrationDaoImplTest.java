@@ -19,7 +19,7 @@ public class DriverRegistrationDaoImplTest {
 
         driverExtracted = ((DriverRegistrationDaoMockImpl) driverRegistrationMockObject).findDriverDetailsFromHashMap(driver_id);
 
-        assert driver_id == driverExtracted.getDriverId();
+        assert driver_id == driverExtracted.getDriver_id();
     }
 
     @Test
@@ -39,7 +39,7 @@ public class DriverRegistrationDaoImplTest {
 
         driverExtracted = ((DriverRegistrationDaoMockImpl) driverRegistrationMockObject).findDriverDetailsFromHashMap(entered_driver_id);
 
-        assert expected_driver_id != driverExtracted.getDriverId();
+        assert expected_driver_id != driverExtracted.getDriver_id();
 
     }
 

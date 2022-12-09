@@ -1,7 +1,8 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
+import com.halifaxcarpool.commons.business.CommonsObjectFactoryTest;
+import com.halifaxcarpool.commons.business.ICommonsObjectFactory;
 import com.halifaxcarpool.commons.business.beans.LatLng;
-import com.halifaxcarpool.commons.business.geocoding.GeoCodingImpl;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -10,12 +11,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class GeoCodingImplTest {
+public class GeoCodingApiTest {
+
+    ICommonsObjectFactory commonsObjectFactory = new CommonsObjectFactoryTest();
+    IGeoCoding geoCoding = commonsObjectFactory.getGeoCoding();
 
     @Disabled("Disabled to save incurring cost caused by calling the REST API ")
     @Test
     void getLatLngTest() {
-        IGeoCoding geoCoding = new GeoCodingImpl();
         LatLng latLng = geoCoding.getLatLng("Sydney");
         assert  -33.8688197 == latLng.latitude;
         assert  151.2092955 == latLng.longitude;
@@ -24,7 +27,6 @@ public class GeoCodingImplTest {
     @Disabled("Disabled to save incurring cost caused by calling the REST API ")
     @Test
     void getLatLngInvalidLocation() {
-        IGeoCoding geoCoding = new GeoCodingImpl();
         LatLng latLng = geoCoding.getLatLng("abc");
         assert  null == latLng;
     }
