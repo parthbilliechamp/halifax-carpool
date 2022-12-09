@@ -10,6 +10,10 @@ public class Ride {
     public int rideStatus;
     public String dateTime;
 
+    public Driver driver;
+
+    public double fare;
+
     public Ride(){
         this.rideStatus = 1;
     }
@@ -69,6 +73,16 @@ public class Ride {
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
+
+    public void withDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public void withFare(double fare) {
+        this.fare = fare;
+    }
+
+
 
     public Ride(int rideId, int driverId, String startLocation, String endLocation, int seatsOffered,
                 int rideStatus, String dateTime) {

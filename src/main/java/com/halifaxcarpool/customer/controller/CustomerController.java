@@ -2,14 +2,19 @@ package com.halifaxcarpool.customer.controller;
 
 import com.halifaxcarpool.customer.business.*;
 import com.halifaxcarpool.customer.business.authentication.*;
+import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.recommendation.*;
 import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
+import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 import com.halifaxcarpool.driver.business.beans.Ride;
+import com.halifaxcarpool.driver.database.dao.IRidesDao;
+import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -115,7 +120,9 @@ public class CustomerController {
                                 @RequestParam("endLocation") String endLocation,
                                 HttpServletRequest httpServletRequest,
                                 Model model) {
-        if(httpServletRequest.getSession().getAttribute("loggedInCustomer") == null || httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object)1) {
+        //TODO refactor it
+        if (httpServletRequest.getSession().getAttribute("loggedInCustomer") == null ||
+                httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
             return "redirect:/customer/login";
         }
         Customer customer = (Customer) httpServletRequest.getSession().getAttribute("loggedInCustomer");
@@ -151,6 +158,18 @@ public class CustomerController {
         IRideToRequestMapperDao rideToRequestMapperDao = customerObjectDaoFactory.getRideToRequestMapperDao();
         rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
         return VIEW_RECOMMENDED_RIDES;
+    }
+
+    @GetMapping("/customer/view_ongoing_rides")
+    public String viewOngoingRides(HttpServletRequest request,
+                                   Model model) {
+        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
+        //TODO call driver factory
+        IRide ride = new RideImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        List<Ride> ongoingRides = ride.viewOngoingRides(customer.getCustomerId(), ridesDao);
+        model.addAttribute("activeRides", ongoingRides);
+        return "view_ongoing_rides";
     }
 
     @GetMapping("/customer/create_ride_request")

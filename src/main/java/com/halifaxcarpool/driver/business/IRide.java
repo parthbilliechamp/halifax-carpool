@@ -14,6 +14,8 @@ public interface IRide {
 
     List<Ride> viewRides(int driverId, IRidesDao ridesDao);
 
+    List<Ride> viewOngoingRides(int customerId, IRidesDao ridesDao);
+
     Ride getRide(int rideId, IRidesDao ridesDao);
 
     boolean cancelRide(int rideId, IRidesDao ridesDao);
