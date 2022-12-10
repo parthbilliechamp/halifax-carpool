@@ -39,8 +39,41 @@ public class DriverApprovalDaoImpl implements DriverApprovalDao{
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }finally {
+            database.closeDatabaseConnection();
         }
-
         return unapprovedDrivers;
+    }
+
+    @Override
+    public boolean acceptDriverRequest(String id) {
+        connection = database.openDatabaseConnection();
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.executeQuery("CALL accept_driver_profile("+ id +")");
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }finally {
+            database.closeDatabaseConnection();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean rejectDriverRequest(String id) {
+        connection = database.openDatabaseConnection();
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            statement.executeQuery("CALL reject_driver_profile("+ id +")");
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }finally {
+            database.closeDatabaseConnection();
+        }
+        return true;
     }
 }

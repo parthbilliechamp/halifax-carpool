@@ -33,6 +33,16 @@ public class DriverApproval implements UserApproval{
         return drivers;
     }
 
+    @Override
+    public boolean acceptUserRequest(String id) {
+        return driverApprovalDao.acceptDriverRequest(id);
+    }
+
+    @Override
+    public boolean rejectUserRequest(String id) {
+        return driverApprovalDao.rejectDriverRequest(id);
+    }
+
     private List<User> filterExpiredLicense(List<User> drivers){
         List<User> filteredDrivers = new ArrayList<>();
         Iterator<User> itr = drivers.iterator();

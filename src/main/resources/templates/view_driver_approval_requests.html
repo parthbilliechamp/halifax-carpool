@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        Driver Approval Requests
+    </title>
 </head>
 <body>
+<br />
+<div class="container">
+    <h3>Driver Approval Requests</h3>
+    <hr>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Driver Name</th>
+            <th>Registered Vehicle Number</th>
+            <th>Driver License Number</th>
+            <th>License Expiry Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="driver: ${approvalRequests}">
+            <td th:text="${driver.driver_name}"/>
+            <td th:text="${driver.registered_vehicle_number}"/>
+            <td th:text="${driver.driver_license}"/>
+            <td th:text="${driver.license_expiry_date}"/>
+            <td>
+                <a class="btn btn-secondary"
+                   th:href="@{/admin/updateApprovalStatus(license_id=${driver.driver_license}, status='accept')}">Accept</a>
+            </td>
+            <td>
+                <a class="btn btn-secondary"
+                   th:href="@{/admin/updateApprovalStatus(license_id=${driver.driver_license}, status='reject')}">Reject</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
+</div>
 </body>
 </html>

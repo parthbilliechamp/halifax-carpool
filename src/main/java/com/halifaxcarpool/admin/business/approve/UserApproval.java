@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface UserApproval {
     List<User> getValidUserRequests();
+    boolean acceptUserRequest(String id);
+
+    boolean rejectUserRequest(String id);
 }
