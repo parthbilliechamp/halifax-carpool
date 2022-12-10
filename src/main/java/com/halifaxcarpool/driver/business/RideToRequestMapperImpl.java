@@ -11,9 +11,9 @@ public class RideToRequestMapperImpl implements IRideToRequestMapper {
     private static final String STATUS = "PENDING";
 
     @Override
-    public void sendRideRequest(int rideId, int rideRequestId,
+    public void sendRideRequest(int rideId, int rideRequestId, double amount,
                                 IRideToRequestMapperDao rideToRequestMapperDao) {
-        rideToRequestMapperDao.insertRideToRequestMapper(rideId, rideRequestId, STATUS);
+        rideToRequestMapperDao.insertRideToRequestMapper(rideId, rideRequestId, STATUS, amount);
     }
 
     @Override

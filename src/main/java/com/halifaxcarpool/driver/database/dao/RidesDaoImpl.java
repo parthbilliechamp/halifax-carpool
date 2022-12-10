@@ -44,11 +44,11 @@ public class RidesDaoImpl implements IRidesDao {
     }
 
     @Override
-    public List<Ride> getRides(int driverId) {
+    public List<Ride> getRides(int rideId) {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL view_rides(" + driverId + ")");
+            ResultSet resultSet = statement.executeQuery("CALL view_rides(" + rideId + ")");
             return buildRidesFrom(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();

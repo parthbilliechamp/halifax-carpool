@@ -4,10 +4,7 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +17,12 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
         database = new DatabaseImpl();
     }
     @Override
-    public void insertRideToRequestMapper(int rideId, int rideRequestId, String status) {
+    public void insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount) {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
             String SQL_STRING = "CALL insert_ride_to_req_map(" + rideId + "," +
-                    rideRequestId + ", '" + status + "' )";
+                    rideRequestId + ", '" + status +","+amount+ "' )";
             statement.executeUpdate(SQL_STRING);
         } catch (SQLException e) {
             throw new RuntimeException("Ride Request already sent!!");
@@ -49,6 +46,64 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
             database.closeDatabaseConnection();
         }
         return receivedRideRequestList;
+    }
+
+    @Override
+    public void updateRideRequestStatus(int rideId, int rideRequestId, String status) {
+        try{
+            connection = database.openDatabaseConnection();
+            String query = "CALL update_ride_request_status(?,?,?);";
+            CallableStatement statement = connection.prepareCall(query);
+
+            statement.setInt(1,rideId);
+            statement.setInt(2,rideRequestId);
+            statement.setString(3,status.toUpperCase());
+
+            System.out.println(query);
+            int result = statement.executeUpdate();
+            System.out.println("updated cols:"+result);
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            //database.closeDatabaseConnection();
+        }
+
+    }
+
+    @Override
+    public void updatePaymentAmount(int rideId, int rideRequestId, double amount) {
+        try{
+            connection = database.openDatabaseConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery
+                    ("CALL update_ride_request_fair_price("+
+                            rideId+","+rideRequestId+","+amount+")");
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.closeDatabaseConnection();
+        }
+    }
+
+    @Override
+    public double getPaymentAmount(int rideId,int rideRequestId) {
+        try{
+            connection = database.openDatabaseConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("CALL get_fair_price(" +
+                    ""+rideId+","+rideRequestId+")");
+            resultSet.next();
+            return Double.parseDouble(resultSet.getString(1));
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return 0;
     }
 
     private List<RideRequest> buildReceivedRideRequestsFrom(ResultSet resultSet) {

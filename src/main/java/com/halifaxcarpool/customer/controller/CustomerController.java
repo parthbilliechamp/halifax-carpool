@@ -130,7 +130,11 @@ public class CustomerController {
         }
         IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
         IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
-        rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
+        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        IFareCalculator fareCalculator = new FareCalculatorImpl();
+        double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
+        rideToRequestMapper.sendRideRequest(rideId, rideRequestId, fare, rideToRequestMapperDao);
         return VIEW_RECOMMENDED_RIDES;
     }
 

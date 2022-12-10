@@ -14,13 +14,30 @@ public class RideToRequestMapperDaoMockImpl implements IRideToRequestMapperDao {
         populateMockData();
     }
     @Override
-    public void insertRideToRequestMapper(int rideId, int rideRequestId, String status) {
+    public void insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount) {
         rideToRequestMapMockData.put(rideId, rideRequestId);
     }
 
     @Override
     public List<RideRequest> viewReceivedRequests(int rideId) {
         return rideRequestMockData.get(rideId);
+    }
+
+    @Override
+    public void updateRideRequestStatus(int rideId, int rideRequestId, String status) {
+
+    }
+
+
+
+    @Override
+    public void updatePaymentAmount(int rideId, int rideRequestId, double amount) {
+
+    }
+
+    @Override
+    public double getPaymentAmount(int rideId, int rideRequestId) {
+        return 0;
     }
 
     private static void populateMockData() {

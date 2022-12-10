@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IRideToRequestMapper {
 
-    void sendRideRequest(int rideId, int rideRequestId, IRideToRequestMapperDao rideToRequestMapperDao);
+    void sendRideRequest(int rideId, int rideRequestId, double amount, IRideToRequestMapperDao rideToRequestMapperDao);
 
     List<RideRequest> viewReceivedRequest(int rideId, IRideToRequestMapperDao rideToRequestMapperDao);
 }

@@ -21,5 +21,19 @@ public class Payment {
     public  String getStatus(){
         return  this.status;
     }
+    public int getPaymentId(){return this.paymentId;}
 
+    public  int getRideId(){
+        return this.rideId;
+    }
+    public int getDriverId(){
+        return this.driverId;
+    }
+    public  double getAmountDue(){
+        return this.amountDue;
+    }
+
+    public int getCustomerId(){
+        return this.customerId;
+    }
 }

@@ -12,4 +12,5 @@ public interface IRidesDao {
 
     Ride getRide(int rideId);
 
+
 }

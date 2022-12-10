@@ -6,8 +6,11 @@ import java.util.List;
 
 public interface IRideToRequestMapperDao {
 
-    void insertRideToRequestMapper(int rideId, int rideRequestId, String status);
+    void insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount);
 
     List<RideRequest> viewReceivedRequests(int rideId);
+    void updateRideRequestStatus(int rideId, int rideRequestId, String status);
+    void updatePaymentAmount(int rideId, int rideRequestId, double amount);
+    double getPaymentAmount(int rideId, int rideRequestId);
 
 }

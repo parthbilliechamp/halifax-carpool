@@ -1,16 +1,19 @@
 package com.halifaxcarpool.driver.controller;
 
+import com.halifaxcarpool.customer.business.beans.Payment;
+import com.halifaxcarpool.customer.business.payment.IPayment;
+import com.halifaxcarpool.customer.business.payment.PaymentImpl;
+import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.IRideNode;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideNodeImpl;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
+import com.halifaxcarpool.driver.business.beans.RideToRequestMapper;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
-import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.authentication.AuthenticationFacade;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class DriverController {
@@ -38,6 +42,8 @@ public class DriverController {
     private static final String VIEW_RECEIVED_REQUESTS = "view_received_requests";
 
     private static final String DRIVER_LOGIN_FROM = "login_driver_form";
+
+    private static final String DRIVER_VIEW_RIDE_HISTORY = "view_ride_history";
 
     @GetMapping("/driver/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
@@ -94,7 +100,7 @@ public class DriverController {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         IRidesDao ridesDao = new RidesDaoImpl();
         IRide ride = new RideImpl();
-        List<Ride> rideList = ride.viewRides(driver.driver_id, ridesDao);
+        List<Ride> rideList = ride.viewRides(7, ridesDao);
         model.addAttribute(ridesAttribute, rideList);
         return VIEW_RIDES_UI_FILE;
     }
@@ -107,6 +113,7 @@ public class DriverController {
         List<RideRequest> receivedRideRequests =
                 rideToRequestMapper.viewReceivedRequest(rideId, rideToRequestMapperDao);
         model.addAttribute("receivedRideRequests", receivedRideRequests);
+        model.addAttribute("rideId", rideId);
         return VIEW_RECEIVED_REQUESTS;
     }
 
@@ -138,5 +145,37 @@ public class DriverController {
         }
         return "redirect:/driver/view_rides";
     }
+    @GetMapping("/driver/update_ride_request_status")
+    public String updateRequestStatus(@RequestParam("status")String status,
+        @RequestParam("rideId") int rideId, @RequestParam("rideRequestId") int rideRequestId){
+        if((status.toUpperCase()).equals("ACCEPTED")){
+            //customer module payment table
+            IPaymentDao paymentDao = new PaymentDaoImpl();
+            IRidesDao ridesDao = new RidesDaoImpl();
+            IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+            IPayment payment = new PaymentImpl();
 
+            IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+            payment.insertPaymentDetails(rideId, rideRequestId, paymentDao, ridesDao,
+                    rideRequestsDao, rideToRequestMapperDao);
+
+        }
+        //ride to request mapping  status change.
+        IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+        rideToRequestMapperDao.updateRideRequestStatus(rideId, rideRequestId,status);
+        return "redirect:/driver/view_rides";
+    }
+    @GetMapping("driver/view_ride_history")
+    public String getRideHistory(@RequestParam("rideId") int rideId, Model model){
+        IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+        IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
+        List<RideRequest> rideRequests = rideToRequestMapper.viewReceivedRequest(rideId, rideToRequestMapperDao);
+
+        System.out.println("getRideHistory: RideId = " + rideId);
+
+        model.addAttribute("rideRequests", rideRequests);
+        model.addAttribute("rideId", rideId);
+
+        return DRIVER_VIEW_RIDE_HISTORY;
+    }
 }
