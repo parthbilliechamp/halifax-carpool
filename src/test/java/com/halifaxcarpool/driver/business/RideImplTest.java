@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+//TODO one of the test case is throwing NPE
 @SpringBootTest
 @ActiveProfiles("test")
 public class RideImplTest {
@@ -30,7 +31,14 @@ public class RideImplTest {
     }
 
     @Test
-    void createNewRideTestSuccess() {
+    public void viewRidesEmptySetTest() {
+        int driverId = 43;
+        List<Ride> rideList = ride.viewRides(driverId, ridesDao);
+        assert rideList.isEmpty();
+    }
+
+    @Test
+    void createNewRideSuccessTest() {
         int driverId = 3;
         int rideId = 8;
 
@@ -48,7 +56,7 @@ public class RideImplTest {
     }
 
     @Test
-    void createNewRideTestFailure() {
+    void createNewRideFailureTest() {
         int driverId = 3;
         int rideId = 8;
 
@@ -66,12 +74,6 @@ public class RideImplTest {
                 directionPointsProvider, rideNode);
         assert Boolean.FALSE.equals(isRideCreated);
     }
-    @Test
-    public void viewRidesEmptySetTest() {
-        int driverId = 43;
-        List<Ride> rideList = ride.viewRides(driverId, ridesDao);
-        assert rideList.isEmpty();
-    }
 
     @Test
     public void cancelRideSuccessTest() {
@@ -83,6 +85,22 @@ public class RideImplTest {
     public void cancelRideFailureTest() {
         int rideId = 84;
         assert Boolean.FALSE.equals(ride.cancelRide(rideId, ridesDao));
+    }
+
+    @Test
+    public void viewOngoingRidesTest() {
+        int customerId = 1;
+        List<Ride> rideList = ride.viewOngoingRides(customerId, ridesDao);
+        assert 2 == rideList.size();
+        assert 15 == rideList.get(0).rideId;
+        assert 16 == rideList.get(1).rideId;
+    }
+
+    @Test
+    public void viewOngoingRidesNoActiveRidesTest() {
+        int customerId = 3;
+        List<Ride> rideList = ride.viewOngoingRides(customerId, ridesDao);
+        assert 0 == rideList.size();
     }
 
 }
