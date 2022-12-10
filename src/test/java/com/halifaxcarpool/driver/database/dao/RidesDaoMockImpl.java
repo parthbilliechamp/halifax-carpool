@@ -92,6 +92,14 @@ public class RidesDaoMockImpl implements IRidesDao {
         String startLocationRide7 = "The Vuze, Fenwick Tower, Fenwick Street, Halifax, Nova Scotia";
         String endLocationRide7 = "Dalplex, South Street, Halifax, Nova Scotia";
         populateRide(36, 46, startLocationRide7, endLocationRide7);
+
+        String startLocationRide8 = "THalifax Backpackers Hostel, Gottingen Street, Halifax, NS";
+        String endLocationRide8 = "Fort Needham Memorial Park, Stairs Place, Halifax, NS";
+        populateRide(101, 40, startLocationRide8, endLocationRide8);
+
+        String startLocationRide9 = "Fairview Variety Quik-Way, 130 Main Av, Halifax, NS";
+        String endLocationRide9 = "Tipico pasta restaurant, Dutch Village Road, Halifax, Nova Scotia";
+        populateRide(102, 31, startLocationRide9, endLocationRide9);
     }
 
     private static void populateDriverToListData() {
@@ -115,17 +123,17 @@ public class RidesDaoMockImpl implements IRidesDao {
         rideIdToRideMap.put(rideId, ride);
     }
 
-    private static void insertRideMockData(Ride ride){
+    private static void insertRideMockData(Ride ride) {
         int driverId = ride.getDriverId();
         List<Ride> rides = new ArrayList<>();
         rides.add(ride);
         driverIdToRideListMap.put(driverId, rides);
     }
 
-    public Ride findRide(int rideId, int driverId){
+    public Ride findRide(int rideId, int driverId) {
         List<Ride> rides = driverIdToRideListMap.get(driverId);
-        for(Ride ride : rides){
-            if(ride.getRideId() == rideId){
+        for (Ride ride : rides) {
+            if (ride.getRideId() == rideId) {
                 return ride;
             }
         }

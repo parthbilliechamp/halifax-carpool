@@ -21,12 +21,17 @@ public class RideNodeDaoMockImpl implements IRideNodeDao {
 
     @Override
     public List<RideNode> getRideNodes(LatLng latLng) {
-        String polyline = latLngToPolylineMap.get(latLng);
-        if (polyLineToRideNodesMap.containsKey(polyline)) {
-            return polyLineToRideNodesMap.get(polyline);
-        } else {
-            return new ArrayList<>();
+        List<String> polylineList = latLngToPolylineMap.get(latLng);
+        List<RideNode> rideNodes = new ArrayList<>();
+        if (null == polylineList) {
+            return rideNodes;
         }
+        for (String polyline: polylineList) {
+            if (polyLineToRideNodesMap.containsKey(polyline)) {
+                rideNodes.addAll(polyLineToRideNodesMap.get(polyline));
+            }
+        }
+        return rideNodes;
     }
 
     @Override

@@ -19,6 +19,7 @@ public class RideFinderFacade {
     private static class RideLookup {
         int firstRideId;
         int secondRideId;
+
         RideLookup(int firstRideId, int secondRideId) {
             this.firstRideId = firstRideId;
             this.secondRideId = secondRideId;
@@ -37,6 +38,7 @@ public class RideFinderFacade {
             return Objects.hash(firstRideId, secondRideId);
         }
     }
+
     private static final double MAXIMUM_RIDE_THRESHOLD_KM = 0.2;
     private static final double MAXIMUM_RIDE_THRESHOLD_KM_FOR_TWO_RIDES = 0.2;
     private final IRide ride;
@@ -46,7 +48,7 @@ public class RideFinderFacade {
     }
 
     public List<List<Ride>> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
-                                           IGeoCoding geoCoding, IRidesDao ridesDao) {
+                                                 IGeoCoding geoCoding, IRidesDao ridesDao) {
 
         LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.startLocation);
         LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.endLocation);
@@ -85,7 +87,7 @@ public class RideFinderFacade {
 
         LatLng endPointOfRideRequest = rideReqPoints.get(rideReqPoints.size() - 1);
         Map<RideLookup, List<Ride>> ridesCache = new HashMap<>();
-        for (int i = 1; i < rideReqPoints.size() - 1 && ridesCache.size() <= 3; i+=3) {
+        for (int i = 1; i < rideReqPoints.size() - 1 && ridesCache.size() <= 3; i += 3) {
             LatLng middleSearchPoint = rideReqPoints.get(i);
 
             List<Ride> ridesForFirstRoute = getRidesForRoute1(rideRequest, rideNodeDao, ridesDao, startPointOfRideRequest, middleSearchPoint, rideReqPoints);
@@ -205,12 +207,11 @@ public class RideFinderFacade {
     }
 
     private void convertListOfRidesToListOfListOfRides(List<List<Ride>> resultList, List<Ride> recommendedRides) {
-        for (Ride ride: recommendedRides) {
+        for (Ride ride : recommendedRides) {
             List<Ride> rides = new ArrayList<>();
             rides.add(ride);
             resultList.add(rides);
         }
     }
-
 
 }
