@@ -38,8 +38,8 @@ public class CustomerController {
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
     private static final String CUSTOMER_PROFILE_FORM = "update_customer_profile";
 
-    private final CustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
-    private final CustomerDaoFactory customerObjectDaoFactory = new CustomerDaoMainFactory();
+    private final CustomerModelFactory customerFactory = new CustomerModelMainFactory();
+    private final CustomerDaoFactory customerDaoFactory = new CustomerDaoMainFactory();
 
     private static final Map<String, String> redirectPageStorage = new HashMap<String, String>() {
         {
@@ -157,8 +157,8 @@ public class CustomerController {
         String loggedInCustomerLiteral = "loggedInCustomer";
 
         Customer customer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
-        IRideRequest viewRideRequests = customerObjectFactory.getRideRequest();
-        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
+        IRideRequest viewRideRequests = customerFactory.getRideRequest();
+        IRideRequestsDao rideRequestsDao = customerDaoFactory.createRideRequestsDao();
         List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId(), rideRequestsDao);
         model.addAttribute(rideRequestsAttribute, rideRequests);
         return VIEW_RIDE_REQUESTS;
@@ -185,7 +185,7 @@ public class CustomerController {
         Customer customer = (Customer) httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral);
         RideRequest rideRequest = new RideRequest(rideRequestId, customer.getCustomerId(), startLocation, endLocation);
 
-        BaseRideFinder rideFinder = customerObjectFactory.getDirectRouteRideFinder();
+        BaseRideFinder rideFinder = customerFactory.getDirectRouteRideFinder();
         rideFinder = new MultipleRouteRideFinderDecorator(rideFinder);
 
         List<List<Ride>> ListOfRideList = rideFinder.findMatchingRides(rideRequest);
@@ -210,8 +210,8 @@ public class CustomerController {
         if (httpServletRequest.getSession().getAttribute("loggedInCustomer") == null || httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
             return "redirect:/customer/login";
         }
-        IRideToRequestMapper rideToRequestMapper = customerObjectFactory.getRideToRequestMapper();
-        IRideToRequestMapperDao rideToRequestMapperDao = customerObjectDaoFactory.createRideToRequestMapperDao();
+        IRideToRequestMapper rideToRequestMapper = customerFactory.getRideToRequestMapper();
+        IRideToRequestMapperDao rideToRequestMapperDao = customerDaoFactory.createRideToRequestMapperDao();
         rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
         return VIEW_RECOMMENDED_RIDES;
     }
@@ -254,9 +254,8 @@ public class CustomerController {
 
         Customer customer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
         rideRequest.setCustomerId(customer.getCustomerId());
-        IRideRequest rideRequestForCreation = customerObjectFactory.getRideRequest();
-        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
-        rideRequestForCreation.createRideRequest(rideRequestsDao);
+        IRideRequestsDao rideRequestsDao = customerDaoFactory.createRideRequestsDao();
+        rideRequest.createRideRequest(rideRequestsDao);
         return "redirect:/customer/view_ride_requests";
     }
 
