@@ -1,5 +1,6 @@
 package com.halifaxcarpool.customer.business;
 
+import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
 import com.halifaxcarpool.customer.business.recommendation.BaseRideFinder;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
@@ -9,7 +10,7 @@ public class CustomerModelMainFactory implements CustomerModelFactory {
 
     @Override
     public IRideRequest getRideRequest() {
-        return new RideRequestImpl();
+        return new RideRequest();
     }
 
     @Override

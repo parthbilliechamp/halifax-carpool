@@ -1,7 +1,12 @@
 package com.halifaxcarpool.customer.business.beans;
 
 
-public class RideRequest {
+import com.halifaxcarpool.customer.business.IRideRequest;
+import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
+
+import java.util.List;
+
+public class RideRequest implements IRideRequest {
 
     private int rideRequestId;
     private int customerId;
@@ -16,6 +21,21 @@ public class RideRequest {
         this.customerId = customerId;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
+    }
+
+    @Override
+    public void createRideRequest(IRideRequestsDao rideRequestsDao) {
+        rideRequestsDao.insertRideRequest(this);
+    }
+
+    @Override
+    public List<RideRequest> viewRideRequests(int customerId, IRideRequestsDao rideRequestsDao) {
+        return rideRequestsDao.viewRideRequests(customerId);
+    }
+
+    @Override
+    public void cancelRideRequest(int rideId, IRideRequestsDao rideRequestsDao) {
+
     }
 
     public int getRideRequestId() {

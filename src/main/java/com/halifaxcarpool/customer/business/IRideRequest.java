@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IRideRequest {
 
-    void createRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao);
+    void createRideRequest(IRideRequestsDao rideRequestsDao);
 
     List<RideRequest> viewRideRequests(int customerId, IRideRequestsDao rideRequestsDao);
 

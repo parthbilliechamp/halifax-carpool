@@ -256,7 +256,7 @@ public class CustomerController {
         rideRequest.setCustomerId(customer.getCustomerId());
         IRideRequest rideRequestForCreation = customerObjectFactory.getRideRequest();
         IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
-        rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
+        rideRequestForCreation.createRideRequest(rideRequestsDao);
         return "redirect:/customer/view_ride_requests";
     }
 

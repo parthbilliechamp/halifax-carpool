@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ActiveProfiles("test")
 public class RideRequestImplTest {
 
-    IRideRequest rideRequest = new RideRequestImpl();
+    IRideRequest rideRequest = new RideRequest();
     IRideRequestsDao rideRequestsDao = new RideRequestsDaoMockImpl();
 
     @Test
@@ -40,21 +40,20 @@ public class RideRequestImplTest {
     void insertRideRequestTest(){
         int customerId = 1;
         int rideId = 8;
-        RideRequest rideRequestObject = new RideRequest(rideId, customerId, "Spring Garden", "Downtown");
-
+        IRideRequest rideRequestObject = new RideRequest(rideId, customerId, "Spring Garden", "Downtown");
         try {
-            rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
+            rideRequestObject.createRideRequest(rideRequestsDao);
             assertTrue(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             fail();
         }
     }
 
     @Test
     void insertRideRequestValuesMissingTest(){
-        RideRequest rideRequestObject = new RideRequest();
+        IRideRequest rideRequestObject = new RideRequest();
         try {
-            rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
+            rideRequestObject.createRideRequest(rideRequestsDao);
             assertTrue(true);
         } catch (Exception e){
             fail();
