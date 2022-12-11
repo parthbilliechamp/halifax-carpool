@@ -13,17 +13,12 @@ import com.halifaxcarpool.admin.business.statistics.UserStatistics;
 import com.halifaxcarpool.admin.business.beans.Admin;
 import com.halifaxcarpool.admin.database.dao.IUserDetails;
 import com.halifaxcarpool.commons.business.beans.User;
-import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.database.dao.CustomerDetailsDaoImpl;
-import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.driver.database.dao.DriverDetailsDaoImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
-
-@Controller
 import java.util.List;
 
 @Controller
