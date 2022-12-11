@@ -8,6 +8,10 @@ public interface IPaymentDao {
 
     public void insertPaymentRecord(Payment payment);
     public void updatePaymentStatus(int rideId, int customerId);
-    public List<Payment> getRidePaymentList(int ride);
+    public List<Payment> getCustomerRidePaymentList(int customerId);
+
+    public double getAmountDue(int paymentId);
+
+    public void changePaymentStatusSuccess(int paymentId);
 
 }

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <title class="header">
+
+  </title>
+</head>
+<body>
+<br />
+<div class="container">
+  <h3>Bill</h3>
+  <hr>
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+          <td>Original amount:</td>
+          <td th:text="${originalAmount}"/>
+
+    </tr>
+    <tr>
+      <td>Discount Avaliable: %</td>
+      <td th:text="${discountPercentage}" />
+    </tr>
+      <tr>
+        <td>Deduction: </td>
+        <td th:text="${deduction}" />
+      </tr>
+      <tr>
+        <td>Final Amount</td>
+        <td th:text="${finalAmount}"/>
+      </tr>
+    <tr>
+      <td>
+        <a class="btn btn-success" th:href="@{/customer/payment_status_success(paymentId=${paymentId})}">Confirm?</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>

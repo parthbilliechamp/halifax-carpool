@@ -6,6 +6,7 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
+import java.util.List;
 import java.util.Random;
 
 public class PaymentImpl implements  IPayment{
@@ -26,4 +27,21 @@ public class PaymentImpl implements  IPayment{
             System.out.println("Payment: "+paymentId +","+ rideId+","+customerId+","+ride.getDriverId()+","+amount);
             paymentDao.insertPaymentRecord(payment);
     }
+
+    @Override
+    public List<Payment> getCustomerRideHistory(int customerId, IPaymentDao paymentDao) {
+        List<Payment> ridesPayment = paymentDao.getCustomerRidePaymentList(customerId);
+        return ridesPayment;
+    }
+
+    @Override
+    public double getAmountDue(int paymentId, IPaymentDao paymentDao) {
+        return paymentDao.getAmountDue(paymentId);
+    }
+
+    @Override
+    public void updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao) {
+        paymentDao.updatePaymentStatus(paymentId);
+    }
+
 }

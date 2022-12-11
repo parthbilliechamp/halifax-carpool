@@ -1,5 +1,10 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.customer.business.beans.Payment;
+import com.halifaxcarpool.customer.business.payment.IPayment;
+import com.halifaxcarpool.customer.business.payment.PaymentImpl;
+import com.halifaxcarpool.customer.database.dao.IPaymentDao;
+import com.halifaxcarpool.customer.database.dao.PaymentDaoImpl;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.RideRequestImpl;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
@@ -35,6 +40,11 @@ public class CustomerController {
     private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
     private static  final String VIEW_PAYMENT_FARE = "view_fare_price";
+
+    private  static  final String CUSTOMER_VIEW_RIDES_PAYMENTS = "view_rides_payments_page";
+
+    private static  final  String CUSTOMER_VIEW_BILL = "view_bill";
+
     private RideFinderFacade rideFinderFacade;
 
     HttpServletRequest httpServletRequest;
@@ -174,6 +184,52 @@ public class CustomerController {
         double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
         model.addAttribute("fare",fare);
         return VIEW_PAYMENT_FARE;
+    }
+
+    @GetMapping("/customer/view_payment_details")
+    String viewCustomerRidesPayment(Model model, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
+            return "redirect:/customer/login";
+        }
+        Customer customer = (Customer)request.getSession().getAttribute("loggedInCustomer");
+        IPayment payment = new PaymentImpl();
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        List<Payment> payments = payment.getCustomerRideHistory(customer.getCustomerId(),paymentDao);
+        model.addAttribute("visitedRides", payments);
+        return CUSTOMER_VIEW_RIDES_PAYMENTS;
+    }
+
+    @GetMapping("/customer/view_billing")
+    String makePayment(@RequestParam("paymentId") int paymentId, Model model, HttpServletRequest request){
+
+        if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
+            return "redirect:/customer/login";
+        }
+        //ICoupon coupon = new CouponImpl();
+        //ICouponDao couponDao = new CouponDao();
+        //double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
+        double discountPercentage = 15.00;
+        IPayment payment = new PaymentImpl();
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
+        Double deduction = originalAmount * discountPercentage /100;
+        Double finalAmount = originalAmount - deduction;
+        model.addAttribute("originalAmount", originalAmount);
+        model.addAttribute("discountPercentage", discountPercentage);
+        model.addAttribute("deduction", deduction);
+        model.addAttribute("finalAmount", finalAmount);
+        return CUSTOMER_VIEW_BILL;
+    }
+
+    @GetMapping("/customer/payment_status_success")
+    String changePaymentStatus(@RequestParam("paymentId") int paymentId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
+            return "redirect:/customer/login";
+        }
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = new PaymentImpl();
+        payment.updatePaymentStatusToSuccess(paymentId, paymentDao);
+        return "redirect: /customer/view_payment_details";
     }
 
 
