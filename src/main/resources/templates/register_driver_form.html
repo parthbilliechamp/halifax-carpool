@@ -47,35 +47,38 @@
                     <div class="card m-3" style="border-radius: 15px;">
                         <div class="card-body p-6 m-2">
                             <h2 class="text-uppercase text-center mb-3">Driver Registration</h2>
+                            <div th:object="${registrationError}" th:if="${registrationError != null}" class="alert alert-danger">
+                                <p th:text="${registrationError}"></p>
+                            </div>
                             <form role="form" th:action="@{/driver/register/save}" method="post" th:object="${driver}">
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="driverName">Your Name</label>
-                                    <input type="text" th:field="*{driver_name}" id="driverName"
+                                    <input type="text" th:field="*{driverName}" id="driverName"
                                            class="form-control form-control-lg" required/>
                                 </div>
 
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="driver_email">Your Email</label>
-                                    <input type="email" th:field="*{driver_email}" id="driver_email"
+                                    <input type="email" th:field="*{driverEmail}" id="driver_email"
                                            class="form-control form-control-lg"/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="driver_password">Enter a Password</label>
-                                    <input th:field="*{driver_password}" type="password" id="driver_password"
+                                    <input th:field="*{driverPassword}" type="password" id="driver_password"
                                            class="form-control form-control-lg" required/>
                                 </div>
 
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="driver_license">License Number</label>
-                                    <input type="text" th:field="*{driver_license}" id="driver_license"
+                                    <input type="text" th:field="*{driverLicense}" id="driver_license"
                                            class="form-control form-control-lg" required/>
                                 </div>
 
                                 <div id="date-picker-example" class="form-outline mb-2 input-with-post-icon datepicker"
                                      inline="true">
                                     <label for="license_expiry_date">License Expiry Date</label>
-                                    <input th:field="*{license_expiry_date}" placeholder="Select date" type="date"
+                                    <input th:field="*{licenseExpiryDate}" placeholder="Select date" type="date"
                                            id="license_expiry_date" class="form-control" required>
                                     <i class="fas fa-calendar input-prefix"></i>
                                 </div>
@@ -83,26 +86,26 @@
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="registered_vehicle_number">Vehicle
                                         Number</label>
-                                    <input type="text" th:field="*{registered_vehicle_number}"
+                                    <input type="text" th:field="*{registeredVehicleNumber}"
                                            id="registered_vehicle_number" class="form-control form-control-lg"
                                            required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="vehicle_name">Vehicle Name</label>
-                                    <input type="text" th:field="*{vehicle_name}" id="vehicle_name"
+                                    <input type="text" th:field="*{vehicleName}" id="vehicle_name"
                                            class="form-control form-control-lg" required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="vehicle_model">Vehicle Model</label>
-                                    <input type="text" th:field="*{vehicle_model}" id="vehicle_model"
+                                    <input type="text" th:field="*{vehicleModel}" id="vehicle_model"
                                            class="form-control form-control-lg" required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="vehicle_color">Vehicle Color</label>
-                                    <input type="text" th:field="*{vehicle_color}" id="vehicle_color"
+                                    <input type="text" th:field="*{vehicleColor}" id="vehicle_color"
                                            class="form-control form-control-lg" required/>
                                 </div>
 

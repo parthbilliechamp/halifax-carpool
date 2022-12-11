@@ -21,17 +21,18 @@
             <th>Total rides completed</th>
             <th>Number of seats offered</th>
             <th>Average seats offered</th>
-            <th>Average ride distance</th>
-            <th>CO2 Emissions saved</th>
+            <th>Average ride distance (in kilometers)</th>
+            <th>CO2 Emissions saved (in kilograms)</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="ride: ${recommendedRides}">
-            <td th:text="${ride.driverId}"/>
-            <td th:text="${ride.startLocation}"/>
-            <td th:text="${ride.endLocation}"/>
-            <td th:text="${ride.seatsOffered}"/>
-            <td th:text="${ride.dateTime}"/>
+        <tr th:each="userStats: ${userStats}">
+            <td th:text="${userStats.numberOfUsers}"/>
+            <td th:text="${userStats.ridesCompleted}"/>
+            <td th:text="${userStats.numberOfSeats}"/>
+            <td th:text="${userStats.averageNumberOfSeats}"/>
+            <td th:text="${userStats.averageRideDistance}"/>
+            <td th:text="${userStats.cO2Emissions}"/>
         </tr>
         </tbody>
     </table>

@@ -9,10 +9,10 @@ public class DistanceCalculatorImpl implements IDistanceCalculator {
     @Override
     public double findDistance(LatLng pointA, LatLng pointB) {
 
-        double longitudeA = convertDegreesToRadian(pointA.longitude);
-        double longitudeB = convertDegreesToRadian(pointB.longitude);
-        double latitudeA = convertDegreesToRadian(pointA.latitude);
-        double latitudeB = convertDegreesToRadian(pointB.latitude);
+        double longitudeA = convertDegreesToRadian(pointA.getLongitude());
+        double longitudeB = convertDegreesToRadian(pointB.getLongitude());
+        double latitudeA = convertDegreesToRadian(pointA.getLatitude());
+        double latitudeB = convertDegreesToRadian(pointB.getLatitude());
 
         double longitudeDifference = longitudeB - longitudeA;
         double latitudeDifference = latitudeB - latitudeA;

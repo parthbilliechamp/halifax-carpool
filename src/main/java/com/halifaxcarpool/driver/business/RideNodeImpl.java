@@ -13,8 +13,8 @@ import java.util.List;
 public class RideNodeImpl implements IRideNode {
     @Override
     public boolean insertRideNodes(Ride ride, IRideNodeDao rideNodeDao, IDirectionPointsProvider directionPointsProvider) {
-        String startLocation = ride.startLocation;
-        String endLocation = ride.endLocation;
+        String startLocation = ride.getStartLocation();
+        String endLocation = ride.getEndLocation();
         try {
             List<LatLng> ridePoints =
                     directionPointsProvider.getPointsBetweenSourceAndDestination(startLocation, endLocation);
@@ -37,7 +37,7 @@ public class RideNodeImpl implements IRideNode {
         List<RideNode> rideNodes = new ArrayList<>();
         while (iterator.hasNext()) {
             LatLng ridePoint = iterator.next();
-            RideNode rideNode = new RideNode(ridePoint.latitude, ridePoint.longitude, rideId, ++sequence);
+            RideNode rideNode = new RideNode(ridePoint.getLatitude(), ridePoint.getLongitude(), rideId, ++sequence);
             rideNodes.add(rideNode);
         }
         return rideNodes;

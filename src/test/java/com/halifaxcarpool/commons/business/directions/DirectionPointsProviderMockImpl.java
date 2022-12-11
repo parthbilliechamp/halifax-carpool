@@ -18,4 +18,9 @@ public class DirectionPointsProviderMockImpl implements IDirectionPointsProvider
         return DirectionTestSuiteData.polylineToPointsMap.get(polyLine);
     }
 
+    @Override
+    public long getDistanceBetweenSourceAndDestination(String source, String destination) {
+        return 0;
+    }
+
 }

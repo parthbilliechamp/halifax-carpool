@@ -1,5 +1,7 @@
 package com.halifaxcarpool.admin.database.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,11 @@ public class DriverDetailsDaoMock extends IUserDetails{
 
     @Override
     public Map<Integer, List<String>> getRideLocations(){
-        return null;
+        Map<Integer, List<String>> distances = new HashMap<>();
+        List<String> locations = new ArrayList<>();
+        locations.add("6328-6276 Quinpool Rd, Halifax, NS B3L 1A5");
+        locations.add("6056 University Ave, Halifax, NS B3H 1W5");
+        distances.put(1,locations);
+        return distances;
     }
 }
