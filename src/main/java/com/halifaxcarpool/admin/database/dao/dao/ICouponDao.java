@@ -6,4 +6,5 @@ public interface ICouponDao {
     List<Coupon> viewCoupons();
 
     boolean deleteCoupon(int couponId);
+    Double getMaximumDiscount();
 }

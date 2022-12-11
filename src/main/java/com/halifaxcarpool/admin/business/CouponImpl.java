@@ -26,4 +26,9 @@ public class CouponImpl implements ICoupon {
     public Coupon updateCoupon(double discountPercentage, LocalDate expiry) {
         return null;
     }
+
+    @Override
+    public Double getMaximumDiscountValidToday(ICouponDao couponDao) {
+        return couponDao.getMaximumDiscount();
+    }
 }

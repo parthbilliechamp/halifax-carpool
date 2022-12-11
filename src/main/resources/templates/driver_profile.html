@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        Driver Rides
+    </title>
+</head>
+<body>
+<br />
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/driver/view_rides">Driver Profile</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/create_new_ride">Create New Ride<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/view_rides"> View Rides <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/view_profile"> View Profile <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h3>Driver Rides</h3>
+    <hr>
+    <form action="#" th:action="@{/driver/update_profile}" th:object="${driverProfile}" method="post">
+        <label>Email:</label><br />
+        <input type="text" th:field="*{driverEmail}"><br />
+        <label>Approval Status:</label><br />
+        <input type="text" th:field="*{driverApprovalStatus}"><br />
+        <label>License:</label><br />
+        <input type="text" th:field="*{driverLicense}"><br />
+        <label>Driver Name:</label><br />
+        <input type="text" th:field="*{driverName}"><br />
+        <label>Vehicle Name:</label><br />
+        <input type="text" th:field="*{vehicleName}"><br />
+        <label>Vehicle Model:</label><br />
+        <input type="text" th:field="*{vehicleModel}"><br />
+        <label>Vehicle Color:</label><br />
+        <input type="text" th:field="*{vehicleColor}"><br />
+        <label>Vehicle Number:</label><br />
+        <input type="text" th:field="*{registeredVehicleNumber}"><br />
+        <button type="submit" class="btn btn-info col-2">Update</button>
+    </form>
+</div>
+</body>
+</html>

@@ -9,18 +9,55 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class RideRequestImplTest {
 
+    IRideRequest rideRequest = new RideRequestImpl();
+    IRideRequestsDao rideRequestsDao = new RideRequestsDaoMockImpl();
+
     @Test
     void viewRideRequestsTest() {
         int customerId = 1;
-        IRideRequest rideRequest = new RideRequestMockImpl();
-        List<RideRequest> rideRequests = rideRequest.viewRideRequests(customerId);
+        List<RideRequest> rideRequests = rideRequest.viewRideRequests(customerId, rideRequestsDao);
         assert 2 == rideRequests.size();
         for (RideRequest ride: rideRequests) {
-            assert customerId == ride.customerId;
+            assert customerId == ride.getCustomerId();
+        }
+    }
+
+    @Test
+    void viewRideRequestsNoDataReturnedTest() {
+        int customerId = 5;
+        List<RideRequest> rideRequests = rideRequest.viewRideRequests(customerId, rideRequestsDao);
+        assert 0 == rideRequests.size();
+    }
+
+    @Test
+    void insertRideRequestTest(){
+        int customerId = 1;
+        int rideId = 8;
+        RideRequest rideRequestObject = new RideRequest(rideId, customerId, "Spring Garden", "Downtown");
+
+        try {
+            rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
+            assertTrue(true);
+        }catch (Exception e){
+            fail();
+        }
+    }
+
+    @Test
+    void insertRideRequestValuesMissingTest(){
+        RideRequest rideRequestObject = new RideRequest();
+        try {
+            rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
+            assertTrue(true);
+        } catch (Exception e){
+            fail();
         }
     }
 

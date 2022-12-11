@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IRideRequestsDao {
 
-    void createRideRequest(RideRequest rideRequest);
+    void insertRideRequest(RideRequest rideRequest);
 
     List<RideRequest> viewRideRequests(int customerId);
 

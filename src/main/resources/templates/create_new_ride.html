@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous">
+    <title class="header">
+        Create New Ride
+    </title>
+</head>
+<br />
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/driver/view_rides">Driver Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/create_new_ride">Create New Ride<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/view_rides">View Rides <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/view_profile"> View Profile <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/driver/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="new_ride_form">
+    <h3>New Ride Create</h3>
+    <form action="#" th:action="@{/driver/create_new_ride}" th:object="${ride}" method="post">
+        <label>Start Location:</label><br />
+        <input type="text" th:field="*{startLocation}"><br />
+        <label>End Location: </label><br />
+        <input type="text" th:field="*{endLocation}"><br />
+        <label>Time and Date of Planned Ride:</label><br />
+        <input type="datetime-local" th:field="*{dateTime}"><br />
+        <label>Seats Available: </label><br />
+        <input type="number" th:field="*{seatsOffered}"><br />
+
+        <input type="submit" value="Create" />
+    </form>
+</div>
+</html>

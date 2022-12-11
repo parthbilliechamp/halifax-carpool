@@ -19,8 +19,8 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
     }
 
     @Override
-    public void createRideRequest(RideRequest rideRequest) {
-
+    public void insertRideRequest(RideRequest rideRequest) {
+        insertRideRequestMockData(rideRequest);
     }
 
     @Override
@@ -38,6 +38,15 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         rideRequests = new ArrayList<>();
         rideRequests.add(new RideRequest(3, customerId, "Citadel", "Gottingen st."));
         rideRequests.add(new RideRequest(4, customerId, "Dalhousie", "Park lane"));
+        mockData.put(customerId, rideRequests);
+        customerId = 5;
+        mockData.put(customerId, new ArrayList<>());
+    }
+
+    private static void insertRideRequestMockData(RideRequest rideRequest){
+        int customerId = 2;
+        List<RideRequest> rideRequests = new ArrayList<>();
+        rideRequests.add(rideRequest);
         mockData.put(customerId, rideRequests);
     }
 

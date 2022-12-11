@@ -13,5 +13,5 @@ public interface ICoupon {
     void deleteCoupon(int couponId, ICouponDao couponDao);
 
     Coupon updateCoupon(double discountPercentage, LocalDate expiry);
-
+    Double getMaximumDiscountValidToday(ICouponDao couponDao);
 }

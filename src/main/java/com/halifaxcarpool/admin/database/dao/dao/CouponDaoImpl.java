@@ -2,10 +2,8 @@ package com.halifaxcarpool.admin.database.dao.dao;
 import com.halifaxcarpool.admin.business.beans.Coupon;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,22 +12,21 @@ import java.util.List;
 public class CouponDaoImpl implements ICouponDao {
 
     private final IDatabase database;
-    private final Connection connection;
+    private  Connection connection;
     public CouponDaoImpl() {
         database = new DatabaseImpl();
-        connection = database.openDatabaseConnection();
+
     }
 
     @Override
     public boolean createCoupon(Coupon coupon) {
         try{
-            Statement statement = connection.createStatement();
-            System.out.println("CALL insert_coupon_details(" + coupon.getCouponId()+ ","+
-                    coupon.getDiscountPercentage()+ ","
-                    + coupon.getExpiry() +")");
-            statement.executeQuery("CALL insert_coupon_details(" + coupon.getCouponId()+ ","+
-                    coupon.getDiscountPercentage()+ ","
-                    + new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(coupon.getExpiry()) +")");
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL insert_coupon_details(?,?,?)");
+            statement.setInt(1,coupon.getCouponId());
+            statement.setDouble(2, coupon.getDiscountPercentage());
+            statement.setDate(3,coupon.getExpiry());
+            statement.execute();
             return true;
         }
 
@@ -37,13 +34,8 @@ public class CouponDaoImpl implements ICouponDao {
             e.printStackTrace();
         }
         finally{
-            try{
-                connection.close();
-            }catch(SQLException e){
-                e.printStackTrace();
-
+               database.closeDatabaseConnection();
             }
-        }
         return false;
     }
 
@@ -74,6 +66,7 @@ public class CouponDaoImpl implements ICouponDao {
     @Override
     public boolean deleteCoupon(int couponId) {
         try{
+            connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
             statement.executeQuery("CALL delete_coupon("+ couponId+ ")");
             return true;
@@ -93,7 +86,24 @@ public class CouponDaoImpl implements ICouponDao {
         return false;
     }
 
-    public static List<Coupon> buildCouponRequestsForm(ResultSet resultSet) throws SQLException{
+    @Override
+    public Double getMaximumDiscount() {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL get_maximum_discount()");
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            Double discountPercentage = Double.parseDouble(resultSet.getString(1));
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return 0.0;
+    }
+
+    private static List<Coupon> buildCouponRequestsForm(ResultSet resultSet) throws SQLException{
         List<Coupon> coupons = new ArrayList<Coupon>();
         while(resultSet.next()){
             int couponId = Integer.parseInt(resultSet.getString("coupon_id"));

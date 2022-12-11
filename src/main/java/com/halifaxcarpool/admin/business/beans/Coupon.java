@@ -1,5 +1,6 @@
 package com.halifaxcarpool.admin.business.beans;
 
+import java.sql.Date;
 import java.time.LocalDate;
 public class Coupon {
     public double getDiscountPercentage() {
@@ -21,7 +22,7 @@ public class Coupon {
     public int couponId;
     public double discountPercentage;
 
-    public LocalDate getExpiry() {
+    public Date getExpiry() {
         return expiry;
     }
 

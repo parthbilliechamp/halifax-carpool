@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <title class="header">
+    Create Ride Request
+  </title>
+</head>
+<body>
+<br />
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/customer/view_ride_requests">Customer Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/customer/view_ride_requests">View Rides <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/customer/view_profile">Update Profile<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/customer/view_ongoing_rides">View Ongoing Rides<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/customer/logout">Logout <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="request_form">
+  <h3>Customer Ride Request</h3>
+  <form action="#" th:action="@{/customer/create_ride_request}" th:object="${rideRequest}" method="post">
+    <label>Start Location:</label><br />
+    <input type="text" th:field="*{startLocation}"><br />
+    <label>End Location: </label><br />
+    <input type="text" th:field="*{endLocation}"><br />
+
+    <input type="submit" value="Request" />
+  </form>
+
+</div>
+</body>
+</html>
