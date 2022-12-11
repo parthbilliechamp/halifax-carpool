@@ -1,14 +1,20 @@
 package com.halifaxcarpool.customer.business;
 
+import com.halifaxcarpool.customer.business.authentication.CustomerAuthenticationImpl;
 import com.halifaxcarpool.customer.business.authentication.ICustomerAuthentication;
-import com.halifaxcarpool.customer.business.authentication.ICustomerLogin;
+import com.halifaxcarpool.customer.business.authentication.ICustomer;
 import com.halifaxcarpool.customer.business.beans.Customer;
+import com.halifaxcarpool.customer.database.dao.ICustomerAuthenticationDao;
 import org.junit.jupiter.api.Test;
 
 public class CustomerLoginImplTest {
 
-    ICustomerLogin customerLoginMock;
+    ICustomerBusinessObjectFactory customerBusinessObjectFactory = new CustomerBusinessObjectFactoryMain();
+    ICustomerDaoObjectFactory customerDaoObjectMockFactory = new CustomerDaoObjectFactoryImplTest();
+    ICustomer customerMock;
     ICustomerAuthentication customerAuthenticationMock;
+
+    ICustomerAuthenticationDao customerAuthenticationDao;
 
     @Test
     public void loginSuccessTest() {
@@ -18,10 +24,12 @@ public class CustomerLoginImplTest {
         int expected_customer_id = 4;
         Customer extractedCustomer;
 
-        customerLoginMock = new CustomerLoginMockImpl();
-        customerAuthenticationMock = new CustomerAuthenticationMockImpl();
+        customerMock = customerBusinessObjectFactory.getCustomer();
+        customerAuthenticationMock = customerBusinessObjectFactory.getCustomerAuthentication();
+        customerAuthenticationDao = customerDaoObjectMockFactory.getCustomerAuthenticationDao();
 
-        extractedCustomer = customerLoginMock.login(username, password, customerAuthenticationMock);
+
+        extractedCustomer = customerMock.login(username, password, customerAuthenticationMock, customerAuthenticationDao);
 
         assert expected_customer_id == extractedCustomer.getCustomerId();
 
@@ -34,10 +42,11 @@ public class CustomerLoginImplTest {
         String password = "kllk90@3";
         Customer extractedCustomer;
 
-        customerLoginMock = new CustomerLoginMockImpl();
-        customerAuthenticationMock = new CustomerAuthenticationMockImpl();
+        customerMock = customerBusinessObjectFactory.getCustomer();
+        customerAuthenticationMock = customerBusinessObjectFactory.getCustomerAuthentication();
+        customerAuthenticationDao = customerDaoObjectMockFactory.getCustomerAuthenticationDao();
 
-        extractedCustomer = customerLoginMock.login(username, password, customerAuthenticationMock);
+        extractedCustomer = customerMock.login(username, password, customerAuthenticationMock, customerAuthenticationDao);
 
         assert extractedCustomer == null;
 

@@ -1,9 +1,7 @@
 package com.halifaxcarpool.driver.business;
 
-import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
-import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
@@ -22,7 +20,7 @@ public class RideImpl implements IRide {
         }
         boolean isRideNodeInserted = rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
         if (Boolean.FALSE.equals(isRideNodeInserted)) {
-            cancelRide(ride.rideId, ridesDao);
+            cancelRide(ride.getRideId(), ridesDao);
             return false;
         }
         return true;
@@ -32,6 +30,11 @@ public class RideImpl implements IRide {
     @Override
     public List<Ride> viewRides(int driverId, IRidesDao ridesDao) {
         return ridesDao.getRides(driverId);
+    }
+
+    @Override
+    public List<Ride> viewOngoingRides(int customerId, IRidesDao ridesDao) {
+        return ridesDao.getActiveRides(customerId);
     }
 
     @Override

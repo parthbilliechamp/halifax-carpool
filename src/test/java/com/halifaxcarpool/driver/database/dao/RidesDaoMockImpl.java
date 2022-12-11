@@ -1,5 +1,6 @@
 package com.halifaxcarpool.driver.database.dao;
 
+import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import java.util.Map;
 public class RidesDaoMockImpl implements IRidesDao {
 
     private static final Map<Integer, List<Ride>> driverIdToRideListMap = new HashMap<>();
+
+    private static final Map<Integer, List<Ride>> activeCustomerRidesMap = new HashMap<>();
     private static final Map<Integer, Ride> rideIdToRideMap = new HashMap<>();
 
     static {
@@ -32,6 +35,14 @@ public class RidesDaoMockImpl implements IRidesDao {
     }
 
     @Override
+    public List<Ride> getActiveRides(int customerId) {
+        if (activeCustomerRidesMap.containsKey(customerId)) {
+            return activeCustomerRidesMap.get(customerId);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public Ride getRide(int rideId) {
         return rideIdToRideMap.get(rideId);
     }
@@ -47,6 +58,8 @@ public class RidesDaoMockImpl implements IRidesDao {
 
     private static void populateMockData() {
         populateDriverToListData();
+
+        populateActiveRidesMapData();
 
         String startLocationRide1 = "6056 University Ave, Halifax, NS B3H 1W5";
         String endLocationRide1 = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
@@ -125,6 +138,28 @@ public class RidesDaoMockImpl implements IRidesDao {
             }
         }
         return new Ride();
+    }
+
+    private static void populateActiveRidesMapData() {
+        List<Ride> rides = new ArrayList<>();
+        Ride ride = new Ride(15, 15, "Citadel",
+                "Halifax Park", 4, 1, "");
+        Driver driver = new Driver();
+        driver.setDriverName("Hakim");
+        driver.setRegisteredVehicleNumber("132");
+        ride.withDriver(driver);
+        ride.withFare(2.0);
+
+        Ride secondRide = new Ride(16, 16, "Brunswick st.",
+                "Halifax Park", 2, 1, "");
+        Driver secondDriver = new Driver();
+        driver.setDriverName("Ben");
+        driver.setRegisteredVehicleNumber("132");
+        ride.withDriver(secondDriver);
+        ride.withFare(4.0);
+        rides.add(ride);
+        rides.add(secondRide);
+        activeCustomerRidesMap.put(1, rides);
     }
 
 }

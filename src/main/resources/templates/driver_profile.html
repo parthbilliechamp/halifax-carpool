@@ -39,21 +39,21 @@
     <hr>
     <form action="#" th:action="@{/driver/update_profile}" th:object="${driverProfile}" method="post">
         <label>Email:</label><br />
-        <input type="text" th:field="*{driver_email}"><br />
+        <input type="text" th:field="*{driverEmail}"><br />
         <label>Approval Status:</label><br />
-        <input type="text" th:field="*{driver_approval_status}"><br />
+        <input type="text" th:field="*{driverApprovalStatus}"><br />
         <label>License:</label><br />
-        <input type="text" th:field="*{driver_license}"><br />
+        <input type="text" th:field="*{driverLicense}"><br />
         <label>Driver Name:</label><br />
-        <input type="text" th:field="*{driver_name}"><br />
+        <input type="text" th:field="*{driverName}"><br />
         <label>Vehicle Name:</label><br />
-        <input type="text" th:field="*{vehicle_name}"><br />
+        <input type="text" th:field="*{vehicleName}"><br />
         <label>Vehicle Model:</label><br />
-        <input type="text" th:field="*{vehicle_model}"><br />
+        <input type="text" th:field="*{vehicleModel}"><br />
         <label>Vehicle Color:</label><br />
-        <input type="text" th:field="*{vehicle_color}"><br />
+        <input type="text" th:field="*{vehicleColor}"><br />
         <label>Vehicle Number:</label><br />
-        <input type="text" th:field="*{registered_vehicle_number}"><br />
+        <input type="text" th:field="*{registeredVehicleNumber}"><br />
         <button type="submit" class="btn btn-info col-2">Update</button>
     </form>
 </div>

@@ -8,42 +8,56 @@ import com.halifaxcarpool.driver.database.dao.DriverDaoMockImpl;
 import com.halifaxcarpool.driver.database.dao.IDriverDao;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class DriverImplTest {
 
-    IDriver driverLoginMock;
-    IDriverAuthentication driverAuthenticationMock;
+    IDriver driverObj;
+
+    IDriverDao driverDaoMockObj;
+
+    IDriverDaoObjectFactory driverDaoObjectFactory = new DriverDaoObjectFactoryImplTest();
+
+    IDriverBusinessObjectFactory driverBusinessObjectFactory = new DriverBusinessObjectFactoryMain();
+
 
     @Test
-    public void loginSuccessTest() {
+    public void registerDriverSuccessTest() {
+        int driver_id;
 
-        String username = "simonehot@gmail.com";
-        String password = "?isSimoneWell?@123";
-        int expected_driver_id = 21;
-        Driver extractedDriver;
+        driver_id = 20;
+        Driver driver = new Driver(driver_id, "ab.love@gmail.com", "rekab.aL@654", "9631597562", "Alicia Baker", "OLK-9880", "2024-06-15", "Ford", "F9", "Red", 0);
 
-        driverLoginMock = new DriverMockImpl();
-        driverAuthenticationMock = new DriverAuthenticationMockImpl();
+        driverObj = driverBusinessObjectFactory.getDriver();
+        driverDaoMockObj = driverDaoObjectFactory.getDriverDao();
 
-        extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
-
-        assert expected_driver_id == extractedDriver.getDriver_id();
+        try {
+            driverObj.registerDriver(driver,driverDaoMockObj);
+            assertTrue(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
 
     }
 
     @Test
-    public void loginFailureTest() {
+    public void registerDriverFailureTest() {
+        int driver_id;
 
-        String username = "simone@gmail.com";
-        String password = "?isSimone?@123";
-        int expected_driver_id = 21;
-        Driver extractedDriver;
+        driver_id = 21;
+        Driver driver = new Driver(driver_id, "simonehot@gmail.com", "?isSimoneWell?@123", "9665235146", "Simon Taylor", "KJK-9090", "2026-09-22", "Ford", "Ecosport", "White", 0);
 
-        driverLoginMock = new DriverMockImpl();
-        driverAuthenticationMock = new DriverAuthenticationMockImpl();
+        driverObj = driverBusinessObjectFactory.getDriver();
+        driverDaoMockObj = driverDaoObjectFactory.getDriverDao();
 
-        extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
-
-        assert extractedDriver == null;
+        try {
+            driverObj.registerDriver(driver,driverDaoMockObj);
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(true);
+        }
 
     }
 

@@ -13,18 +13,18 @@ public class DriverApprovalDaoMock implements DriverApprovalDao{
 
     public DriverApprovalDaoMock(){
         Driver driver1 = new Driver();
-        driver1.setLicense_expiry_date("2022-12-31");
-        driver1.setDriver_license("1");
+        driver1.setLicenseExpiryDate("2022-12-31");
+        driver1.setDriverLicense("1");
         drivers.add(driver1);
 
         Driver driver2 = new Driver();
-        driver2.setLicense_expiry_date("2002-11-11");
-        driver2.setDriver_license("2");
+        driver2.setLicenseExpiryDate("2002-11-11");
+        driver2.setDriverLicense("2");
         drivers.add(driver2);
 
         Driver driver3 = new Driver();
-        driver3.setLicense_expiry_date(null);
-        driver3.setDriver_license("3");
+        driver3.setLicenseExpiryDate(null);
+        driver3.setDriverLicense("3");
         drivers.add(driver3);
     }
 
@@ -39,8 +39,8 @@ public class DriverApprovalDaoMock implements DriverApprovalDao{
         System.out.println(drivers.size());
         while(itr.hasNext()){
             Driver driverTemp = (Driver) itr.next();
-            System.out.println(driverTemp.getDriver_license());
-            if(driverTemp.getDriver_license().equals(id)){
+            System.out.println(driverTemp.getDriverLicense());
+            if(driverTemp.getDriverLicense().equals(id)){
                 return true;
             }
         }
@@ -52,7 +52,7 @@ public class DriverApprovalDaoMock implements DriverApprovalDao{
         Iterator<User> itr = drivers.iterator();
         while(itr.hasNext()){
             Driver driverTemp = (Driver) itr.next();
-            if(driverTemp.getDriver_license().equals(id)){
+            if(driverTemp.getDriverLicense().equals(id)){
                 return true;
             }
         }

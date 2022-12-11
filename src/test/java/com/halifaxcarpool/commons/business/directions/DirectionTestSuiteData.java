@@ -286,7 +286,7 @@ public class DirectionTestSuiteData {
         Iterator<LatLng> iterator = points.iterator();
         while (iterator.hasNext()) {
             LatLng latLng = iterator.next();
-            RideNode rideNode = new RideNode(latLng.latitude, latLng.longitude, rideId, ++COUNTER);
+            RideNode rideNode = new RideNode(latLng.getLatitude(), latLng.getLongitude(), rideId, ++COUNTER);
             rideNodes.add(rideNode);
         }
         resetCounter();

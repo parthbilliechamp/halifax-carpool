@@ -22,7 +22,7 @@ public class RideToRequestMapperImplTest {
         int rideId = 5;
         List<RideRequest> rideRequests = rideToRequestMapperDao.viewReceivedRequests(rideId);
         assert 1 == rideRequests.size();
-        assert 5 == rideRequests.get(0).rideRequestId;
+        assert 5 == rideRequests.get(0).getRideRequestId();
     }
 
 }
