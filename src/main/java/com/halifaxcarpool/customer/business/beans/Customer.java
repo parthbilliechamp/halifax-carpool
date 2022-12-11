@@ -1,6 +1,8 @@
 package com.halifaxcarpool.customer.business.beans;
 
-public class Customer {
+import com.halifaxcarpool.commons.business.beans.User;
+
+public class Customer extends User {
     public Customer() {
 
     }

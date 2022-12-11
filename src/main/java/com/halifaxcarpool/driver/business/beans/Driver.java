@@ -1,6 +1,8 @@
 package com.halifaxcarpool.driver.business.beans;
 
-public class Driver {
+import com.halifaxcarpool.commons.business.beans.User;
+
+public class Driver extends User {
 
     private int driverId;
     private String driverEmail;
