@@ -6,7 +6,6 @@ import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.business.*;
-import com.halifaxcarpool.customer.business.authentication.*;
 import com.halifaxcarpool.customer.business.beans.InvalidCustomer;
 import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.IRide;
@@ -187,7 +186,7 @@ public class CustomerController {
         Customer customer = (Customer) httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral);
         RideRequest rideRequest = new RideRequest(rideRequestId, customer.getCustomerId(), startLocation, endLocation);
 
-        RideFinder rideFinder = customerObjectFactory.getDirectRouteRideFinder();
+        BaseRideFinder rideFinder = customerObjectFactory.getDirectRouteRideFinder();
         rideFinder = new MultipleRouteRideFinderDecorator(rideFinder);
 
         List<List<Ride>> ListOfRideList = rideFinder.findMatchingRides(rideRequest);

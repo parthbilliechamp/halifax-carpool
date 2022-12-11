@@ -1,7 +1,7 @@
 package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
-import com.halifaxcarpool.customer.business.recommendation.RideFinder;
+import com.halifaxcarpool.customer.business.recommendation.BaseRideFinder;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 
@@ -13,7 +13,7 @@ public class CustomerBusinessObjectFactoryMain implements ICustomerBusinessObjec
     }
 
     @Override
-    public RideFinder getDirectRouteRideFinder() {
+    public BaseRideFinder getDirectRouteRideFinder() {
         return new DirectRouteRideFinder();
     }
 

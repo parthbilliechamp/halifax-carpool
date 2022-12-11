@@ -6,7 +6,7 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectRouteRideFinder extends RideFinder {
+public class DirectRouteRideFinder extends BaseRideFinder {
 
     RideFinderStrategy rideFinderStrategy = new DirectRouteRideFinderStrategy();
     RideFinderNavigator navigator = new RideFinderNavigator(rideFinderStrategy);

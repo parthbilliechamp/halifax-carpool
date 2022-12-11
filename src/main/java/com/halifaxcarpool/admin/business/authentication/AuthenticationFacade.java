@@ -4,6 +4,7 @@ import com.halifaxcarpool.admin.business.beans.Admin;
 
 public class AuthenticationFacade {
 
+    //TODO remove facade
     public Admin authenticate(String userName, String password) {
 
         IAdmin admin = new AdminImpl();

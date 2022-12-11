@@ -11,7 +11,7 @@ public class MultipleRouteRideFinderDecorator extends RideFinderBaseDecorator {
     RideFinderStrategy rideFinderStrategy = new MultipleRouteRideFinderStrategy();
     RideFinderNavigator navigator = new RideFinderNavigator(rideFinderStrategy);
 
-    public MultipleRouteRideFinderDecorator(RideFinder rideFinder) {
+    public MultipleRouteRideFinderDecorator(BaseRideFinder rideFinder) {
         super(rideFinder);
     }
 
