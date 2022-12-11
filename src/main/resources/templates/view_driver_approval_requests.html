@@ -26,17 +26,17 @@
         </thead>
         <tbody>
         <tr th:each="driver: ${approvalRequests}">
-            <td th:text="${driver.driver_name}"/>
-            <td th:text="${driver.registered_vehicle_number}"/>
-            <td th:text="${driver.driver_license}"/>
-            <td th:text="${driver.license_expiry_date}"/>
+            <td th:text="${driver.driverName}"/>
+            <td th:text="${driver.registeredVehicleNumber}"/>
+            <td th:text="${driver.driverLicense}"/>
+            <td th:text="${driver.licenseExpiryDate}"/>
             <td>
                 <a class="btn btn-secondary"
-                   th:href="@{/admin/updateApprovalStatus(license_id=${driver.driver_license}, status='accept')}">Accept</a>
+                   th:href="@{/admin/updateApprovalStatus(license_id=${driver.driverLicense}, status='accept')}">Accept</a>
             </td>
             <td>
                 <a class="btn btn-secondary"
-                   th:href="@{/admin/updateApprovalStatus(license_id=${driver.driver_license}, status='reject')}">Reject</a>
+                   th:href="@{/admin/updateApprovalStatus(license_id=${driver.driverLicense}, status='reject')}">Reject</a>
             </td>
         </tr>
         </tbody>

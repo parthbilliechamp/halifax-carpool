@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <title class="header">
+    Popular Locations for Pick Up
+  </title>
+</head>
+<body>
+<br />
+<div class="container" th:with="occurrence=${maxOccurrence}">
+  <h3>The most popular streets with <span th:text="${occurrence}"></span> requests from this street/s.</h3>
+  <hr>
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Pick Up Street Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="street: ${streetNames}">
+      <td th:text="${street}"/>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>

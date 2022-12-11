@@ -2,16 +2,16 @@ package com.halifaxcarpool.admin.controller;
 
 import com.halifaxcarpool.admin.business.approve.DriverApproval;
 import com.halifaxcarpool.admin.business.approve.UserApproval;
+import com.halifaxcarpool.admin.business.popular.LocationPopularity;
+import com.halifaxcarpool.admin.business.popular.LocationPopularityImpl;
 import com.halifaxcarpool.admin.business.statistics.*;
-import com.halifaxcarpool.admin.database.dao.DriverApprovalDao;
-import com.halifaxcarpool.admin.database.dao.DriverApprovalDaoImpl;
+import com.halifaxcarpool.admin.database.dao.*;
 import com.halifaxcarpool.admin.business.authentication.AuthenticationFacade;
 import com.halifaxcarpool.admin.business.statistics.DriverStatistics;
 import com.halifaxcarpool.admin.business.statistics.IUserStatisticsBuilder;
 import com.halifaxcarpool.admin.business.statistics.UserAnalysis;
 import com.halifaxcarpool.admin.business.statistics.UserStatistics;
 import com.halifaxcarpool.admin.business.beans.Admin;
-import com.halifaxcarpool.admin.database.dao.IUserDetails;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.customer.database.dao.CustomerDetailsDaoImpl;
 import com.halifaxcarpool.driver.database.dao.DriverDetailsDaoImpl;
@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AdminController {
@@ -121,4 +122,21 @@ public class AdminController {
         return "redirect:/admin/view_driver_approval_requests";
     }
 
+    @GetMapping("/admin/view_popular_locations")
+    public String viewPopularLocations(Model model){
+        LocationPopularityDao locationPopularityDao = new LocationPopularityDaoImpl();
+        LocationPopularity locationPopularity = new LocationPopularityImpl(locationPopularityDao);
+
+        Map<Integer, List<String>> popularStreetNames = locationPopularity.getPopularPickUpLocations();
+        Map.Entry<Integer,List<String>> entry = popularStreetNames.entrySet().iterator().next();
+
+        int occurrences = entry.getKey().intValue();
+        List<String> streetNames = entry.getValue();
+
+        model.addAttribute("maxOccurrence", occurrences);
+        model.addAttribute("streetNames", streetNames);
+
+        return "view_popular_locations";
+
+    }
 }
