@@ -1,13 +1,14 @@
 package com.halifaxcarpool.customer.database.dao;
 
+import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.customer.business.beans.Customer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerRegistrationDaoMockImpl implements ICustomerRegistrationDao {
+public class CustomerDaoMockImpl extends IUserDao {
 
-    private static Map<Integer, Customer> mockCustomerData = new HashMap<>();
+    private static final Map<Integer, Customer> mockCustomerData = new HashMap<>();
 
     static {
         populateMockCustomerData();
@@ -29,11 +30,15 @@ public class CustomerRegistrationDaoMockImpl implements ICustomerRegistrationDao
     }
 
     @Override
-    public void registerCustomer(Customer customer) {
-        int customer_id;
+    public void registerUser(User user) {
+        Customer customerUser = (Customer) user;
+        int customer_id = 5;
+        mockCustomerData.put(customer_id, customerUser);
+    }
 
-        customer_id = 5;
-        mockCustomerData.put(customer_id, customer);
+    @Override
+    public boolean updateUser(User user) {
+        return false;
     }
 
     public Customer findCustomerDetailsFromHashMap(int customer_id) {

@@ -1,6 +1,12 @@
 package com.halifaxcarpool.driver.business.beans;
 
 import com.halifaxcarpool.commons.business.beans.User;
+import com.halifaxcarpool.customer.business.authentication.IUserAuthentication;
+import com.halifaxcarpool.customer.database.dao.CustomerAuthenticationDaoImpl;
+import com.halifaxcarpool.customer.database.dao.CustomerDaoImpl;
+import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
+import com.halifaxcarpool.customer.database.dao.IUserDao;
+import com.halifaxcarpool.driver.database.dao.DriverDaoImpl;
 
 public class Driver extends User {
 
@@ -143,6 +149,16 @@ public class Driver extends User {
                 ", vehicle_color='" + vehicle_color + '\'' +
                 ", driver_approval_status=" + driver_approval_status +
                 '}';
+    }
+
+    @Override
+    public void registerUser(IUserDao userDao) {
+        userDao.registerUser(this);
+    }
+
+    @Override
+    public boolean updateUser(IUserDao userDao) {
+        return userDao.updateUser(this);
     }
 
     public static class Builder {

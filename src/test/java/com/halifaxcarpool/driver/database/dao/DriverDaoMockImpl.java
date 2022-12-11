@@ -1,26 +1,18 @@
 package com.halifaxcarpool.driver.database.dao;
 
+import com.halifaxcarpool.commons.business.beans.User;
+import com.halifaxcarpool.customer.database.dao.IUserDao;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DriverDaoMockImpl implements IDriverDao {
+public class DriverDaoMockImpl extends IUserDao {
 
     private static final Map<Integer, Driver> driverIdToDriverMap = new HashMap<>();
 
     static {
         populateMockData();
-    }
-
-    @Override
-    public boolean updateDriverProfile(Driver driver) {
-        int driverId = driver.getDriver_id();
-        if (driverIdToDriverMap.containsKey(driverId)) {
-            driverIdToDriverMap.put(driverId, driver);
-            return true;
-        }
-        return false;
     }
 
     private static void populateMockData() {
@@ -55,4 +47,22 @@ public class DriverDaoMockImpl implements IDriverDao {
                 .build();
         driverIdToDriverMap.put(driver3Id, driver3);
     }
+
+    @Override
+    public void registerUser(User user) {
+        Driver driverUser = (Driver) user;
+        driverIdToDriverMap.put(driverUser.getDriver_id(), driverUser);
+    }
+
+    @Override
+    public boolean updateUser(User user) {
+        Driver driverUser = (Driver) user;
+        int driverId = driverUser.getDriver_id();
+        if (driverIdToDriverMap.containsKey(driverId)) {
+            driverIdToDriverMap.put(driverId, driverUser);
+            return true;
+        }
+        return false;
+    }
+
 }

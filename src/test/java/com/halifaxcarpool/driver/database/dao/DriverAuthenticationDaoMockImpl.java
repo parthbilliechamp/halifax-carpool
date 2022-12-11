@@ -1,6 +1,7 @@
 package com.halifaxcarpool.driver.database.dao;
 
-import com.halifaxcarpool.customer.business.beans.Customer;
+import com.halifaxcarpool.commons.business.beans.User;
+import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
 import java.util.ArrayList;
@@ -8,10 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DriverAuthenticationDaoMockImpl implements IDriverAuthenticationDao{
+public class DriverAuthenticationDaoMockImpl implements IUserAuthenticationDao {
 
-    private static Map<List<String>, Driver> mockDriverData = new HashMap<>();
-    private static List<String> emailAndPasswordList = new ArrayList<>();
+    private static final Map<List<String>, Driver> mockDriverData = new HashMap<>();
+    private static final List<String> emailAndPasswordList = new ArrayList<>();
 
     static {
         populateMockDriverData();
@@ -52,4 +53,5 @@ public class DriverAuthenticationDaoMockImpl implements IDriverAuthenticationDao
 
         return mockDriverData.get(emailAndPasswordList);
     }
+
 }

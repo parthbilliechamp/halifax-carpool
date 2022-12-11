@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CustomerAuthenticationDaoImpl implements ICustomerAuthenticationDao {
+public class CustomerAuthenticationDaoImpl implements IUserAuthenticationDao {
 
     IDatabase database;
     Connection connection;
@@ -47,7 +47,6 @@ public class CustomerAuthenticationDaoImpl implements ICustomerAuthenticationDao
             String customer_password = resultSet.getString("customer_password");
             customer = new Customer(customer_id, customer_name, customer_contact, customer_email, customer_password);
         }
-
         return customer;
     }
 

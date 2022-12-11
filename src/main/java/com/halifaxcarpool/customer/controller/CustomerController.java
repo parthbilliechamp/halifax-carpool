@@ -1,20 +1,20 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.customer.business.*;
 import com.halifaxcarpool.customer.business.authentication.*;
+import com.halifaxcarpool.customer.business.beans.InvalidCustomer;
+import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.recommendation.*;
-import com.halifaxcarpool.customer.business.registration.ICustomerRegistration;
 import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
-import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,16 +60,19 @@ public class CustomerController {
     String authenticateLoggedInCustomer(@ModelAttribute("customer") Customer customer, HttpServletRequest
             httpServletRequest, Model model) {
 
-        ICustomerLogin customerLogin = customerObjectFactory.getCustomerLogin();
-        ICustomerAuthentication customerAuthentication = customerObjectFactory.getCustomerAuthentication();
+        User customerUser = new Customer();
+        IUserAuthentication customerAuthentication = new UserAuthenticationImpl();
+        IUserAuthenticationDao customerAuthenticationDao = new CustomerAuthenticationDaoImpl();
 
         String email = customer.getCustomerEmail();
         String password = customer.getCustomerPassword();
 
-        Customer validCustomer =  customerLogin.login(email, password, customerAuthentication);
+        User validCustomer =
+                customerUser.loginUser(email, password, customerAuthentication, customerAuthenticationDao);
+
         model.addAttribute("customer", customer);
-        if (validCustomer == null) {
-            httpServletRequest.getSession().setAttribute("loggedInCustomer", 0);
+        if (null == validCustomer) {
+            httpServletRequest.getSession().setAttribute("loggedInCustomer", new InvalidCustomer());
             return "redirect:/customer/login";
         }
         httpServletRequest.getSession().setAttribute("loggedInCustomer", validCustomer);
@@ -79,6 +82,8 @@ public class CustomerController {
     @GetMapping("/customer/logout")
     String logoutCustomer(@ModelAttribute("customer") Customer customer, HttpServletRequest
             httpServletRequest) {
+        Customer customerUser = (Customer) httpServletRequest.getSession().getAttribute("loggedInCustomer");
+        //TODO implement with invalid user feature
         if (httpServletRequest.getSession().getAttribute("loggedInCustomer") != (Object) 0) {
             httpServletRequest.getSession().setAttribute("loggedInCustomer", 1);
         }
@@ -87,6 +92,7 @@ public class CustomerController {
 
     @GetMapping("/customer/register")
     String registerCustomer(Model model) {
+        //call to factory to return object
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
         return CUSTOMER_REGISTRATION_FORM;
@@ -94,8 +100,8 @@ public class CustomerController {
 
     @PostMapping("/customer/register/save")
     String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer) {
-        ICustomerRegistration customerRegistration = customerObjectFactory.getCustomerRegistration();
-        customerRegistration.registerCustomer(customer);
+        IUserDao userDao = new CustomerDaoImpl();
+        customer.registerUser(userDao);
         return "redirect:/customer/login";
     }
 

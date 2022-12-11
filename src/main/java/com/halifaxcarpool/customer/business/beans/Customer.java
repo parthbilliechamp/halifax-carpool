@@ -1,8 +1,19 @@
 package com.halifaxcarpool.customer.business.beans;
 
 import com.halifaxcarpool.commons.business.beans.User;
+import com.halifaxcarpool.customer.business.authentication.IUserAuthentication;
+import com.halifaxcarpool.customer.database.dao.CustomerAuthenticationDaoImpl;
+import com.halifaxcarpool.customer.database.dao.CustomerDaoImpl;
+import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
+import com.halifaxcarpool.customer.database.dao.IUserDao;
 
 public class Customer extends User {
+
+    public int customerId;
+    String customerName;
+    String customerContact;
+    String customerEmail;
+    String customerPassword;
     public Customer() {
 
     }
@@ -15,11 +26,15 @@ public class Customer extends User {
         this.customerPassword = customerPassword;
     }
 
-    public int customerId;
-    String customerName;
-    String customerContact;
-    String customerEmail;
-    String customerPassword;
+    @Override
+    public void registerUser(IUserDao userDao) {
+        userDao.registerUser(this);
+    }
+
+    @Override
+    public boolean updateUser(IUserDao userDao) {
+        return userDao.updateUser(this);
+    }
 
     public int getCustomerId() {
         return customerId;
@@ -71,4 +86,5 @@ public class Customer extends User {
                 ", customerPassword='" + customerPassword + '\'' +
                 '}';
     }
+
 }

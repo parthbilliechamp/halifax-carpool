@@ -23,7 +23,7 @@ public abstract class IUserDetails {
 
     public abstract int getNumberOfUsers();
 
-    public int getNumberOfRides(){
+    public int getNumberOfRides() {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
