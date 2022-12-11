@@ -48,8 +48,8 @@ public class DriverApproval implements UserApproval{
         Iterator<User> itr = drivers.iterator();
         while(itr.hasNext()){
             Driver filterDriver = (Driver) itr.next();
-            if(null != filterDriver.getLicense_expiry_date()){
-                Date driverLicenseExpireDate = parseDate(filterDriver.getLicense_expiry_date());
+            if(null != filterDriver.getLicenseExpiryDate()){
+                Date driverLicenseExpireDate = parseDate(filterDriver.getLicenseExpiryDate());
                 if(driverLicenseExpireDate.compareTo(currentDate)>0){
                     filteredDrivers.add(filterDriver);
                 }

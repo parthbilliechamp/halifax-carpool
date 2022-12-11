@@ -31,9 +31,9 @@ public class RideNodeDaoImpl implements IRideNodeDao {
             Iterator<RideNode> iterator = rideNodes.iterator();
             while (iterator.hasNext()) {
                 RideNode rideNode = iterator.next();
-                statement.addBatch("CALL insert_ride_nodes(" + rideNode.rideId +
-                        "," + rideNode.latitude + "," + rideNode.longitude +
-                        "," + rideNode.sequence + ")");
+                statement.addBatch("CALL insert_ride_nodes(" + rideNode.getRideId() +
+                        "," + rideNode.getLatitude() + "," + rideNode.getLongitude() +
+                        "," + rideNode.getSequence() + ")");
             }
             statement.executeBatch();
             return true;
@@ -52,9 +52,9 @@ public class RideNodeDaoImpl implements IRideNodeDao {
             Statement statement = connection.createStatement();
             StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.append("CALL view_ride_nodes(")
-                    .append(latLng.latitude)
+                    .append(latLng.getLatitude())
                     .append(",")
-                    .append(latLng.longitude)
+                    .append(latLng.getLongitude())
                     .append(")");
             ResultSet resultSet =
                     statement.executeQuery(queryBuilder.toString());

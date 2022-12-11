@@ -1,7 +1,6 @@
 package com.halifaxcarpool.driver.database.dao;
 
-import com.halifaxcarpool.commons.business.beans.User;
-import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
 import java.util.ArrayList;

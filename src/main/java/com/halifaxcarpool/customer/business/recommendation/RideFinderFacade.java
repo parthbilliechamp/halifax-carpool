@@ -16,11 +16,11 @@ import java.util.*;
 
 public class RideFinderFacade {
 
-    private static class RideLookup {
+    private static class RideLookupKey {
         int firstRideId;
         int secondRideId;
 
-        RideLookup(int firstRideId, int secondRideId) {
+        RideLookupKey(int firstRideId, int secondRideId) {
             this.firstRideId = firstRideId;
             this.secondRideId = secondRideId;
         }
@@ -29,7 +29,7 @@ public class RideFinderFacade {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            RideLookup that = (RideLookup) o;
+            RideLookupKey that = (RideLookupKey) o;
             return firstRideId == that.firstRideId && secondRideId == that.secondRideId;
         }
 
@@ -50,21 +50,21 @@ public class RideFinderFacade {
     public List<List<Ride>> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
                                                  IGeoCoding geoCoding, IRidesDao ridesDao) {
 
-        LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.startLocation);
-        LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.endLocation);
+        LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.getStartLocation());
+        LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.getEndLocation());
         if (null == startLocationPoint || null == endLocationPoint) {
-            throw new RuntimeException("Error finding coordinates of the ride request : " + rideRequest.rideRequestId);
+            throw new RuntimeException("Error finding coordinates of the ride request : " + rideRequest.getRideRequestId());
         }
 
         List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
         List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);
 
         RideRequestNode startNode =
-                new RideRequestNode(startLocationPoint.latitude, startLocationPoint.longitude,
-                        rideRequest.rideRequestId);
+                new RideRequestNode(startLocationPoint.getLatitude(), startLocationPoint.getLongitude(),
+                        rideRequest.getRideRequestId());
         RideRequestNode endNode =
-                new RideRequestNode(endLocationPoint.latitude, endLocationPoint.longitude,
-                        rideRequest.rideRequestId);
+                new RideRequestNode(endLocationPoint.getLatitude(), endLocationPoint.getLongitude(),
+                        rideRequest.getRideRequestId());
 
         Set<RideNode> validRidesForStartNode = new HashSet<>();
         Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
@@ -81,12 +81,12 @@ public class RideFinderFacade {
     }
 
     public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest, IDirectionPointsProvider directionPointsProvider, IRideNodeDao rideNodeDao, IRidesDao ridesDao) {
-        List<LatLng> rideReqPoints = directionPointsProvider.getPointsBetweenSourceAndDestination(rideRequest.startLocation, rideRequest.endLocation);
+        List<LatLng> rideReqPoints = directionPointsProvider.getPointsBetweenSourceAndDestination(rideRequest.getStartLocation(), rideRequest.getEndLocation());
 
         LatLng startPointOfRideRequest = rideReqPoints.get(0);
 
         LatLng endPointOfRideRequest = rideReqPoints.get(rideReqPoints.size() - 1);
-        Map<RideLookup, List<Ride>> ridesCache = new HashMap<>();
+        Map<RideLookupKey, List<Ride>> ridesCache = new HashMap<>();
         for (int i = 1; i < rideReqPoints.size() - 1 && ridesCache.size() <= 3; i += 3) {
             LatLng middleSearchPoint = rideReqPoints.get(i);
 
@@ -96,14 +96,14 @@ public class RideFinderFacade {
             if (ridesForFirstRoute.size() != 0 && ridesForSecondRoute.size() != 0) {
                 for (Ride ride1 : ridesForFirstRoute) {
                     for (Ride ride2 : ridesForSecondRoute) {
-                        if (ride1.rideId == ride2.rideId) {
+                        if (ride1.getRideId() == ride2.getRideId()) {
                             continue;
                         }
-                        RideLookup rideLookup = new RideLookup(ride1.rideId, ride2.rideId);
+                        RideLookupKey rideLookupKey = new RideLookupKey(ride1.getRideId(), ride2.getRideId());
                         List<Ride> combinedRides = new ArrayList<>();
                         combinedRides.add(ride1);
                         combinedRides.add(ride2);
-                        ridesCache.put(rideLookup, combinedRides);
+                        ridesCache.put(rideLookupKey, combinedRides);
                     }
                 }
             }
@@ -117,11 +117,11 @@ public class RideFinderFacade {
         List<RideNode> rideNodesNearToStartPoint = rideNodeDao.getRideNodes(startPointOfRideRequest);
         List<RideNode> rideNodesNearToMiddlePoint = rideNodeDao.getRideNodes(middleSearchPoint);
         RideRequestNode startNodeOfRideRequest =
-                new RideRequestNode(startPointOfRideRequest.latitude, startPointOfRideRequest.longitude,
-                        rideRequest.rideRequestId);
+                new RideRequestNode(startPointOfRideRequest.getLatitude(), startPointOfRideRequest.getLongitude(),
+                        rideRequest.getRideRequestId());
         RideRequestNode middleNodeOfRideRequest =
-                new RideRequestNode(middleSearchPoint.latitude, middleSearchPoint.longitude,
-                        rideRequest.rideRequestId);
+                new RideRequestNode(middleSearchPoint.getLatitude(), middleSearchPoint.getLongitude(),
+                        rideRequest.getRideRequestId());
         Set<RideNode> validRidesForStartNode = new HashSet<>();
         Map<RideNode, RideNode> validRidesForMiddleNode = new HashMap<>();
         filterValidRidesForStartNodeForTwoRides(rideNodesNearToStartPoint, startNodeOfRideRequest, validRidesForStartNode);
@@ -135,11 +135,11 @@ public class RideFinderFacade {
         List<RideNode> rideNodesNearToMiddlePoint = rideNodeDao.getRideNodes(middleSearchPoint);
         List<RideNode> rideNodesNearToEndPoint = rideNodeDao.getRideNodes(endPointOfRideRequest);
         RideRequestNode middleNodeOfRideRequest =
-                new RideRequestNode(middleSearchPoint.latitude, middleSearchPoint.longitude,
-                        rideRequest.rideRequestId);
+                new RideRequestNode(middleSearchPoint.getLatitude(), middleSearchPoint.getLongitude(),
+                        rideRequest.getRideRequestId());
         RideRequestNode endNodeOfRideRequest =
-                new RideRequestNode(endPointOfRideRequest.latitude, endPointOfRideRequest.longitude,
-                        rideRequest.rideRequestId);
+                new RideRequestNode(endPointOfRideRequest.getLatitude(), endPointOfRideRequest.getLongitude(),
+                        rideRequest.getRideRequestId());
         Set<RideNode> validRidesForMiddleNode2 = new HashSet<>();
         Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
         filterValidRidesForStartNodeForTwoRides(rideNodesNearToMiddlePoint, middleNodeOfRideRequest, validRidesForMiddleNode2);
@@ -152,8 +152,8 @@ public class RideFinderFacade {
                                                                 RideRequestNode startNode,
                                                                 Set<RideNode> validRidesForStartNode) {
         for (RideNode rideNode : rideNodesNearToStartLocation) {
-            double distanceFromStartNode = DistanceFinder.findDistance(startNode.latitude, rideNode.latitude,
-                    startNode.longitude, rideNode.longitude);
+            double distanceFromStartNode = DistanceFinder.findDistance(startNode.getLatitude(), rideNode.getLatitude(),
+                    startNode.getLongitude(), rideNode.getLongitude());
             if (distanceFromStartNode < MAXIMUM_RIDE_THRESHOLD_KM_FOR_TWO_RIDES && !validRidesForStartNode.contains(rideNode)) {
                 validRidesForStartNode.add(rideNode);
             }
@@ -162,8 +162,8 @@ public class RideFinderFacade {
 
     private static void filterValidRidesForEndNodeForTwoRides(List<RideNode> rideNodesNearToEndLocation, RideRequestNode endNode, Map<RideNode, RideNode> validRidesForEndNode) {
         for (RideNode rideNode : rideNodesNearToEndLocation) {
-            double distanceFromEndNode = DistanceFinder.findDistance(endNode.latitude, rideNode.latitude,
-                    endNode.longitude, rideNode.longitude);
+            double distanceFromEndNode = DistanceFinder.findDistance(endNode.getLatitude(), rideNode.getLatitude(),
+                    endNode.getLongitude(), rideNode.getLongitude());
             if (distanceFromEndNode <= MAXIMUM_RIDE_THRESHOLD_KM_FOR_TWO_RIDES && !validRidesForEndNode.containsKey(rideNode)) {
                 validRidesForEndNode.put(rideNode, rideNode);
             }
@@ -174,8 +174,8 @@ public class RideFinderFacade {
                                                      RideRequestNode startNode,
                                                      Set<RideNode> validRidesForStartNode) {
         for (RideNode rideNode : rideNodesNearToStartLocation) {
-            double distanceFromStartNode = DistanceFinder.findDistance(startNode.latitude, rideNode.latitude,
-                    startNode.longitude, rideNode.longitude);
+            double distanceFromStartNode = DistanceFinder.findDistance(startNode.getLatitude(), rideNode.getLatitude(),
+                    startNode.getLongitude(), rideNode.getLongitude());
             if (distanceFromStartNode < MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForStartNode.contains(rideNode)) {
                 validRidesForStartNode.add(rideNode);
             }
@@ -184,8 +184,8 @@ public class RideFinderFacade {
 
     private static void filterValidRidesForEndNode(List<RideNode> rideNodesNearToEndLocation, RideRequestNode endNode, Map<RideNode, RideNode> validRidesForEndNode) {
         for (RideNode rideNode : rideNodesNearToEndLocation) {
-            double distanceFromEndNode = DistanceFinder.findDistance(endNode.latitude, rideNode.latitude,
-                    endNode.longitude, rideNode.longitude);
+            double distanceFromEndNode = DistanceFinder.findDistance(endNode.getLatitude(), rideNode.getLatitude(),
+                    endNode.getLongitude(), rideNode.getLongitude());
             if (distanceFromEndNode <= MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForEndNode.containsKey(rideNode)) {
                 validRidesForEndNode.put(rideNode, rideNode);
             }
@@ -198,8 +198,8 @@ public class RideFinderFacade {
         List<Ride> recommendedRides = new ArrayList<>();
         for (RideNode rideNode : validRidesForStartNode) {
             RideNode temp = validRidesForEndNode.get(rideNode);
-            if (rideNode.sequence <= temp.sequence) {
-                Ride currentRide = ride.getRide(rideNode.rideId, ridesDao);
+            if (rideNode.getSequence() <= temp.getSequence()) {
+                Ride currentRide = ride.getRide(rideNode.getRideId(), ridesDao);
                 recommendedRides.add(currentRide);
             }
         }

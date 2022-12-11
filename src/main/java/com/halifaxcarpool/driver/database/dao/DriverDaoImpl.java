@@ -3,9 +3,7 @@ package com.halifaxcarpool.driver.database.dao;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
-import com.halifaxcarpool.customer.business.authentication.IUserAuthentication;
-import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
-import com.halifaxcarpool.customer.database.dao.IUserDao;
+import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
 import java.sql.CallableStatement;
@@ -25,7 +23,6 @@ public class DriverDaoImpl extends IUserDao {
         database = new DatabaseImpl();
     }
 
-
     @Override
     public boolean updateUser(User user) {
         Driver driverUser = (Driver) user;
@@ -33,15 +30,15 @@ public class DriverDaoImpl extends IUserDao {
             connection = database.openDatabaseConnection();
             String SQL_STRING = "{CALL update_driver_profile(?,?,?,?,?,?,?,?,?)}";
             CallableStatement statement = connection.prepareCall(SQL_STRING);
-            statement.setInt(1, driverUser.getDriver_id());
-            statement.setString(2, driverUser.getDriver_email());
-            statement.setInt(3, driverUser.getDriver_approval_status());
-            statement.setString(4, driverUser.getDriver_license());
-            statement.setString(5, driverUser.getDriver_name());
-            statement.setString(6, driverUser.getVehicle_name());
-            statement.setString(7, driverUser.getVehicle_model());
-            statement.setString(8, driverUser.getVehicle_color());
-            statement.setString(9, driverUser.getRegistered_vehicle_number());
+            statement.setInt(1, driverUser.getDriverId());
+            statement.setString(2, driverUser.getDriverEmail());
+            statement.setInt(3, driverUser.getDriverApprovalStatus());
+            statement.setString(4, driverUser.getDriverLicense());
+            statement.setString(5, driverUser.getDriverName());
+            statement.setString(6, driverUser.getVehicleName());
+            statement.setString(7, driverUser.getVehicleModel());
+            statement.setString(8, driverUser.getVehicleColor());
+            statement.setString(9, driverUser.getRegisteredVehicleNumber());
             statement.executeQuery();
             return true;
         } catch (Exception e) {
@@ -58,12 +55,20 @@ public class DriverDaoImpl extends IUserDao {
         try {
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-            statement.executeQuery("CALL insert_driver_details('" + driver.getDriver_email() + "', '" +
-                    driver.getDriver_password() + "', '" + driver.getDriver_license() + "', '" +
-                    driver.getDriver_name() + "', '" + driver.getRegistered_vehicle_number() + "', '" +
-                    new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)) + "', '" +
-                    driver.getVehicle_name() + "', '" + driver.getVehicle_model() + "', '" + driver.getVehicle_color() +
-                    "', " + driver.getDriver_approval_status() + ")");
+            String SQL_STRING = "{CALL insert_driver_details(?,?,?,?,?,?,?,?,?,?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, driver.getDriverEmail());
+            stmt.setString(2, driver.getDriverPassword());
+            stmt.setString(3, driver.getDriverLicense());
+            stmt.setString(4, driver.getDriverName());
+            stmt.setString(5, driver.getRegisteredVehicleNumber());
+            stmt.setString(6, new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)));
+            stmt.setString(7, driver.getVehicleName());
+            stmt.setString(8, driver.getVehicleModel());
+            stmt.setString(9, driver.getVehicleColor());
+            stmt.setInt(10, driver.getDriverApprovalStatus());
+
+            stmt.execute();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -74,7 +79,7 @@ public class DriverDaoImpl extends IUserDao {
 
     private Date getLicenseDate(Driver driver) {
         String licenseExpiryDate;
-        licenseExpiryDate = driver.getLicense_expiry_date();
+        licenseExpiryDate = driver.getLicenseExpiryDate();
         Date date;
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

@@ -1,4 +1,4 @@
-package com.halifaxcarpool.commons.business.directions;
+package com.halifaxcarpool.commons.business.beans;
 
 import java.util.Objects;
 
@@ -6,7 +6,7 @@ public class Tuple2 {
     String source;
     String destination;
 
-    Tuple2(String source, String destination) {
+    public Tuple2(String source, String destination) {
         this.source = source;
         this.destination = destination;
     }

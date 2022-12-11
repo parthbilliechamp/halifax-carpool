@@ -25,7 +25,7 @@ public class RideRequestImplTest {
         List<RideRequest> rideRequests = rideRequest.viewRideRequests(customerId, rideRequestsDao);
         assert 2 == rideRequests.size();
         for (RideRequest ride: rideRequests) {
-            assert customerId == ride.customerId;
+            assert customerId == ride.getCustomerId();
         }
     }
 

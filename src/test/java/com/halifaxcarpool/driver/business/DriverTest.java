@@ -2,10 +2,10 @@ package com.halifaxcarpool.driver.business;
 
 
 import com.halifaxcarpool.commons.business.beans.User;
-import com.halifaxcarpool.customer.business.authentication.IUserAuthentication;
-import com.halifaxcarpool.customer.business.authentication.UserAuthenticationImpl;
-import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
-import com.halifaxcarpool.customer.database.dao.IUserDao;
+import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
+import com.halifaxcarpool.commons.business.authentication.UserAuthenticationImpl;
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
+import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.database.dao.DriverAuthenticationDaoMockImpl;
 import com.halifaxcarpool.driver.database.dao.DriverDaoMockImpl;
@@ -52,7 +52,7 @@ public class DriverTest {
         IUserAuthenticationDao driverAuthenticationDao = new DriverAuthenticationDaoMockImpl();
 
         Driver validDriver = (Driver) driver.loginUser(username, password, driverAuthentication, driverAuthenticationDao);
-        assert expectedDriverId == validDriver.getDriver_id();
+        assert expectedDriverId == validDriver.getDriverId();
     }
 
     @Test

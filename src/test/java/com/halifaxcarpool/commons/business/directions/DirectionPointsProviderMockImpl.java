@@ -1,6 +1,7 @@
 package com.halifaxcarpool.commons.business.directions;
 
 import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.Tuple2;
 
 import java.util.*;
 

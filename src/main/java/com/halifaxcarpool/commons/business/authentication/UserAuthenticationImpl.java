@@ -1,7 +1,7 @@
-package com.halifaxcarpool.customer.business.authentication;
+package com.halifaxcarpool.commons.business.authentication;
 
 import com.halifaxcarpool.commons.business.beans.User;
-import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 
 public class UserAuthenticationImpl implements IUserAuthentication {
     @Override

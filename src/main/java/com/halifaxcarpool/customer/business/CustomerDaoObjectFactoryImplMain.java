@@ -1,15 +1,13 @@
 package com.halifaxcarpool.customer.business;
 
-import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
-import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
-import com.halifaxcarpool.customer.database.dao.RideNodeDaoImpl;
-import com.halifaxcarpool.customer.database.dao.RideRequestsDaoImpl;
+import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 
 public class CustomerDaoObjectFactoryImplMain implements ICustomerDaoObjectFactory {
+
     @Override
     public IRidesDao getRidesDao() {
         return new RidesDaoImpl();

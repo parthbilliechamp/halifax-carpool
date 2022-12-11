@@ -2,13 +2,13 @@ package com.halifaxcarpool.driver.business.beans;
 
 public class Ride {
 
-    public int rideId;
-    public int driverId;
-    public String startLocation;
-    public String endLocation;
-    public int seatsOffered;
-    public int rideStatus;
-    public String dateTime;
+    private int rideId;
+    private int driverId;
+    private String startLocation;
+    private String endLocation;
+    private int seatsOffered;
+    private int rideStatus;
+    private String dateTime;
 
     public Driver driver;
 

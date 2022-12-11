@@ -34,8 +34,8 @@ public class RideFinderFacadeTest {
         List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
-        assert Objects.equals(ride.startLocation, startLocation);
-        assert Objects.equals(ride.endLocation, endLocation);
+        assert Objects.equals(ride.getStartLocation(), startLocation);
+        assert Objects.equals(ride.getEndLocation(), endLocation);
     }
 
     @Test
@@ -47,8 +47,8 @@ public class RideFinderFacadeTest {
         List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
-        assert Objects.equals(ride.startLocation, rideStartsFrom);
-        assert Objects.equals(ride.endLocation, endLocation);
+        assert Objects.equals(ride.getStartLocation(), rideStartsFrom);
+        assert Objects.equals(ride.getEndLocation(), endLocation);
     }
 
     @Test
@@ -60,8 +60,8 @@ public class RideFinderFacadeTest {
         List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
-        assert Objects.equals(ride.startLocation, startLocation);
-        assert Objects.equals(ride.endLocation, rideEndsAt);
+        assert Objects.equals(ride.getStartLocation(), startLocation);
+        assert Objects.equals(ride.getEndLocation(), rideEndsAt);
     }
 
     @Test
@@ -74,8 +74,8 @@ public class RideFinderFacadeTest {
         List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
-        assert Objects.equals(ride.startLocation, rideStartsFrom);
-        assert Objects.equals(ride.endLocation, rideEndsAt);
+        assert Objects.equals(ride.getStartLocation(), rideStartsFrom);
+        assert Objects.equals(ride.getEndLocation(), rideEndsAt);
     }
 
     @Test
@@ -140,8 +140,8 @@ public class RideFinderFacadeTest {
         List<Ride> rides = rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao).get(0);
         assert 1 == rides.size();
         Ride ride = rides.get(0);
-        assert Objects.equals(ride.startLocation, startLocation);
-        assert Objects.equals(ride.endLocation, endLocation);
+        assert Objects.equals(ride.getStartLocation(), startLocation);
+        assert Objects.equals(ride.getEndLocation(), endLocation);
     }
 
 }

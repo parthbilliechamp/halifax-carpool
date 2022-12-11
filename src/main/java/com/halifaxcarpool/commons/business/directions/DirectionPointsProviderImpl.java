@@ -4,9 +4,7 @@ import com.google.maps.model.DirectionsResult;
 import com.halifaxcarpool.commons.business.PolylineDecoder;
 import com.halifaxcarpool.commons.business.beans.LatLng;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
 

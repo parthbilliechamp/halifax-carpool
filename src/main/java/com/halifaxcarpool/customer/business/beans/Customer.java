@@ -1,11 +1,7 @@
 package com.halifaxcarpool.customer.business.beans;
 
 import com.halifaxcarpool.commons.business.beans.User;
-import com.halifaxcarpool.customer.business.authentication.IUserAuthentication;
-import com.halifaxcarpool.customer.database.dao.CustomerAuthenticationDaoImpl;
-import com.halifaxcarpool.customer.database.dao.CustomerDaoImpl;
-import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
-import com.halifaxcarpool.customer.database.dao.IUserDao;
+import com.halifaxcarpool.commons.database.dao.IUserDao;
 
 public class Customer extends User {
 

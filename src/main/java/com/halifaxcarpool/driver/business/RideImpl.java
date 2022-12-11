@@ -20,7 +20,7 @@ public class RideImpl implements IRide {
         }
         boolean isRideNodeInserted = rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
         if (Boolean.FALSE.equals(isRideNodeInserted)) {
-            cancelRide(ride.rideId, ridesDao);
+            cancelRide(ride.getRideId(), ridesDao);
             return false;
         }
         return true;

@@ -38,8 +38,8 @@ public class RideNodeDaoMockImpl implements IRideNodeDao {
     public int getLatestRideId() {
         int latestRideId = -1;
         for (RideNode rideNode: resultList) {
-            if (rideNode.rideId > latestRideId) {
-                latestRideId = rideNode.rideId;
+            if (rideNode.getRideId() > latestRideId) {
+                latestRideId = rideNode.getRideId();
             }
         }
         return latestRideId;

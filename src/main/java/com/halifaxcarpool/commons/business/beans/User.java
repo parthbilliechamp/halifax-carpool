@@ -1,9 +1,8 @@
 package com.halifaxcarpool.commons.business.beans;
 
-import com.halifaxcarpool.customer.business.authentication.IUserAuthentication;
-import com.halifaxcarpool.customer.database.dao.CustomerAuthenticationDaoImpl;
-import com.halifaxcarpool.customer.database.dao.IUserAuthenticationDao;
-import com.halifaxcarpool.customer.database.dao.IUserDao;
+import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
+import com.halifaxcarpool.commons.database.dao.IUserDao;
 
 public abstract class User {
 

@@ -2,6 +2,7 @@ package com.halifaxcarpool.commons.business.directions;
 
 import com.halifaxcarpool.commons.business.PolylineDecoder;
 import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.Tuple2;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 
 import java.util.*;
@@ -286,7 +287,7 @@ public class DirectionTestSuiteData {
         Iterator<LatLng> iterator = points.iterator();
         while (iterator.hasNext()) {
             LatLng latLng = iterator.next();
-            RideNode rideNode = new RideNode(latLng.latitude, latLng.longitude, rideId, ++COUNTER);
+            RideNode rideNode = new RideNode(latLng.getLatitude(), latLng.getLongitude(), rideId, ++COUNTER);
             rideNodes.add(rideNode);
         }
         resetCounter();

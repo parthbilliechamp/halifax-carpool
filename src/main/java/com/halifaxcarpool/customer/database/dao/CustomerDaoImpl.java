@@ -3,6 +3,7 @@ package com.halifaxcarpool.customer.database.dao;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
+import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.business.beans.Customer;
 
 import java.sql.Connection;
@@ -13,10 +14,6 @@ public class CustomerDaoImpl extends IUserDao {
 
     IDatabase database;
     Connection connection;
-
-    public CustomerDaoImpl() {
-
-    }
 
     public void registerUser(User user) {
         Customer customerUser = (Customer) user;

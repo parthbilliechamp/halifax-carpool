@@ -20,8 +20,8 @@ public class GeoCodingApiTest {
     @Test
     void getLatLngTest() {
         LatLng latLng = geoCoding.getLatLng("Sydney");
-        assert  -33.8688197 == latLng.latitude;
-        assert  151.2092955 == latLng.longitude;
+        assert  -33.8688197 == latLng.getLatitude();
+        assert  151.2092955 == latLng.getLongitude();
     }
 
     @Disabled("Disabled to save incurring cost caused by calling the REST API ")

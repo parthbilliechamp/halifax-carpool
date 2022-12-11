@@ -140,8 +140,8 @@ public class RidesDaoImpl implements IRidesDao {
             ride.withFare(fare);
 
             Driver driver = new Driver();
-            driver.setDriver_name(driverName);
-            driver.setRegistered_vehicle_number(vehicleNumber);
+            driver.setDriverName(driverName);
+            driver.setRegisteredVehicleNumber(vehicleNumber);
 
             ride.withDriver(driver);
             rideList.add(ride);

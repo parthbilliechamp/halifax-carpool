@@ -4,6 +4,7 @@ import com.google.maps.DirectionsApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsResult;
 import com.halifaxcarpool.commons.business.ApiContextFactory;
+import com.halifaxcarpool.commons.business.beans.Tuple2;
 
 import java.io.IOException;
 import java.util.HashMap;

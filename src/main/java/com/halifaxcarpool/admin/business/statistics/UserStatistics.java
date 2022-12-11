@@ -1,6 +1,6 @@
 package com.halifaxcarpool.admin.business.statistics;
 
-public class UserStatistics implements IUserStatistics{
+public class UserStatistics implements IUserStatistics {
 
     private int numberOfUsers;
     private int ridesCompleted;

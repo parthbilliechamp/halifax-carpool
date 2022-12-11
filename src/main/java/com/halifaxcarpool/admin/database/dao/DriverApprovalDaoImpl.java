@@ -30,10 +30,10 @@ public class DriverApprovalDaoImpl implements DriverApprovalDao{
             ResultSet resultSet = statement.executeQuery("CALL get_unapproved_drivers()");
             while(resultSet.next()){
                 Driver driver = new Driver();
-                driver.setDriver_name(resultSet.getString("driver_name"));
-                driver.setRegistered_vehicle_number(resultSet.getString("registered_vehicle_number"));
-                driver.setDriver_license(resultSet.getString("driver_license"));
-                driver.setLicense_expiry_date(resultSet.getString("license_expiry_date"));
+                driver.setDriverName(resultSet.getString("driver_name"));
+                driver.setRegisteredVehicleNumber(resultSet.getString("registered_vehicle_number"));
+                driver.setDriverLicense(resultSet.getString("driver_license"));
+                driver.setLicenseExpiryDate(resultSet.getString("license_expiry_date"));
 
                 unapprovedDrivers.add(driver);
             }

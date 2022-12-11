@@ -1,4 +1,4 @@
-package com.halifaxcarpool.customer.database.dao;
+package com.halifaxcarpool.commons.database.dao;
 
 import com.halifaxcarpool.commons.business.beans.User;
 

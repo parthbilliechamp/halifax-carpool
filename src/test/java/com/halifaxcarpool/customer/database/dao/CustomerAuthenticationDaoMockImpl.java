@@ -1,5 +1,6 @@
 package com.halifaxcarpool.customer.database.dao;
 
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.customer.business.beans.Customer;
 
 import java.util.ArrayList;

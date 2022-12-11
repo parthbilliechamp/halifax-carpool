@@ -1,8 +1,10 @@
 package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.commons.business.beans.User;
-import com.halifaxcarpool.customer.business.authentication.IUserAuthentication;
-import com.halifaxcarpool.customer.business.authentication.UserAuthenticationImpl;
+import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
+import com.halifaxcarpool.commons.business.authentication.UserAuthenticationImpl;
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
+import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.database.dao.*;
 import org.junit.jupiter.api.Test;
