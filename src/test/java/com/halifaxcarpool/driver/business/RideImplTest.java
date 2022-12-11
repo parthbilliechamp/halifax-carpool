@@ -26,7 +26,7 @@ public class RideImplTest {
         List<Ride> rideList = ride.viewRides(driverId, ridesDao);
         assert 2 == rideList.size();
         for (Ride currentRide: rideList) {
-            assert driverId == currentRide.getRideId();
+            assert driverId == currentRide.getDriverId();
         }
     }
 
@@ -92,8 +92,8 @@ public class RideImplTest {
         int customerId = 1;
         List<Ride> rideList = ride.viewOngoingRides(customerId, ridesDao);
         assert 2 == rideList.size();
-        assert 15 == rideList.get(0).rideId;
-        assert 16 == rideList.get(1).rideId;
+        assert 15 == rideList.get(0).getRideId();
+        assert 16 == rideList.get(1).getRideId();
     }
 
     @Test

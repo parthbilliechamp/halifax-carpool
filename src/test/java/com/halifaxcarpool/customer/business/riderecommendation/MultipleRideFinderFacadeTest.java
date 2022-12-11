@@ -33,8 +33,8 @@ public class MultipleRideFinderFacadeTest {
         List<List<Ride>> listOfRidesList = rideFinderFacade.findMultipleRouteRides(rideRequest, directionPointsProvider, rideNodeDao, ridesDao);
         for (List<Ride> rideList : listOfRidesList) {
             assert 2 == rideList.size();
-            assert Objects.equals(rideList.get(0).startLocation, startLocationOfRideRequest);
-            assert Objects.equals(rideList.get(1).endLocation, endLocationOfRideRequest);
+            assert Objects.equals(rideList.get(0).getStartLocation(), startLocationOfRideRequest);
+            assert Objects.equals(rideList.get(1).getEndLocation(), endLocationOfRideRequest);
         }
     }
 

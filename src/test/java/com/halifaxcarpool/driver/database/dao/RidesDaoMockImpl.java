@@ -145,16 +145,16 @@ public class RidesDaoMockImpl implements IRidesDao {
         Ride ride = new Ride(15, 15, "Citadel",
                 "Halifax Park", 4, 1, "");
         Driver driver = new Driver();
-        driver.setDriver_name("Hakim");
-        driver.setRegistered_vehicle_number("132");
+        driver.setDriverName("Hakim");
+        driver.setRegisteredVehicleNumber("132");
         ride.withDriver(driver);
         ride.withFare(2.0);
 
         Ride secondRide = new Ride(16, 16, "Brunswick st.",
                 "Halifax Park", 2, 1, "");
         Driver secondDriver = new Driver();
-        driver.setDriver_name("Ben");
-        driver.setRegistered_vehicle_number("132");
+        driver.setDriverName("Ben");
+        driver.setRegisteredVehicleNumber("132");
         ride.withDriver(secondDriver);
         ride.withFare(4.0);
         rides.add(ride);
