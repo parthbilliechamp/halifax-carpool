@@ -6,14 +6,8 @@ import com.halifaxcarpool.admin.database.dao.IAdminAuthenticationDao;
 
 public class AdminAuthenticationImpl implements IAdminAuthentication {
 
-    IAdminAuthenticationDao adminAuthenticationDao;
-
-    public AdminAuthenticationImpl() {
-        adminAuthenticationDao = new AdminAuthenticationDaoImpl();
-    }
-
     @Override
-    public Admin authenticate(String userName, String password) {
+    public Admin authenticate(String userName, String password, IAdminAuthenticationDao adminAuthenticationDao) {
         return adminAuthenticationDao.authenticate(userName, password);
     }
 }

@@ -6,7 +6,7 @@ import com.halifaxcarpool.commons.database.dao.IUserDao;
 
 public abstract class User {
 
-    public abstract void registerUser(IUserDao userDao);
+    public abstract void registerUser(IUserDao userDao) throws Exception;
 
     public abstract boolean updateUser(IUserDao userDao);
 

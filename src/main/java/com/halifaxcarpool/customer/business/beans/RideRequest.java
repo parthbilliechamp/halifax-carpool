@@ -16,6 +16,7 @@ public class RideRequest implements IRideRequest {
     public RideRequest() {
 
     }
+
     public RideRequest(int rideRequestId, int customerId, String startLocation, String endLocation) {
         this.rideRequestId = rideRequestId;
         this.customerId = customerId;
@@ -34,8 +35,8 @@ public class RideRequest implements IRideRequest {
     }
 
     @Override
-    public void cancelRideRequest(int rideId, IRideRequestsDao rideRequestsDao) {
-
+    public void cancelRideRequest(RideRequest rideRequest, IRideRequestsDao rideRequestsDao) {
+        rideRequestsDao.cancelRideRequest(rideRequest);
     }
 
     public int getRideRequestId() {
