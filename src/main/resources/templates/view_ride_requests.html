@@ -56,6 +56,10 @@
                    th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},
                    startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended Rides</a>
             </td>
+            <td>
+                <a class="btn btn-secondary btn-alert"
+                   th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel</a>
+            </td>
         </tr>
         </tbody>
     </table>

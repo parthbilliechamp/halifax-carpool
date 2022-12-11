@@ -147,8 +147,17 @@ public class Driver extends User {
     }
 
     @Override
-    public void registerUser(IUserDao userDao) {
-        userDao.registerUser(this);
+    public void registerUser(IUserDao userDao) throws Exception {
+        try {
+            userDao.registerUser(this);
+        } catch (Exception e) {
+            if(e.getMessage().contains("driver_email_UNIQUE")) {
+                throw new Exception("Driver already exists");
+            }
+            else {
+                throw new Exception("Some error has occurred");
+            }
+        }
     }
 
     @Override

@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ActiveProfiles("test")
 public class RideRequestImplTest {
 
-    IRideRequest rideRequest = new RideRequest();
-    IRideRequestsDao rideRequestsDao = new RideRequestsDaoMockImpl();
+    CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
+    CustomerDaoTestFactory customerDaoTestFactory = new CustomerDaoTestFactory();
+    IRideRequest rideRequest = customerModelFactory.getRideRequest();
+    IRideRequestsDao rideRequestsDao = customerDaoTestFactory.createRideRequestsDao();
 
     @Test
     void viewRideRequestsTest() {
@@ -51,12 +53,48 @@ public class RideRequestImplTest {
 
     @Test
     void insertRideRequestValuesMissingTest(){
-        IRideRequest rideRequestObject = new RideRequest();
+        IRideRequest rideRequestObject = customerModelFactory.getRideRequest();
         try {
             rideRequestObject.createRideRequest(rideRequestsDao);
             assertTrue(true);
         } catch (Exception e){
             fail();
+        }
+    }
+
+    @Test
+    void cancelRideRequestSuccessTest() {
+        int rideRequestId = 4;
+        int customerId = 2;
+
+        RideRequest rideRequestObj = new RideRequest();
+        rideRequestObj.setRideRequestId(rideRequestId);
+        rideRequestObj.setCustomerId(customerId);
+
+        try {
+            rideRequest.cancelRideRequest(rideRequestObj, rideRequestsDao);
+            assertTrue(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+    }
+
+    @Test
+    void cancelRideRequestFailureTest() {
+        int rideRequestId = 9;
+        int customerId = 6;
+        RideRequest rideRequestObj = new RideRequest();
+
+        rideRequestObj.setRideRequestId(rideRequestId);
+        rideRequestObj.setCustomerId(customerId);
+
+        try {
+            rideRequest.cancelRideRequest(rideRequestObj, rideRequestsDao);
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(true);
         }
     }
 

@@ -2,11 +2,11 @@ package com.halifaxcarpool.admin.controller;
 
 import com.halifaxcarpool.admin.business.approve.DriverApproval;
 import com.halifaxcarpool.admin.business.approve.UserApproval;
+import com.halifaxcarpool.admin.business.authentication.*;
 import com.halifaxcarpool.admin.business.popular.LocationPopularity;
 import com.halifaxcarpool.admin.business.popular.LocationPopularityImpl;
 import com.halifaxcarpool.admin.business.statistics.*;
 import com.halifaxcarpool.admin.database.dao.*;
-import com.halifaxcarpool.admin.business.authentication.AuthenticationFacade;
 import com.halifaxcarpool.admin.business.statistics.DriverStatistics;
 import com.halifaxcarpool.admin.business.statistics.IUserStatisticsBuilder;
 import com.halifaxcarpool.admin.business.statistics.UserAnalysis;
@@ -32,14 +32,22 @@ public class AdminController {
     private static final String DRIVER_APPROVAL_REQUESTS = "view_driver_approval_requests";
 
 
+    //TODO: Add Factories if possible
+
     @GetMapping("/admin/login")
     String adminLogin(Model model, HttpServletRequest httpServletRequest) {
-        model.addAttribute("admin", new Admin());
-        if (httpServletRequest.getSession().getAttribute("loggedInAdmin") == (Object) 1) {
-            model.addAttribute("loggedInError", "noError");
-        } else if (httpServletRequest.getSession().getAttribute("loggedInAdmin") == (Object) 0) {
-            model.addAttribute("loggedInError", "error");
-            httpServletRequest.getSession().setAttribute("loggedInAdmin", 1);
+        String adminLiteral = "admin";
+        String loggedInAdminLiteral = "loggedInAdmin";
+        String loggedInErrorLiteral = "loggedInError";
+
+        Object adminAttribute = httpServletRequest.getSession().getAttribute(loggedInAdminLiteral);
+
+        model.addAttribute(adminLiteral, new Admin());
+        if (adminAttribute == (Object) 1) {
+            model.addAttribute(loggedInErrorLiteral, "noError");
+        } else if (adminAttribute == (Object) 0) {
+            model.addAttribute(loggedInErrorLiteral, "error");
+            httpServletRequest.getSession().setAttribute(loggedInAdminLiteral, 1);
         }
         return ADMIN_LOGIN_FORM;
     }
@@ -47,61 +55,80 @@ public class AdminController {
     @PostMapping("/admin/login/check")
     String authenticateLoggedInAdmin(@ModelAttribute("admin") Admin admin, HttpServletRequest
             httpServletRequest, Model model) {
-        AuthenticationFacade authenticationFacade = new AuthenticationFacade();
-        Admin validAdmin = authenticationFacade.authenticate(admin.getUserName(), admin.getPassword());
-        model.addAttribute("admin", admin);
+        String adminLiteral = "admin";
+        String loggedInAdminLiteral = "loggedInAdmin";
+
+        IAdmin adminImplObj = new AdminImpl();
+        IAdminAuthentication adminAuthentication = new AdminAuthenticationImpl();
+        IAdminAuthenticationDao adminAuthenticationDao = new AdminAuthenticationDaoImpl();
+
+        Admin validAdmin = adminImplObj.login(admin.getUserName(), admin.getPassword(), adminAuthentication, adminAuthenticationDao);
+
+        model.addAttribute(adminLiteral, admin);
+
         if (validAdmin == null) {
-            httpServletRequest.getSession().setAttribute("loggedInAdmin", 0);
+            httpServletRequest.getSession().setAttribute(loggedInAdminLiteral, 0);
             return "redirect:/admin/login";
         }
-        httpServletRequest.getSession().setAttribute("loggedInAdmin", validAdmin);
+        httpServletRequest.getSession().setAttribute(loggedInAdminLiteral, validAdmin);
         return "redirect:/admin/home";
     }
 
     @GetMapping("/admin/logout")
     String logoutAdmin(@ModelAttribute("admin") Admin admin, HttpServletRequest
             httpServletRequest, Model model) {
-        if (httpServletRequest.getSession().getAttribute("loggedInAdmin") != (Object) 0) {
-            httpServletRequest.getSession().setAttribute("loggedInAdmin", 1);
+        String loggedInAdminLiteral = "loggedInAdmin";
+        Object adminAttribute = httpServletRequest.getSession().getAttribute(loggedInAdminLiteral);
+
+        if (adminAttribute != (Object) 0) {
+            httpServletRequest.getSession().setAttribute(loggedInAdminLiteral, 1);
         }
         return "redirect:/admin/login";
     }
 
     @GetMapping("/admin/home")
     String adminHome(Model model, HttpServletRequest httpServletRequest) {
-        Admin admin = (Admin) httpServletRequest.getSession().getAttribute("loggedInAdmin");
+        String loggedInAdminLiteral = "loggedInAdmin";
+
+        Admin admin = (Admin) httpServletRequest.getSession().getAttribute(loggedInAdminLiteral);
         return ADMIN_HOME_PAGE;
     }
 
     @GetMapping("/admin/view_driver_stats")
     public String showDriverStatistic(Model model){
+        String userStatsAttribute = "userStats";
+
         IUserDetails driverDetails = new DriverDetailsDaoImpl();
         IUserStatisticsBuilder userStatisticsBuilder = new DriverStatistics(driverDetails);
         UserStatistics userStatistics = new UserAnalysis(userStatisticsBuilder).deriveUserStatistics();
 
-        model.addAttribute("userStats", userStatistics);
+        model.addAttribute(userStatsAttribute, userStatistics);
 
         return DRIVER_STATISTICS;
     }
 
     @GetMapping("/admin/view_customer_stats")
     public String showCustomerStatistic(Model model){
+        String userStatsAttribute = "userStats";
+
         IUserDetails customerDetails = new CustomerDetailsDaoImpl();
         IUserStatisticsBuilder userStatisticsBuilder = new CustomerStatistics(customerDetails);
         UserStatistics userStatistics = new UserAnalysis(userStatisticsBuilder).deriveUserStatistics();
 
-        model.addAttribute("userStats", userStatistics);
+        model.addAttribute(userStatsAttribute, userStatistics);
 
         return CUSTOMER_STATISTICS;
     }
 
     @GetMapping("/admin/view_driver_approval_requests")
     public String showDriverApprovalRequests(Model model){
+        String approvalRequestsAttribute = "approvalRequests";
+
         DriverApprovalDao driverApprovalDao = new DriverApprovalDaoImpl();
         UserApproval userApproval = new DriverApproval(driverApprovalDao);
         List<User> drivers = userApproval.getValidUserRequests();
 
-        model.addAttribute("approvalRequests", drivers);
+        model.addAttribute(approvalRequestsAttribute, drivers);
 
         return DRIVER_APPROVAL_REQUESTS;
     }
@@ -109,7 +136,6 @@ public class AdminController {
     @GetMapping("/admin/updateApprovalStatus")
     public String updateDriverApprovalStatus(@RequestParam("license_id") String licenseNumber,
                                              @RequestParam("status") String status){
-        System.out.println("JJJ");
         DriverApprovalDao driverApprovalDao = new DriverApprovalDaoImpl();
         UserApproval userApproval = new DriverApproval(driverApprovalDao);
 
@@ -124,6 +150,9 @@ public class AdminController {
 
     @GetMapping("/admin/view_popular_locations")
     public String viewPopularLocations(Model model){
+        String maxOccurrenceAttribute = "maxOccurrence";
+        String streetNamesAttribute = "streetNames";
+
         LocationPopularityDao locationPopularityDao = new LocationPopularityDaoImpl();
         LocationPopularity locationPopularity = new LocationPopularityImpl(locationPopularityDao);
 
@@ -133,8 +162,8 @@ public class AdminController {
         int occurrences = entry.getKey().intValue();
         List<String> streetNames = entry.getValue();
 
-        model.addAttribute("maxOccurrence", occurrences);
-        model.addAttribute("streetNames", streetNames);
+        model.addAttribute(maxOccurrenceAttribute, occurrences);
+        model.addAttribute(streetNamesAttribute, streetNames);
 
         return "view_popular_locations";
 

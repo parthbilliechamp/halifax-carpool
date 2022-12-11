@@ -2,6 +2,7 @@ package com.halifaxcarpool.driver.database.dao;
 
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
+import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
 import java.util.HashMap;
@@ -69,15 +70,22 @@ public class DriverDaoMockImpl extends IUserDao {
     }
 
     @Override
-    public void registerUser(User user) {
-        Driver driverUser = (Driver) user;
-        driverIdToDriverMap.put(driverUser.getDriverId(), driverUser);
+    public void registerUser(User user) throws Exception {
+        Driver driver = (Driver) user;
+        int driverId;
+        driverId = driver.getDriverId();
+        if(driverIdToDriverMap.containsKey(driverId)) {
+            throw new Exception("Driver Already Exists");
+        }
+        driverIdToDriverMap.put(driverId, driver);
     }
+
 
     @Override
     public boolean updateUser(User user) {
         Driver driverUser = (Driver) user;
         int driverId = driverUser.getDriverId();
+
         if (driverIdToDriverMap.containsKey(driverId)) {
             driverIdToDriverMap.put(driverId, driverUser);
             return true;

@@ -24,6 +24,34 @@ public class DriverDaoImpl extends IUserDao {
     }
 
     @Override
+    public void registerUser(User user) throws Exception {
+        Driver driver = (Driver) user;
+        try {
+            connection = database.openDatabaseConnection();
+            Statement statement = connection.createStatement();
+            String SQL_STRING = "{CALL insert_driver_details(?,?,?,?,?,?,?,?,?,?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, driver.getDriverEmail());
+            stmt.setString(2, driver.getDriverPassword());
+            stmt.setString(3, driver.getDriverLicense());
+            stmt.setString(4, driver.getDriverName());
+            stmt.setString(5, driver.getRegisteredVehicleNumber());
+            stmt.setString(6, new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)));
+            stmt.setString(7, driver.getVehicleName());
+            stmt.setString(8, driver.getVehicleModel());
+            stmt.setString(9, driver.getVehicleColor());
+            stmt.setInt(10, driver.getDriverApprovalStatus());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            throw new Exception(e.getMessage());
+        } finally {
+            database.closeDatabaseConnection();
+        }
+    }
+
+    @Override
     public boolean updateUser(User user) {
         Driver driverUser = (Driver) user;
         try {
@@ -47,34 +75,6 @@ public class DriverDaoImpl extends IUserDao {
             database.closeDatabaseConnection();
         }
         return false;
-    }
-
-    @Override
-    public void registerUser(User user) {
-        Driver driver = (Driver) user;
-        try {
-            connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String SQL_STRING = "{CALL insert_driver_details(?,?,?,?,?,?,?,?,?,?)}";
-            CallableStatement stmt = connection.prepareCall(SQL_STRING);
-            stmt.setString(1, driver.getDriverEmail());
-            stmt.setString(2, driver.getDriverPassword());
-            stmt.setString(3, driver.getDriverLicense());
-            stmt.setString(4, driver.getDriverName());
-            stmt.setString(5, driver.getRegisteredVehicleNumber());
-            stmt.setString(6, new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)));
-            stmt.setString(7, driver.getVehicleName());
-            stmt.setString(8, driver.getVehicleModel());
-            stmt.setString(9, driver.getVehicleColor());
-            stmt.setInt(10, driver.getDriverApprovalStatus());
-
-            stmt.execute();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            database.closeDatabaseConnection();
-        }
     }
 
     private Date getLicenseDate(Driver driver) {
