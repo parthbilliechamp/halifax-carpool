@@ -45,6 +45,8 @@ public class DriverController {
 
     private static final String DRIVER_VIEW_RIDE_HISTORY = "view_ride_history";
 
+    private static final String DRIVER_VIEW_MY_RIDES = "view_driver_my_rides";
+
     private static final String VIEW_PAYMENT_DETAILS = "view_driver_payment_status";
 
     @GetMapping("/driver/login")
@@ -179,7 +181,7 @@ public class DriverController {
     }
 
     @GetMapping("/driver/update_payment_status")
-    String updatePaymentStatus(@RequestParam("paymentId") int paymentId, HttpServletRequest request){
+    public String updatePaymentStatus(@RequestParam("paymentId") int paymentId, HttpServletRequest request){
         if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
             return "redirect:/driver/login";
         }
@@ -201,5 +203,40 @@ public class DriverController {
         Payment paymentDetails= payment.fetchPaymentDetails(customerId,rideId,7, paymentDao);
         model.addAttribute("Payment",paymentDetails);
         return VIEW_PAYMENT_DETAILS;
+    }
+
+    @GetMapping("/driver/my_rides")
+    public String viewMyRides(HttpServletRequest request, Model model){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
+        IRide ride =  new RideImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        List<Ride> rides = ride.viewRides(driver.driver_id, ridesDao);
+        model.addAttribute("rides", rides);
+        return DRIVER_VIEW_MY_RIDES;
+
+    }
+    @GetMapping("/driver/start_ride")
+    public String changeRideStatusToStart(@RequestParam("rideId") int rideId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        IRide ride = new RideImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        ride.startRide(rideId, ridesDao);
+        return "redirect: /driver/my_rides";
+    }
+
+    @GetMapping("/driver/stop_ride")
+    public String changeRideStatusToStop(@RequestParam("rideId") int rideId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        IRide ride = new RideImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        ride.stopRide(rideId, ridesDao);
+        return "redirect: /driver/my_rides";
     }
 }

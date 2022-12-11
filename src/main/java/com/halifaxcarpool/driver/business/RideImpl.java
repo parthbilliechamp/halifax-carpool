@@ -24,4 +24,14 @@ public class RideImpl implements IRide {
         return ridesDao.getRide(rideId);
     }
 
+    @Override
+    public void startRide(int rideId, IRidesDao ridesDao) {
+        ridesDao.startRide(rideId);
+    }
+
+    @Override
+    public void stopRide(int rideId, IRidesDao ridesDao) {
+        ridesDao.stopRide(rideId);
+    }
+
 }

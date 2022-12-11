@@ -4,7 +4,6 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.driver.business.beans.Ride;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,8 +46,9 @@ public class RidesDaoImpl implements IRidesDao {
     public List<Ride> getRides(int rideId) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL view_rides(" + rideId + ")");
+            CallableStatement statement = connection.prepareCall("CALL view_rides(?)");
+            statement.setInt(1,rideId);
+            ResultSet resultSet = statement.executeQuery();
             return buildRidesFrom(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,6 +72,38 @@ public class RidesDaoImpl implements IRidesDao {
             database.closeDatabaseConnection();
         }
         return ride;
+    }
+
+    @Override
+    public void startRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL start_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+    }
+
+    @Override
+    public void stopRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL stop_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
     }
 
     private static List<Ride> buildRidesFrom(ResultSet resultSet) throws SQLException {

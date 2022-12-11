@@ -13,4 +13,7 @@ public interface IRide {
 
     Ride getRide(int rideId, IRidesDao ridesDao);
 
+    void startRide(int rideId, IRidesDao ridesDao);
+    void stopRide(int rideId, IRidesDao ridesDao);
+
 }

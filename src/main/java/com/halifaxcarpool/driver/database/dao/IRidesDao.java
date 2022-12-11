@@ -11,6 +11,7 @@ public interface IRidesDao {
     List<Ride> getRides(int driverId);
 
     Ride getRide(int rideId);
-
+    void startRide(int rideId);
+    void stopRide(int rideId);
 
 }
