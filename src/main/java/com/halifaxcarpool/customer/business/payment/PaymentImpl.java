@@ -41,7 +41,7 @@ public class PaymentImpl implements  IPayment{
 
     @Override
     public void updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao) {
-        paymentDao.updatePaymentStatus(paymentId);
+        paymentDao.changePaymentStatusSuccess(paymentId);
     }
 
 }
