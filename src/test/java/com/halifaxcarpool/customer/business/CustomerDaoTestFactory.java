@@ -7,25 +7,25 @@ import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RidesDaoMockImpl;
 
-public class CustomerDaoObjectFactoryImplTest implements ICustomerDaoObjectFactory {
+public class CustomerDaoTestFactory implements CustomerDaoFactory {
 
     @Override
-    public IRidesDao getRidesDao() {
+    public IRidesDao createRidesDao() {
         return new RidesDaoMockImpl();
     }
 
     @Override
-    public IRideRequestsDao getRideRequestsDao() {
+    public IRideRequestsDao createRideRequestsDao() {
         return new RideRequestsDaoMockImpl();
     }
 
     @Override
-    public IRideToRequestMapperDao getRideToRequestMapperDao() {
+    public IRideToRequestMapperDao createRideToRequestMapperDao() {
         return new RideToRequestMapperDaoMockImpl();
     }
 
     @Override
-    public IRideNodeDao getRideNodeDao() {
+    public IRideNodeDao createRideNodeDao() {
         return new RideNodeDaoMockImpl();
     }
 

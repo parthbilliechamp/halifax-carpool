@@ -13,7 +13,6 @@ import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.recommendation.*;
-import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
@@ -39,8 +38,8 @@ public class CustomerController {
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
     private static final String CUSTOMER_PROFILE_FORM = "update_customer_profile";
 
-    private final ICustomerBusinessObjectFactory customerObjectFactory = new CustomerBusinessObjectFactoryMain();
-    private final ICustomerDaoObjectFactory customerObjectDaoFactory = new CustomerDaoObjectFactoryImplMain();
+    private final CustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
+    private final CustomerDaoFactory customerObjectDaoFactory = new CustomerDaoMainFactory();
 
     private static final Map<String, String> redirectPageStorage = new HashMap<String, String>() {
         {
@@ -159,7 +158,7 @@ public class CustomerController {
 
         Customer customer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
         IRideRequest viewRideRequests = customerObjectFactory.getRideRequest();
-        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.getRideRequestsDao();
+        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
         List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId(), rideRequestsDao);
         model.addAttribute(rideRequestsAttribute, rideRequests);
         return VIEW_RIDE_REQUESTS;
@@ -212,7 +211,7 @@ public class CustomerController {
             return "redirect:/customer/login";
         }
         IRideToRequestMapper rideToRequestMapper = customerObjectFactory.getRideToRequestMapper();
-        IRideToRequestMapperDao rideToRequestMapperDao = customerObjectDaoFactory.getRideToRequestMapperDao();
+        IRideToRequestMapperDao rideToRequestMapperDao = customerObjectDaoFactory.createRideToRequestMapperDao();
         rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
         return VIEW_RECOMMENDED_RIDES;
     }
@@ -222,7 +221,7 @@ public class CustomerController {
                                    Model model) {
         Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
         //TODO call driver factory
-        IRide ride = new RideImpl();
+        IRide ride = new Ride();
         IRidesDao ridesDao = new RidesDaoImpl();
         List<Ride> ongoingRides = ride.viewOngoingRides(customer.getCustomerId(), ridesDao);
         model.addAttribute("activeRides", ongoingRides);
@@ -256,7 +255,7 @@ public class CustomerController {
         Customer customer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
         rideRequest.setCustomerId(customer.getCustomerId());
         IRideRequest rideRequestForCreation = customerObjectFactory.getRideRequest();
-        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.getRideRequestsDao();
+        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
         rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
         return "redirect:/customer/view_ride_requests";
     }

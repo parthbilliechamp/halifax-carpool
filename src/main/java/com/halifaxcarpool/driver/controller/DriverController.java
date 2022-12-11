@@ -34,8 +34,8 @@ public class DriverController {
     private static final String DRIVER_PROFILE = "driver_profile";
     private static final String CREATE_NEW_RIDE_PAGE = "create_new_ride";
 
-    IDriverBusinessObjectFactory driverBusinessObjectFactory = new DriverBusinessObjectFactoryMain();
-    IDriverDaoObjectFactory driverDaoObjectFactory = new DriverDaoObjectFactoryImplMain();
+    DriverModelFactory driverBusinessObjectFactory = new DriverModelMainFactory();
+    DriverDaoFactory driverDaoObjectFactory = new DriverDaoMainFactory();
 
     @GetMapping("/driver/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
@@ -112,7 +112,7 @@ public class DriverController {
         String ridesAttribute = "rides";
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         IRidesDao ridesDao = new RidesDaoImpl();
-        IRide ride = new RideImpl();
+        IRide ride = new Ride();
         List<Ride> rideList = ride.viewRides(driver.getDriverId(), ridesDao);
         model.addAttribute(ridesAttribute, rideList);
         return VIEW_RIDES_UI_FILE;
@@ -121,7 +121,7 @@ public class DriverController {
     @GetMapping("/driver/cancel_ride")
     String cancelRide(@RequestParam("rideId") int rideId) {
         IRidesDao ridesDao = new RidesDaoImpl();
-        IRide ride = new RideImpl();
+        IRide ride = new Ride();
         ride.cancelRide(rideId, ridesDao);
         return VIEW_RIDES_UI_FILE;
     }
@@ -148,13 +148,11 @@ public class DriverController {
                               HttpServletRequest request) {
         Driver driver = (Driver) request.getSession().getAttribute("loggedInDriver");
         ride.setDriverId(driver.getDriverId());
-        IRide rideModel = new RideImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
         IRideNode rideNode = new RideNodeImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoImpl();
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderImpl();
-        boolean isRideCreated = rideModel.createNewRide(ride, ridesDao, rideNodeDao,
-                                                        directionPointsProvider, rideNode);
+        boolean isRideCreated = ride.createNewRide(ridesDao, rideNodeDao, directionPointsProvider, rideNode);
         if (isRideCreated) {
             return "redirect:/driver/view_rides";
         } else {

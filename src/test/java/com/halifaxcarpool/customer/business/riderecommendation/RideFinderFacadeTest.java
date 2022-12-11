@@ -3,8 +3,8 @@ package com.halifaxcarpool.customer.business.riderecommendation;
 import com.halifaxcarpool.commons.business.CommonsObjectFactoryTest;
 import com.halifaxcarpool.commons.business.ICommonsObjectFactory;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
-import com.halifaxcarpool.customer.business.CustomerDaoObjectFactoryImplTest;
-import com.halifaxcarpool.customer.business.ICustomerDaoObjectFactory;
+import com.halifaxcarpool.customer.business.CustomerDaoTestFactory;
+import com.halifaxcarpool.customer.business.CustomerDaoFactory;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.recommendation.RideFinderFacade;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
@@ -18,13 +18,13 @@ import java.util.*;
 @SpringBootTest
 public class RideFinderFacadeTest {
 
-    ICustomerDaoObjectFactory customerDaoObjectFactory = new CustomerDaoObjectFactoryImplTest();
+    CustomerDaoFactory customerDaoObjectFactory = new CustomerDaoTestFactory();
     ICommonsObjectFactory commonsObjectFactory = new CommonsObjectFactoryTest();
 
     RideFinderFacade rideFinderFacade = new RideFinderFacade();
-    IRideNodeDao rideNodeDao = customerDaoObjectFactory.getRideNodeDao();
+    IRideNodeDao rideNodeDao = customerDaoObjectFactory.createRideNodeDao();
     IGeoCoding geoCoding = commonsObjectFactory.getGeoCoding();
-    IRidesDao ridesDao = customerDaoObjectFactory.getRidesDao();
+    IRidesDao ridesDao = customerDaoObjectFactory.createRidesDao();
 
     @Test
     public void findDirectRouteRidesSameStartPointSameEndPointTest() {

@@ -6,9 +6,9 @@ import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
+import com.halifaxcarpool.customer.business.beans.RouterFinderParameter;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.driver.business.IRide;
-import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
@@ -20,7 +20,7 @@ public class RideFinderFacade {
     private final IRide ride;
 
     public RideFinderFacade() {
-        ride = new RideImpl();
+        ride = new Ride();
     }
 
     public List<List<Ride>> findDirectRouteRidesInvoker(RideRequest rideRequest,
@@ -35,8 +35,8 @@ public class RideFinderFacade {
             throw new RuntimeException("Error finding coordinates of the ride request : " +
                     rideRequest.getRideRequestId());
         }
-        List<Ride> recommendedRides =
-                findDirectRouteRides(rideRequest, rideNodeDao, ridesDao, startLocationPoint, endLocationPoint);
+        RouterFinderParameter routerFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, startLocationPoint, endLocationPoint);
+        List<Ride> recommendedRides = findDirectRouteRides(routerFinderParameter);
         List<List<Ride>> recommendedRidesWrapper = new ArrayList<>();
         convertListOfRidesToListOfListOfRides(recommendedRidesWrapper, recommendedRides);
         return recommendedRidesWrapper;
@@ -58,11 +58,13 @@ public class RideFinderFacade {
         Map<RideLookupKey, List<Ride>> ridesCache = new HashMap<>();
 
         for (int i = 1; i < rideRequestNodes.size() - 1 && ridesCache.size() <= 3; i += 3) {
-            LatLng middleSearchPoint = rideRequestNodes.get(i);
+            LatLng intermediateNode = rideRequestNodes.get(i);
+            RouterFinderParameter firstRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, rideRequestStartNode, intermediateNode);
             List<Ride> ridesForFirstRoute =
-                    findDirectRouteRides(rideRequest, rideNodeDao, ridesDao, rideRequestStartNode, middleSearchPoint);
+                    findDirectRouteRides(firstRouterFinderParameter);
+            RouterFinderParameter secondRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, intermediateNode, endPointOfRideRequest);
             List<Ride> ridesForSecondRoute =
-                    findDirectRouteRides(rideRequest, rideNodeDao, ridesDao, middleSearchPoint, endPointOfRideRequest);
+                    findDirectRouteRides(secondRouterFinderParameter);
 
             if (0 != ridesForFirstRoute.size() && 0 != ridesForSecondRoute.size()) {
                 for (Ride ride1 : ridesForFirstRoute) {
@@ -83,11 +85,13 @@ public class RideFinderFacade {
         return new ArrayList<>(ridesCache.values());
     }
 
-    private List<Ride> findDirectRouteRides(RideRequest rideRequest,
-                                            IRideNodeDao rideNodeDao,
-                                            IRidesDao ridesDao,
-                                            LatLng startLocationPoint,
-                                            LatLng endLocationPoint) {
+    private List<Ride> findDirectRouteRides(RouterFinderParameter routerFinderParameter) {
+        IRideNodeDao rideNodeDao = routerFinderParameter.getRideNodeDao();
+        LatLng startLocationPoint = routerFinderParameter.getStartLocationPoint();
+        LatLng endLocationPoint = routerFinderParameter.getEndLocationPoint();
+        RideRequest rideRequest = routerFinderParameter.getRideRequest();
+        IRidesDao ridesDao = routerFinderParameter.getRidesDao();
+
         List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
         List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);
 

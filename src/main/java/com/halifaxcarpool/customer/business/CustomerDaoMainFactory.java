@@ -6,25 +6,25 @@ import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 
-public class CustomerDaoObjectFactoryImplMain implements ICustomerDaoObjectFactory {
+public class CustomerDaoMainFactory implements CustomerDaoFactory {
 
     @Override
-    public IRidesDao getRidesDao() {
+    public IRidesDao createRidesDao() {
         return new RidesDaoImpl();
     }
 
     @Override
-    public IRideRequestsDao getRideRequestsDao() {
+    public IRideRequestsDao createRideRequestsDao() {
         return new RideRequestsDaoImpl();
     }
 
     @Override
-    public IRideToRequestMapperDao getRideToRequestMapperDao() {
+    public IRideToRequestMapperDao createRideToRequestMapperDao() {
         return new RideToRequestMapperDaoImpl();
     }
 
     @Override
-    public IRideNodeDao getRideNodeDao() {
+    public IRideNodeDao createRideNodeDao() {
         return new RideNodeDaoImpl();
     }
 

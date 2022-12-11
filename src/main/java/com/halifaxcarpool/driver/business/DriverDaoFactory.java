@@ -1,5 +1,5 @@
 package com.halifaxcarpool.driver.business;
 
-public interface IDriverDaoObjectFactory {
+public interface DriverDaoFactory {
 
 }

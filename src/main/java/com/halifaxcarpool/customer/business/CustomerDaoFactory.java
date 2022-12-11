@@ -5,14 +5,14 @@ import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
-public interface ICustomerDaoObjectFactory {
+public interface CustomerDaoFactory {
 
-    IRidesDao getRidesDao();
+    IRidesDao createRidesDao();
 
-    IRideRequestsDao getRideRequestsDao();
+    IRideRequestsDao createRideRequestsDao();
 
-    IRideToRequestMapperDao getRideToRequestMapperDao();
+    IRideToRequestMapperDao createRideToRequestMapperDao();
 
-    IRideNodeDao getRideNodeDao();
+    IRideNodeDao createRideNodeDao();
 
 }

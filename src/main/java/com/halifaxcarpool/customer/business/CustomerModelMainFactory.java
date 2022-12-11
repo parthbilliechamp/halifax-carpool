@@ -5,7 +5,7 @@ import com.halifaxcarpool.customer.business.recommendation.BaseRideFinder;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 
-public class CustomerBusinessObjectFactoryMain implements ICustomerBusinessObjectFactory {
+public class CustomerModelMainFactory implements CustomerModelFactory {
 
     @Override
     public IRideRequest getRideRequest() {

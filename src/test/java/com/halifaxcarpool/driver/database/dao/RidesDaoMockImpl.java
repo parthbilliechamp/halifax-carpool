@@ -130,16 +130,6 @@ public class RidesDaoMockImpl implements IRidesDao {
         driverIdToRideListMap.put(driverId, rides);
     }
 
-    public Ride findRide(int rideId, int driverId) {
-        List<Ride> rides = driverIdToRideListMap.get(driverId);
-        for (Ride ride : rides) {
-            if (ride.getRideId() == rideId) {
-                return ride;
-            }
-        }
-        return new Ride();
-    }
-
     private static void populateActiveRidesMapData() {
         List<Ride> rides = new ArrayList<>();
         Ride ride = new Ride(15, 15, "Citadel",
