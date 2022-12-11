@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        Ride Customers
+    </title>
 </head>
 <body>
+<br />
+<div class="container">
+    <h3>Ride Customers</h3>
+    <hr>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Ride Request Id</th>
+            <th>Customer Id</th>
+            <th>Start Location</th>
+            <th>End Location</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ride: ${approvedRequest}">
+            <td th:text="${ride.rideRequestId}"/>
+            <td th:text="${ride.customerId}"/>
+            <td th:text="${ride.startLocation}"/>
+            <td th:text="${ride.endLocation}"/>
+            <td>
+                <a class="btn btn-success"
+                   th:href="@{/driver/view_payment_status(customerId=${ride.customerId}, rideId=${rideId})}">Change</a>
+            </td>
 
+        </tr>
+        </tbody>
+    </table>
+
+</div>
 </body>
 </html>

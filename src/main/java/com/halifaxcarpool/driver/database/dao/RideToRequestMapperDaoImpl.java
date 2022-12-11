@@ -49,6 +49,24 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
     }
 
     @Override
+    public List<RideRequest> viewRidePassengers(int rideId) {
+        List<RideRequest> receivedRideRequestList = new ArrayList<>();
+        try {
+            connection = database.openDatabaseConnection();
+            String SQL_STRING = "CALL view_approved_request_customers(?)";
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(1, rideId);
+            ResultSet resultSet = statement.executeQuery();
+            receivedRideRequestList = buildReceivedRideRequestsFrom(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            database.closeDatabaseConnection();
+        }
+        return receivedRideRequestList;
+    }
+
+    @Override
     public void updateRideRequestStatus(int rideId, int rideRequestId, String status) {
         try{
             connection = database.openDatabaseConnection();

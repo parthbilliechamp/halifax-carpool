@@ -44,4 +44,14 @@ public class PaymentImpl implements  IPayment{
         paymentDao.changePaymentStatusSuccess(paymentId);
     }
 
+    @Override
+    public void driverUpdatePaymentStatus(int paymentId, IPaymentDao paymentDao) {
+        paymentDao.driverUpdatePaymentStatus(paymentId);
+    }
+
+    @Override
+    public Payment fetchPaymentDetails(int customerId, int rideId, int driverId, IPaymentDao paymentDao) {
+        return paymentDao.fetchPaymentDetails(customerId,rideId,driverId);
+    }
+
 }

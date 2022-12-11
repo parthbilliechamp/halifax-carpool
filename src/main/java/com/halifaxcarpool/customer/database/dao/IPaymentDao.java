@@ -14,4 +14,8 @@ public interface IPaymentDao {
 
     public void changePaymentStatusSuccess(int paymentId);
 
+    public void driverUpdatePaymentStatus(int paymentId);
+
+    public Payment fetchPaymentDetails(int customerId, int rideId, int driverId);
+
 }

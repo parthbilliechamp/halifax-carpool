@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <title class="header">
+    Received Requests
+  </title>
+</head>
+<body>
+<br />
+<div class="container">
+  <h3>Visited Rides</h3>
+  <hr>
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Ride ID</th>
+      <th>DriverID</th>
+      <th>Amount Due</th>
+      <th>Status</th>
+      <th></th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td th:text="${payment.paymentId}"/>
+      <td th:text="${payment.customerId}"/>
+      <td th:text="${payment.rideId}"/>
+      <td th:text="${payment.amountDue}" />
+      <td th:text="${payment.status}" />
+      <td>
+        <a class="btn btn-success"
+           th:href="@{/driver/update_payment_status(paymentId=${payment.paymentId})}">Pay</a>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>

@@ -3,8 +3,6 @@ package com.halifaxcarpool.customer.database.dao;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.customer.business.beans.Payment;
-import jdk.vm.ci.code.site.Call;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +95,48 @@ public class PaymentDaoImpl implements IPaymentDao{
         finally {
             database.closeDatabaseConnection();
         }
+    }
+
+    @Override
+    public void driverUpdatePaymentStatus(int paymentId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL change_payment_status_to_completed(?");
+            statement.setInt(1, paymentId);
+            statement.executeUpdate();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+    }
+
+    @Override
+    public Payment fetchPaymentDetails(int customerId, int rideId, int driverId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL fetch_payment_details(?,?,?");
+            statement.setInt(1, customerId);
+            statement.setInt(2,rideId);
+            statement.setInt(3, driverId);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            List<Payment> payments = buildPaymentList(resultSet);
+            if(payments.size() ==1) {
+                Payment payment = payments.get(0);
+                return payment;
+            }
+            return null;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return  null;
     }
 
     private static List<Payment> buildPaymentList(ResultSet resultSet) throws SQLException{

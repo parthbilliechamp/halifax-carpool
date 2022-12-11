@@ -21,4 +21,9 @@ public class RideToRequestMapperImpl implements IRideToRequestMapper {
         return rideToRequestMapperDao.viewReceivedRequests(rideId);
     }
 
+    @Override
+    public List<RideRequest> viewApprovedRequest(int rideId, IRideToRequestMapperDao rideToRequestMapperDao) {
+        return  rideToRequestMapperDao.viewRidePassengers(rideId);
+    }
+
 }

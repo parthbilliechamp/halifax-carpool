@@ -45,6 +45,8 @@ public class DriverController {
 
     private static final String DRIVER_VIEW_RIDE_HISTORY = "view_ride_history";
 
+    private static final String VIEW_PAYMENT_DETAILS = "view_driver_payment_status";
+
     @GetMapping("/driver/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
         model.addAttribute("driver", new Driver());
@@ -165,17 +167,39 @@ public class DriverController {
         rideToRequestMapperDao.updateRideRequestStatus(rideId, rideRequestId,status);
         return "redirect:/driver/view_rides";
     }
-    @GetMapping("driver/view_ride_history")
+    @GetMapping("/driver/view_ride_history")
     public String getRideHistory(@RequestParam("rideId") int rideId, Model model){
         IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
         IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
-        List<RideRequest> rideRequests = rideToRequestMapper.viewReceivedRequest(rideId, rideToRequestMapperDao);
-
-        System.out.println("getRideHistory: RideId = " + rideId);
-
-        model.addAttribute("rideRequests", rideRequests);
+        List<RideRequest> rideRequests = rideToRequestMapper.viewApprovedRequest(rideId, rideToRequestMapperDao);
+        model.addAttribute("approvedRequest", rideRequests);
         model.addAttribute("rideId", rideId);
 
         return DRIVER_VIEW_RIDE_HISTORY;
+    }
+
+    @GetMapping("/driver/update_payment_status")
+    String updatePaymentStatus(@RequestParam("paymentId") int paymentId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = new PaymentImpl();
+        payment.driverUpdatePaymentStatus(paymentId, paymentDao);
+        return "redirect: /driver/view_ride_history";
+    }
+
+    @GetMapping("/driver/view_payment_status")
+    String viewPaymentStatus(@RequestParam("customerId") int customerId, @RequestParam("rideId") int rideId, HttpServletRequest request,  Model model){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = new PaymentImpl();
+        Payment paymentDetails= payment.fetchPaymentDetails(customerId,rideId,7, paymentDao);
+        model.addAttribute("Payment",paymentDetails);
+        return VIEW_PAYMENT_DETAILS;
     }
 }
