@@ -13,11 +13,11 @@ public class Customer {
         this.customerPassword = customerPassword;
     }
 
-    public int customerId;
-    String customerName;
-    String customerContact;
-    String customerEmail;
-    String customerPassword;
+    private int customerId;
+    private String customerName;
+    private String customerContact;
+    private String customerEmail;
+    private String customerPassword;
 
     public int getCustomerId() {
         return customerId;

@@ -6,4 +6,6 @@ public interface ICustomerDao {
 
     void updateCustomerProfile(Customer customer);
 
+    void registerCustomer(Customer customer) throws Exception;
+
 }

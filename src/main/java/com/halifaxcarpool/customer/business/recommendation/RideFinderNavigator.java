@@ -7,13 +7,13 @@ import java.util.List;
 
 public class RideFinderNavigator {
 
-    private RideFinderStrategy rideFinderStrategy;
+    private final RideFinderStrategy rideFinderStrategy;
 
     public RideFinderNavigator(RideFinderStrategy rideFinderStrategy) {
         this.rideFinderStrategy = rideFinderStrategy;
     }
 
-    public List<Ride> findMatchingRides(RideRequest rideRequest) {
+    public List<List<Ride>> findMatchingRides(RideRequest rideRequest) {
         return rideFinderStrategy.findMatchingRides(rideRequest);
     }
 

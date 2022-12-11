@@ -1,46 +1,97 @@
 package com.halifaxcarpool.customer.business;
 
-import com.halifaxcarpool.customer.business.authentication.ICustomerAuthentication;
+import com.halifaxcarpool.customer.business.authentication.CustomerImpl;
 import com.halifaxcarpool.customer.business.authentication.ICustomer;
 import com.halifaxcarpool.customer.business.beans.Customer;
+import com.halifaxcarpool.customer.database.dao.ICustomerDao;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class CustomerImplTest {
 
-    ICustomer customerLoginMock;
-    ICustomerAuthentication customerAuthenticationMock;
+    ICustomerDaoObjectFactory customerDaoObjectFactoryImplTest = new CustomerDaoObjectFactoryImplTest();
+
+    ICustomerBusinessObjectFactory customerBusinessObjectFactory = new CustomerBusinessObjectFactoryMain();
+
+    ICustomer customerObj;
+
+    ICustomerDao customerDaoMockObj;
 
     @Test
-    public void loginSuccessTest() {
+    public void registerCustomerSuccessTest() {
+        int customerId;
 
-        String username = "klklkl@gmail.ca";
-        String password = "kllk9009@3";
-        int expected_customer_id = 4;
-        Customer extractedCustomer;
+        customerId = 5;
+        Customer customer = new Customer(customerId, "Jake Firl", "8856041798", "jakeacceptsall@gmail.com", "rocker233<!>");
 
-        customerLoginMock = new CustomerMockImpl();
-        customerAuthenticationMock = new CustomerAuthenticationMockImpl();
+        customerObj = customerBusinessObjectFactory.getCustomer();
+        customerDaoMockObj = customerDaoObjectFactoryImplTest.getCustomerDao();
 
-        extractedCustomer = customerLoginMock.login(username, password, customerAuthenticationMock);
-
-        assert expected_customer_id == extractedCustomer.getCustomerId();
-
+        try {
+            customerObj.registerCustomer(customer, customerDaoMockObj);
+            assertTrue(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
     }
 
     @Test
-    public void loginFailureTest() {
+    public void registerCustomerFailureTest() {
+        int customerId;
 
-        String username = "klklkl1@gmail.ca";
-        String password = "kllk90@3";
-        Customer extractedCustomer;
+        customerId = 4;
+        Customer customer = new Customer(customerId, "Kane Lart", "9532120333", "klklkl@gmail.ca", "kllk9009@3");
+        customerObj = customerBusinessObjectFactory.getCustomer();
+        customerDaoMockObj = customerDaoObjectFactoryImplTest.getCustomerDao();
 
-        customerLoginMock = new CustomerMockImpl();
-        customerAuthenticationMock = new CustomerAuthenticationMockImpl();
+        try {
+            customerObj.registerCustomer(customer, customerDaoMockObj);
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(true);
+        }
+    }
 
-        extractedCustomer = customerLoginMock.login(username, password, customerAuthenticationMock);
+    @Test
+    public void updateCustomerProfileSuccessTest() {
+        int customerId;
 
-        assert extractedCustomer == null;
+        customerId = 4;
+        Customer customer = new Customer(customerId, "Kanely Lart", "9532120333", "klklkl@gmail.ca", "kllk9009@3");
 
+        customerObj = new CustomerImpl();
+        customerDaoMockObj = customerDaoObjectFactoryImplTest.getCustomerDao();
+
+        try {
+            customerObj.updateCustomer(customer, customerDaoMockObj);
+            assertTrue(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+    }
+
+    @Test
+    public void updateCustomerProfileFailureTest() {
+        int customerId;
+
+        customerId = 11;
+        Customer customer = new Customer(customerId, "Kanely Lart", "9532120333", "klklkl@gmail.ca", "kllk9009@3");
+
+        customerObj = new CustomerImpl();
+        customerDaoMockObj = customerDaoObjectFactoryImplTest.getCustomerDao();
+
+        try {
+            customerObj.updateCustomer(customer, customerDaoMockObj);
+            assertTrue(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(true);
+        }
     }
 
 }

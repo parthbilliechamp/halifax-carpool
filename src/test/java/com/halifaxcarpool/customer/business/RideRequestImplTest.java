@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -24,7 +25,7 @@ public class RideRequestImplTest {
         List<RideRequest> rideRequests = rideRequest.viewRideRequests(customerId, rideRequestsDao);
         assert 2 == rideRequests.size();
         for (RideRequest ride: rideRequests) {
-            assert customerId == ride.customerId;
+            assert customerId == ride.getCustomerId();
         }
     }
 
@@ -45,7 +46,7 @@ public class RideRequestImplTest {
             rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
             assertTrue(true);
         }catch (Exception e){
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -55,8 +56,8 @@ public class RideRequestImplTest {
         try {
             rideRequest.createRideRequest(rideRequestObject, rideRequestsDao);
             assertTrue(true);
-        }catch (Exception e){
-            assertTrue(false);
+        } catch (Exception e){
+            fail();
         }
     }
 

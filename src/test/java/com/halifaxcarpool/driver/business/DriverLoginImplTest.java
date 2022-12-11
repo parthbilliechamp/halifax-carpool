@@ -1,14 +1,18 @@
 package com.halifaxcarpool.driver.business;
 
+import com.halifaxcarpool.driver.business.authentication.IDriver;
 import com.halifaxcarpool.driver.business.authentication.IDriverAuthentication;
-import com.halifaxcarpool.driver.business.authentication.IDriverLogin;
 import com.halifaxcarpool.driver.business.beans.Driver;
+import com.halifaxcarpool.driver.database.dao.IDriverAuthenticationDao;
 import org.junit.jupiter.api.Test;
 
 public class DriverLoginImplTest {
 
-    IDriverLogin driverLoginMock;
+    IDriverBusinessObjectFactory driverBusinessObjectFactory = new DriverBusinessObjectFactoryMain();
+    IDriverDaoObjectFactory driverDaoObjectFactory = new DriverDaoObjectFactoryImplTest();
+    IDriver driverMock;
     IDriverAuthentication driverAuthenticationMock;
+    IDriverAuthenticationDao driverAuthenticationDao;
 
     @Test
     public void loginSuccessTest() {
@@ -18,12 +22,13 @@ public class DriverLoginImplTest {
         int expected_driver_id = 21;
         Driver extractedDriver;
 
-        driverLoginMock = new DriverLoginMockImpl();
-        driverAuthenticationMock = new DriverAuthenticationMockImpl();
+        driverMock = driverBusinessObjectFactory.getDriver();
+        driverAuthenticationMock = driverBusinessObjectFactory.getDriverAuthentication();
+        driverAuthenticationDao = driverDaoObjectFactory.getDriverAuthenticationDao();
 
-        extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
+        extractedDriver = driverMock.login(username, password, driverAuthenticationMock, driverAuthenticationDao);
 
-        assert expected_driver_id == extractedDriver.getDriver_id();
+        assert expected_driver_id == extractedDriver.getDriverId();
 
     }
 
@@ -35,13 +40,16 @@ public class DriverLoginImplTest {
         int expected_driver_id = 21;
         Driver extractedDriver;
 
-        driverLoginMock = new DriverLoginMockImpl();
-        driverAuthenticationMock = new DriverAuthenticationMockImpl();
+        driverMock = driverBusinessObjectFactory.getDriver();
+        driverAuthenticationMock = driverBusinessObjectFactory.getDriverAuthentication();
+        driverAuthenticationDao = driverDaoObjectFactory.getDriverAuthenticationDao();
 
-        extractedDriver = driverLoginMock.login(username, password, driverAuthenticationMock);
+        extractedDriver = driverMock.login(username, password, driverAuthenticationMock, driverAuthenticationDao);
 
         assert extractedDriver == null;
 
     }
+
+
 
 }

@@ -18,6 +18,23 @@ public class CustomerDaoImpl implements ICustomerDao{
         database = new DatabaseImpl();
     }
 
+    public void registerCustomer(Customer customer) throws Exception{
+        try {
+            connection = database.openDatabaseConnection();
+            String SQL_STRING = "{CALL insert_customer_details(?,?,?,?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, customer.getCustomerName());
+            stmt.setString(2, customer.getCustomerContact());
+            stmt.setString(3, customer.getCustomerEmail());
+            stmt.setString(4, customer.getCustomerPassword());
+            stmt.execute();
+        } catch (SQLException e) {
+            throw new Exception(e.getMessage());
+        } finally {
+            database.closeDatabaseConnection();
+        }
+    }
+
     @Override
     public void updateCustomerProfile(Customer customer) {
         try {

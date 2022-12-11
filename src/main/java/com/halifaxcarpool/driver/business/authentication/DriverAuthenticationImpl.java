@@ -4,15 +4,10 @@ import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.database.dao.DriverAuthenticationDaoImpl;
 import com.halifaxcarpool.driver.database.dao.IDriverAuthenticationDao;
 
-public class DriverAuthenticationImpl implements IDriverAuthentication{
+public class DriverAuthenticationImpl implements IDriverAuthentication {
 
-    IDriverAuthenticationDao driverAuthenticationDao;
-
-    public DriverAuthenticationImpl() {
-        driverAuthenticationDao = new DriverAuthenticationDaoImpl();
-    }
     @Override
-    public Driver authenticate(String userName, String password) {
+    public Driver authenticate(String userName, String password, IDriverAuthenticationDao driverAuthenticationDao) {
         return driverAuthenticationDao.authenticate(userName, password);
     }
 

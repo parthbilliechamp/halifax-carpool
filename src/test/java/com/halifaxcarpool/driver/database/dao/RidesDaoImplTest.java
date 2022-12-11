@@ -18,7 +18,7 @@ public class RidesDaoImplTest {
         List<Ride> rides = ridesDao.getRides(driverId);
         assert 2 == rides.size();
         for (Ride ride: rides) {
-            assert driverId == ride.driverId;
+            assert driverId == ride.getRideId();
         }
     }
 }
