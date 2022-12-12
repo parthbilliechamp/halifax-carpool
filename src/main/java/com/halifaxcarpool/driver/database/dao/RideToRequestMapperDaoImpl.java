@@ -4,10 +4,7 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +20,15 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
     public void insertRideToRequestMapper(int rideId, int rideRequestId, String status) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String SQL_STRING = "CALL insert_ride_to_req_map(" + rideId + "," +
-                    rideRequestId + ", '" + status + "' )";
-            statement.executeUpdate(SQL_STRING);
+
+            String SQL_STRING = "{CALL insert_ride_to_req_map(?, ?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, rideId);
+            stmt.setInt(2, rideRequestId);
+            stmt.setString(3, status);
+
+            stmt.executeQuery();
+
         } catch (SQLException e) {
             throw new RuntimeException("Ride Request already sent!!");
         } finally {
@@ -39,9 +41,13 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
         List<RideRequest> receivedRideRequestList = new ArrayList<>();
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String SQL_STRING = "CALL view_received_requests(" + rideId + ")";
-            ResultSet resultSet = statement.executeQuery(SQL_STRING);
+
+            String SQL_STRING = "{CALL view_received_requests(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, rideId);
+
+            ResultSet resultSet = stmt.executeQuery();
+
             receivedRideRequestList = buildReceivedRideRequestsFrom(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
