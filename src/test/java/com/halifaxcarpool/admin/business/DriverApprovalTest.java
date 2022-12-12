@@ -1,11 +1,10 @@
 package com.halifaxcarpool.admin.business;
 
 import com.halifaxcarpool.admin.business.approve.DriverApproval;
-import com.halifaxcarpool.admin.business.approve.UserApproval;
-import com.halifaxcarpool.admin.database.dao.DriverApprovalDao;
+import com.halifaxcarpool.admin.business.approve.IUserApproval;
+import com.halifaxcarpool.admin.database.dao.IDriverApprovalDao;
 import com.halifaxcarpool.admin.database.dao.DriverApprovalDaoMock;
 import com.halifaxcarpool.commons.business.beans.User;
-import com.halifaxcarpool.driver.business.beans.Driver;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,8 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ActiveProfiles("test")
 public class DriverApprovalTest{
 
-    private DriverApprovalDao driverApprovalDao = new DriverApprovalDaoMock();
-    private UserApproval userApproval = new DriverApproval(driverApprovalDao);
+    private IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private IAdminDaoFactory adminDaoFactory = new AdminDaoTestFactory();
+
+    private IDriverApprovalDao driverApprovalDao = adminDaoFactory.getDriverApprovalDao();
+    private IUserApproval userApproval = adminModelFactory.getDriverApproval(driverApprovalDao);
 
     private static final String LICENSE_EXIST = "1";
     private static final String LICENSE_NOT_EXIST = "4";

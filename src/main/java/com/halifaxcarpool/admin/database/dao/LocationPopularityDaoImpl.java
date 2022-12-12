@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationPopularityDaoImpl implements LocationPopularityDao{
+public class LocationPopularityDaoImpl implements ILocationPopularityDao {
 
     protected final IDatabase database;
     protected Connection connection;

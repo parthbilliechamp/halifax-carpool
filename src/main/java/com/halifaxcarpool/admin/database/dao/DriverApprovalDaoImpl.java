@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverApprovalDaoImpl implements DriverApprovalDao{
+public class DriverApprovalDaoImpl implements IDriverApprovalDao {
     protected final IDatabase database;
     protected Connection connection;
 
