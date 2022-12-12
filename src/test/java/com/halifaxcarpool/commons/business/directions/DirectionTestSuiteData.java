@@ -2,6 +2,7 @@ package com.halifaxcarpool.commons.business.directions;
 
 import com.halifaxcarpool.commons.business.PolylineDecoder;
 import com.halifaxcarpool.commons.business.beans.LatLng;
+import com.halifaxcarpool.commons.business.beans.Tuple2;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 
 import java.util.*;
@@ -15,13 +16,15 @@ public class DirectionTestSuiteData {
 
     public static Map<Tuple2, String> locationToPolyLineMap = new HashMap<>();
 
-    public static Map<LatLng, String> latLngToPolylineMap = new HashMap<>();
+    public static Map<LatLng, List<String>> latLngToPolylineMap = new HashMap<>();
+
+    public static Map<LatLng, List<String>> latLngToListOfPolylineMap = new HashMap<>();
     public static Map<String, List<LatLng>> polylineToPointsMap = new HashMap<>();
 
     public static Map<String, List<RideNode>> polyLineToRideNodesMap = new HashMap<>();
 
     public static final Map<String, LatLng> locationToLatLngMap = new HashMap<>();
-    
+
     static {
         populateRideData1();
         populateRideData2();
@@ -31,6 +34,9 @@ public class DirectionTestSuiteData {
         populateRideData6();
         populateRideData7();
         populateMultipleRideData1();
+        populateMultipleRideData2();
+        populateMultipleRideData3();
+        populateMultipleRideData4();
     }
 
     private static void populateRideData1() {
@@ -46,8 +52,13 @@ public class DirectionTestSuiteData {
         String encodedPolyline =
                 "}gmoGplbcK]{Be@PwB~@kCdAuBv@p@|Dx@pFtA`JdAbHzAxJhAvHyDxA_FfBcFxBmCvAmBz@eCjAeBp@wD|AaAd@w@uD";
 
-        latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
-        latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(latLngStartLocation);
+        latLngs.add(latLngEndLocation);
+        polylineToPointsMap.put(encodedPolyline, latLngs);
+
+        latLngToPolylineMap.put(latLngStartLocation, Arrays.asList(encodedPolyline));
+        latLngToPolylineMap.put(latLngEndLocation, Arrays.asList(encodedPolyline));
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
         polyLineToRideNodesMap.put(encodedPolyline, rideNodes);
         Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
@@ -65,8 +76,8 @@ public class DirectionTestSuiteData {
         locationToLatLngMap.put(endLocation, latLngEndLocation);
 
         String encodedPolyline = "}~noGn`ccKYcB`@QdBu@tGoCjAg@jB{@GWa@eCcAiG[oB]oB@Q@Y@KHWhCkA^EpCkArAo@EOA@";
-        latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
-        latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
+        latLngToPolylineMap.put(latLngStartLocation, Arrays.asList(encodedPolyline));
+        latLngToPolylineMap.put(latLngEndLocation, Arrays.asList(encodedPolyline));
 
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
         polyLineToRideNodesMap.put(encodedPolyline, rideNodes);
@@ -75,7 +86,7 @@ public class DirectionTestSuiteData {
 
         String customerStartLocation = "Halifax Infirmary @ QEII - Robie Street Entrance, Robie Street, Halifax, NS";
         LatLng customerStartLocationLatLng = new LatLng(44.64680117511276, -63.5907166156215);
-        latLngToPolylineMap.put(customerStartLocationLatLng, encodedPolyline);
+        latLngToPolylineMap.put(customerStartLocationLatLng, Arrays.asList(encodedPolyline));
         locationToLatLngMap.put(customerStartLocation, customerStartLocationLatLng);
     }
 
@@ -84,7 +95,7 @@ public class DirectionTestSuiteData {
         String customerEndLocation = "Camp Hill Veterans Memorial Building @ QEII Health Sciences Centre";
         LatLng customerStartLocationLatLng = new LatLng(44.644482448668285, -63.58753955388395);
         locationToLatLngMap.put(customerEndLocation, customerStartLocationLatLng);
-        latLngToPolylineMap.put(customerStartLocationLatLng, encodedPolyline);
+        latLngToPolylineMap.put(customerStartLocationLatLng, Arrays.asList(encodedPolyline));
     }
 
     private static void populateRideData4() {
@@ -110,8 +121,8 @@ public class DirectionTestSuiteData {
         locationToLatLngMap.put(endLocation, latLngEndLocation);
 
         String encodedPolyline = "shloG~racKbChPFz@FjDBf@Pt@LXvAjCt@x@{@|BiAbDiAbDgBrFu@tCs@bCoAzD]h@WPYJy@VSiAsAqIEYRIZI";
-        latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
-        latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
+        latLngToPolylineMap.put(latLngStartLocation, Arrays.asList(encodedPolyline));
+        latLngToPolylineMap.put(latLngEndLocation, Arrays.asList(encodedPolyline));
 
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
         polyLineToRideNodesMap.put(encodedPolyline, rideNodes);
@@ -129,8 +140,8 @@ public class DirectionTestSuiteData {
                 "eunoGhwdcKe@mCm@_DYqBg@iBSgAm@cD{@_F}@cFd@I`@OdAe@pCoAlDwAlEeBrAi@W_BWwAfBo@hDsA|HcDdGiCrFyBOaA";
         int rideId = 11;
 
-        latLngToPolylineMap.put(latLngStartLocation, encodedPolyline);
-        latLngToPolylineMap.put(latLngEndLocation, encodedPolyline);
+        latLngToPolylineMap.put(latLngStartLocation, Arrays.asList(encodedPolyline));
+        latLngToPolylineMap.put(latLngEndLocation, Arrays.asList(encodedPolyline));
         locationToLatLngMap.put(startLocation, latLngStartLocation);
         locationToLatLngMap.put(endLocation, latLngEndLocation);
         List<RideNode> rideNodes = prepareRideNodesFrom(encodedPolyline, rideId);
@@ -147,7 +158,6 @@ public class DirectionTestSuiteData {
     private static void populateMultipleRideData1() {
 
         String startLocation = "THE TEN SPOT halifax, South Street, Halifax, NS";
-        String middleLocation = "The Vuze, Fenwick Tower, Fenwick Street, Halifax, Nova Scotia";
         String endLocation = "Dalplex, South Street, Halifax, Nova Scotia";
 
         String polyLineForRideRequest = "mxmoG||~bKl@dE`AjFxAhI`@bC|A|Jb@pCfAxHlBzNl@zDvA`Kz@zFX~A`@~Bj@~Dz@vGnAbJpBfOHf@n@S";
@@ -171,17 +181,105 @@ public class DirectionTestSuiteData {
         latLngs.add(latLngEndLocation);
         polylineToPointsMap.put(polyLineForRideRequest, latLngs);
 
-        latLngToPolylineMap.put(latLngStartLocation, polyLineForRide1);
-        latLngToPolylineMap.put(latLngMiddleLocation, polyLineForRide1);
+        List<String> polylineList = new ArrayList<>();
+        polylineList.add(polyLineForRide1);
+        polylineList.add(polyLineForRide2);
+
+        latLngToPolylineMap.put(latLngStartLocation, Arrays.asList(polyLineForRide1));
+        latLngToPolylineMap.put(latLngMiddleLocation, polylineList);
+        latLngToPolylineMap.put(latLngEndLocation, Arrays.asList(polyLineForRide2));
+
         List<RideNode> rideNodesOn1 = prepareRideNodesFrom(polyLineForRide1, rideId1);
         polyLineToRideNodesMap.put(polyLineForRide1, rideNodesOn1);
 
-        //Cant add another polyline for the same middle node
-        latLngToPolylineMap.put(latLngEndLocation, polyLineForRide2);
         List<RideNode> rideNodesOn2 = prepareRideNodesFrom(polyLineForRide2, rideId2);
         polyLineToRideNodesMap.put(polyLineForRide2, rideNodesOn2);
 
     }
+
+    private static void populateMultipleRideData2() {
+        String startLocation = "Halifax Backpackers Hostel, Gottingen Street, Halifax, NS";
+        String endLocation = "CFB Halifax Curling Club, Hawk Terrace, Halifax, NS";
+
+        String polyLineForRideRequest = "whpoGx|acKu@pAnBhDjEtHVv@AF?L@NJZHTRdBbAjJb@|FLpANp@VjCn@`EPvATnBe@x@kDnEWZqAbCsAfDeBxEmAxCcCvGoD|KqCzHa@r@yBfDQZYJs@hAGb@OX{A`Co@fAqAzBp@~@HPABGJK\\\\KPg@d@U^Gh@@zIE|@~B~G@";
+        String polyLineForRide1 = "whpoGx|acKiEdHuHhMwC~EcCzD_KfP_FbIyDlGkCnEi@@[`@qA|BoAvBqBdDg@@{@vAc@x@i@p@";
+
+        LatLng latLngStartLocation = new LatLng(44.65308, -63.58493);
+        LatLng latLngMiddleLocation = new LatLng(44.65335, -63.58534);
+        LatLng latLngEndLocation = new LatLng(44.65339, -63.60974);
+
+        int rideId1 = 101;
+
+        Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
+
+        locationToPolyLineMap.put(tuple2, polyLineForRideRequest);
+
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(latLngStartLocation);
+        latLngs.add(latLngMiddleLocation);
+        latLngs.add(latLngEndLocation);
+        polylineToPointsMap.put(polyLineForRideRequest, latLngs);
+
+        latLngToPolylineMap.put(latLngStartLocation, Arrays.asList(polyLineForRide1));
+        latLngToPolylineMap.put(latLngMiddleLocation, Arrays.asList(polyLineForRide1));
+
+        List<RideNode> rideNodesOn1 = prepareRideNodesFrom(polyLineForRide1, rideId1);
+        polyLineToRideNodesMap.put(polyLineForRide1, rideNodesOn1);
+
+    }
+
+    private static void populateMultipleRideData3() {
+        String startLocation = "Maplestone Enhanced Care, Main Avenue, Halifax, NS";
+        String endLocation = "BIGS Brothers Grocery Store, Boss Plaza, Supreme Court, Halifax, Nova Scotia";
+
+        String polyLineForRideRequest = "{ipoG`kncKwAiEq@qBU}@MQm@uBi@qAw@aCeA{CkAkDsA{DyAkEkDiKmBqFgBsFeAqCo@aBy@oCMm@WgBP_@Rs@bA{D^q@RQVKXGPAPh@^dAv@nB";
+        String polyLineForRide2 = "ubqoGvrlcKuGuRuAiDu@oCG_@QuABEHOL_@fAoEJUP[XYd@QxAKXCj@QdA]fBg@RCb@?jAHjBHnAAx@?d@AZC";
+
+        LatLng latLngStartLocation = new LatLng(44.65326, -63.64865);
+        LatLng latLngMiddleLocation = new LatLng(44.65645, -63.64142);
+        LatLng latLngEndLocation = new LatLng(44.65779, -63.63364);
+
+        int rideId2 = 102;
+
+        Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
+
+        locationToPolyLineMap.put(tuple2, polyLineForRideRequest);
+
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(latLngStartLocation);
+        latLngs.add(latLngMiddleLocation);
+        latLngs.add(latLngEndLocation);
+        polylineToPointsMap.put(polyLineForRideRequest, latLngs);
+
+        latLngToPolylineMap.put(latLngMiddleLocation, Arrays.asList(polyLineForRide2));
+        latLngToPolylineMap.put(latLngEndLocation, Arrays.asList(polyLineForRide2));
+
+        List<RideNode> rideNodesOn2 = prepareRideNodesFrom(polyLineForRide2, rideId2);
+        polyLineToRideNodesMap.put(polyLineForRide2, rideNodesOn2);
+
+    }
+
+    private static void populateMultipleRideData4() {
+        String startLocation = "McDonald's, Quinpool Road, Halifax, Nova Scotia";
+        String endLocation = "Scotiabank Centre, Argyle Street, Halifax, Nova Scotia";
+
+        String polyLineForRideRequest = "kunoGjvdcK_@oBm@DYqBg@iBSgAm@cD{@_F}@cFsA_I?Yq@{Ey@}CwA_DoBiDk@mAu@uBUs@Ow@WuAW{A@m@DWHW?c@OYCCK]i@gATMJOHUb@qMJoDLkB?@M[To@@]^sB|@kEZe@Li@x@[";
+
+        LatLng latLngStartLocation = new LatLng(44.64486, -63.59926);
+        LatLng latLngMiddleLocation = new LatLng(44.65748, -63.59057);
+        LatLng latLngEndLocation = new LatLng(44.64813, -63.57853);
+
+        Tuple2 tuple2 = new Tuple2(startLocation, endLocation);
+
+        locationToPolyLineMap.put(tuple2, polyLineForRideRequest);
+
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(latLngStartLocation);
+        latLngs.add(latLngMiddleLocation);
+        latLngs.add(latLngEndLocation);
+        polylineToPointsMap.put(polyLineForRideRequest, latLngs);
+    }
+
 
     private static List<RideNode> prepareRideNodesFrom(String encodedPolyLine, int rideId) {
         List<LatLng> points = PolylineDecoder.decodePolyline(encodedPolyLine);
@@ -189,7 +287,7 @@ public class DirectionTestSuiteData {
         Iterator<LatLng> iterator = points.iterator();
         while (iterator.hasNext()) {
             LatLng latLng = iterator.next();
-            RideNode rideNode = new RideNode(latLng.latitude, latLng.longitude, rideId, ++COUNTER);
+            RideNode rideNode = new RideNode(latLng.getLatitude(), latLng.getLongitude(), rideId, ++COUNTER);
             rideNodes.add(rideNode);
         }
         resetCounter();
@@ -199,5 +297,5 @@ public class DirectionTestSuiteData {
     private static void resetCounter() {
         COUNTER = 0;
     }
-    
+
 }

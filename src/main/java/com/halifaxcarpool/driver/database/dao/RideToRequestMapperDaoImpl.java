@@ -3,7 +3,7 @@ package com.halifaxcarpool.driver.database.dao;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-
+import java.text.DecimalFormat;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
 
     IDatabase database;
     Connection connection;
-
+    private static final DecimalFormat df = new DecimalFormat("0.00");
     public RideToRequestMapperDaoImpl() {
         database = new DatabaseImpl();
     }
@@ -20,12 +20,15 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
     public void insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String SQL_STRING = "CALL insert_ride_to_req_map(" + rideId + "," +
-                    rideRequestId + ", '" + status +","+amount+ "' )";
-            statement.executeUpdate(SQL_STRING);
+            CallableStatement statement = connection.prepareCall("CALL insert_ride_to_req_map(?,?,?,?)");
+            statement.setInt(1,rideId);
+            statement.setInt(2,rideRequestId);
+            statement.setString(3,status);
+            statement.setDouble(4,amount);
+            statement.execute();
+
         } catch (SQLException e) {
-            throw new RuntimeException("Ride Request already sent!!");
+            e.printStackTrace();
         } finally {
             database.closeDatabaseConnection();
         }

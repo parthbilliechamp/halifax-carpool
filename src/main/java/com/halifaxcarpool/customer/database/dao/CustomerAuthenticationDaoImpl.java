@@ -2,6 +2,7 @@ package com.halifaxcarpool.customer.database.dao;
 
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.customer.business.beans.Customer;
 
 import java.sql.Connection;
@@ -9,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CustomerAuthenticationDaoImpl implements ICustomerAuthenticationDao {
+public class CustomerAuthenticationDaoImpl implements IUserAuthenticationDao {
 
     IDatabase database;
     Connection connection;
@@ -47,7 +48,6 @@ public class CustomerAuthenticationDaoImpl implements ICustomerAuthenticationDao
             String customer_password = resultSet.getString("customer_password");
             customer = new Customer(customer_id, customer_name, customer_contact, customer_email, customer_password);
         }
-
         return customer;
     }
 

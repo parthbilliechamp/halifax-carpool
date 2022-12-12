@@ -34,6 +34,11 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         return 0;
     }
 
+    @Override
+    public int getCustomerId(int rideId) {
+        return 0;
+    }
+
     private static void populateMockData() {
         int customerId = 1;
         List<RideRequest> rideRequests = new ArrayList<>();
@@ -54,6 +59,15 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         List<RideRequest> rideRequests = new ArrayList<>();
         rideRequests.add(rideRequest);
         mockData.put(customerId, rideRequests);
+    }
+
+    public void cancelRideRequest(RideRequest rideRequest) {
+        int customerId = rideRequest.getCustomerId();
+        for(int i = 0; i < mockData.get(customerId).size(); i++) {
+            if(mockData.get(customerId).get(i).getRideRequestId() == rideRequest.getRideRequestId()) {
+                mockData.get(customerId).remove(i);
+            }
+        }
     }
 
 }

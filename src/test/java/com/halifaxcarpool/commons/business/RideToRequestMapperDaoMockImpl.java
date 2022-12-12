@@ -24,6 +24,11 @@ public class RideToRequestMapperDaoMockImpl implements IRideToRequestMapperDao {
     }
 
     @Override
+    public List<RideRequest> viewRidePassengers(int rideId) {
+        return null;
+    }
+
+    @Override
     public void updateRideRequestStatus(int rideId, int rideRequestId, String status) {
 
     }

@@ -44,6 +44,7 @@
       <th>Ride Status</th>
       <th>Ride Time</th>
       <th></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -59,6 +60,10 @@
            th:case="0" th:href="@{/driver/start_ride(rideId=${ride.rideId})}">start ride</a>
         <a class="btn btn-secondary"
            th:case="1" th:href="@{/driver/stop_ride(rideId=${ride.rideId})}">stop ride</a>
+      </td>
+      <td>
+        <a class="btn btn-secondary"
+            th:href="@{/driver/view_ride_history(rideId=${ride.rideId})}">Payments</a>
       </td>
     </tr>
     </tbody>

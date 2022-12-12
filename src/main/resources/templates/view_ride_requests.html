@@ -23,7 +23,10 @@
                 <a class="nav-link" href="/customer/create_ride_request">Create New Ride<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/view_ride_requests">View Rides <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/view_profile">Update Profile<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/customer/view_ongoing_rides">View Ongoing Rides<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/customer/logout">Logout <span class="sr-only">(current)</span></a>
@@ -52,6 +55,10 @@
                 <a class="btn btn-secondary"
                    th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},
                    startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended Rides</a>
+            </td>
+            <td>
+                <a class="btn btn-secondary btn-alert"
+                   th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel Request</a>
             </td>
         </tr>
         </tbody>

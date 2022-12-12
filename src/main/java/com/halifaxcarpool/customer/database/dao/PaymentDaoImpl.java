@@ -101,7 +101,7 @@ public class PaymentDaoImpl implements IPaymentDao{
     public void driverUpdatePaymentStatus(int paymentId) {
         try{
             connection = database.openDatabaseConnection();
-            CallableStatement statement = connection.prepareCall("CALL change_payment_status_to_completed(?");
+            CallableStatement statement = connection.prepareCall("CALL change_payment_status_to_completed(?)");
             statement.setInt(1, paymentId);
             statement.executeUpdate();
         }
@@ -115,14 +115,13 @@ public class PaymentDaoImpl implements IPaymentDao{
 
     @Override
     public Payment fetchPaymentDetails(int customerId, int rideId, int driverId) {
-        try{
+        try {
             connection = database.openDatabaseConnection();
-            CallableStatement statement = connection.prepareCall("CALL fetch_payment_details(?,?,?");
+            CallableStatement statement = connection.prepareCall("CALL fetch_payment_details(?,?,?)");
             statement.setInt(1, customerId);
             statement.setInt(2,rideId);
             statement.setInt(3, driverId);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
             List<Payment> payments = buildPaymentList(resultSet);
             if(payments.size() ==1) {
                 Payment payment = payments.get(0);
