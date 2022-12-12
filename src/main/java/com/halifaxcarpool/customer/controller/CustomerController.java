@@ -2,7 +2,6 @@ package com.halifaxcarpool.customer.controller;
 
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
-import com.halifaxcarpool.customer.business.payment.PaymentImpl;
 import com.halifaxcarpool.customer.database.dao.IPaymentDao;
 import com.halifaxcarpool.customer.database.dao.PaymentDaoImpl;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
@@ -13,7 +12,6 @@ import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.business.*;
-import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.*;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
@@ -28,7 +26,6 @@ import com.halifaxcarpool.customer.database.dao.RideRequestsDaoImpl;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
-import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -378,7 +375,7 @@ public class CustomerController {
             return "redirect:/customer/login";
         }
         Customer customer = (Customer)request.getSession().getAttribute("loggedInCustomer");
-        IPayment payment = new PaymentImpl();
+        IPayment payment = new Payment();
         IPaymentDao paymentDao = new PaymentDaoImpl();
         List<Payment> payments = payment.getCustomerRideHistory(customer.getCustomerId(),paymentDao);
         model.addAttribute("visitedRides", payments);
@@ -395,7 +392,7 @@ public class CustomerController {
         //ICouponDao couponDao = new CouponDao();
         //double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
         double discountPercentage = 15.00;
-        IPayment payment = new PaymentImpl();
+        IPayment payment = new Payment();
         IPaymentDao paymentDao = new PaymentDaoImpl();
         Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
         Double deduction = originalAmount * discountPercentage /100;
@@ -413,7 +410,7 @@ public class CustomerController {
             return "redirect:/customer/login";
         }
         IPaymentDao paymentDao = new PaymentDaoImpl();
-        IPayment payment = new PaymentImpl();
+        IPayment payment = new Payment();
         payment.updatePaymentStatusToSuccess(paymentId, paymentDao);
         return "redirect: /customer/view_payment_details";
     }

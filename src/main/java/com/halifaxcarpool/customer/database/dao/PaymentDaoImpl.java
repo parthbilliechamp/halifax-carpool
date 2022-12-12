@@ -14,7 +14,7 @@ public class PaymentDaoImpl implements IPaymentDao{
         this.database = new DatabaseImpl();
     }
     @Override
-    public void insertPaymentRecord(Payment payment) {
+    public boolean insertPaymentRecord(Payment payment) {
         try{
             connection = database.openDatabaseConnection();
             String query = "CALL insert_payment_record(?,?,?,?,?,?)";
@@ -27,6 +27,7 @@ public class PaymentDaoImpl implements IPaymentDao{
             statement.setDouble(5, payment.getAmountDue());
             statement.setString(6,payment.getStatus());
             statement.execute();
+            return true;
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -34,13 +35,11 @@ public class PaymentDaoImpl implements IPaymentDao{
         finally {
             database.closeDatabaseConnection();
             }
+        return false;
         }
 
 
-    @Override
-    public void updatePaymentStatus(int rideId, int customerId) {
 
-    }
 
     @Override
     public List<Payment> getCustomerRidePaymentList(int customerId) {
@@ -82,12 +81,13 @@ public class PaymentDaoImpl implements IPaymentDao{
     }
 
     @Override
-    public void changePaymentStatusSuccess(int paymentId) {
+    public boolean changePaymentStatusSuccess(int paymentId) {
         try{
             connection = database.openDatabaseConnection();
             CallableStatement statement = connection.prepareCall("CALL change_payment_status_to_success(?)");
             statement.setInt(1, paymentId);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -95,15 +95,17 @@ public class PaymentDaoImpl implements IPaymentDao{
         finally {
             database.closeDatabaseConnection();
         }
+        return false;
     }
 
     @Override
-    public void driverUpdatePaymentStatus(int paymentId) {
+    public boolean driverUpdatePaymentStatus(int paymentId) {
         try{
             connection = database.openDatabaseConnection();
             CallableStatement statement = connection.prepareCall("CALL change_payment_status_to_completed(?)");
             statement.setInt(1, paymentId);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -111,6 +113,7 @@ public class PaymentDaoImpl implements IPaymentDao{
         finally {
             database.closeDatabaseConnection();
         }
+        return false;
     }
 
     @Override

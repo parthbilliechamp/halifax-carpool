@@ -2,11 +2,9 @@ package com.halifaxcarpool.driver.controller;
 
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
-import com.halifaxcarpool.customer.business.payment.PaymentImpl;
 import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.IRideNode;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
-import com.halifaxcarpool.driver.business.RideNodeImpl;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.CommonsObjectFactoryImpl;
 import com.halifaxcarpool.commons.business.ICommonsObjectFactory;
@@ -25,7 +23,6 @@ import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.driver.business.*;
 import com.halifaxcarpool.driver.database.dao.*;
-import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.springframework.stereotype.Controller;
@@ -38,7 +35,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 public class DriverController {
@@ -261,7 +257,7 @@ public class DriverController {
             IPaymentDao paymentDao = new PaymentDaoImpl();
             IRidesDao ridesDao = new RidesDaoImpl();
             IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
-            IPayment payment = new PaymentImpl();
+            IPayment payment = new Payment();
 
             IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
             payment.insertPaymentDetails(rideId, rideRequestId, paymentDao, ridesDao,
@@ -291,7 +287,7 @@ public class DriverController {
         }
         Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
         IPaymentDao paymentDao = new PaymentDaoImpl();
-        IPayment payment = new PaymentImpl();
+        IPayment payment = new Payment();
         payment.driverUpdatePaymentStatus(paymentId, paymentDao);
 
         return "redirect:/driver/my_rides";
@@ -304,7 +300,7 @@ public class DriverController {
         }
         Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
         IPaymentDao paymentDao = new PaymentDaoImpl();
-        IPayment payment = new PaymentImpl();
+        IPayment payment = new Payment();
         Payment paymentDetails= payment.fetchPaymentDetails(customerId,rideId,driver.getDriverId(), paymentDao);
         model.addAttribute("payment",paymentDetails);
 

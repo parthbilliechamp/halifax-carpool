@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface IPaymentDao {
 
-    public void insertPaymentRecord(Payment payment);
-    public void updatePaymentStatus(int rideId, int customerId);
+    public boolean insertPaymentRecord(Payment payment);
+
     public List<Payment> getCustomerRidePaymentList(int customerId);
 
     public double getAmountDue(int paymentId);
 
-    public void changePaymentStatusSuccess(int paymentId);
+    public boolean changePaymentStatusSuccess(int paymentId);
 
-    public void driverUpdatePaymentStatus(int paymentId);
+    public boolean driverUpdatePaymentStatus(int paymentId);
 
     public Payment fetchPaymentDetails(int customerId, int rideId, int driverId);
 
