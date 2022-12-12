@@ -19,7 +19,7 @@ public class DirectRouteRideFinderStrategy implements RideFinderStrategy {
     IRidesDao ridesDao = new RidesDaoImpl();
 
     @Override
-    public List<Ride> findMatchingRides(RideRequest rideRequest) {
+    public List<List<Ride>> findMatchingRides(RideRequest rideRequest) {
         return rideFinderFacade.findDirectRouteRides(rideRequest, rideNodeDao, geoCoding, ridesDao);
     }
 }

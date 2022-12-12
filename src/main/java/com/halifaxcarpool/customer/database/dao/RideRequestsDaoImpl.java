@@ -28,10 +28,10 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
             // TODO: Research on calling this method better
             String SQL_STRING = "{CALL insert_ride_request(?,?,?,?,?)}";
             CallableStatement stmt = connection.prepareCall(SQL_STRING);
-            stmt.setInt(1, rideRequest.rideRequestId);
-            stmt.setString(2, rideRequest.startLocation);
-            stmt.setString(3, rideRequest.endLocation);
-            stmt.setInt(4, rideRequest.customerId);
+            stmt.setInt(1, rideRequest.getRideRequestId());
+            stmt.setString(2, rideRequest.getStartLocation());
+            stmt.setString(3, rideRequest.getEndLocation());
+            stmt.setInt(4, rideRequest.getCustomerId());
             stmt.setString(5, new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()));
             stmt.execute();
         } catch (SQLException e) {

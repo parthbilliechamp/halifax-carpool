@@ -26,6 +26,9 @@
                 <a class="nav-link" href="/driver/view_rides">View Rides <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
+                <a class="nav-link" href="/driver/view_profile"> View Profile <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
                 <a class="nav-link" href="/driver/logout">Logout <span class="sr-only">(current)</span></a>
             </li>
         </ul>
@@ -43,6 +46,7 @@
             <th>Seats Offered </th>
             <th>Ride Status</th>
             <th>Ride Time</th>
+            <th>Cancel Ride</th>
             <th></th>
         </tr>
         </thead>
@@ -57,6 +61,10 @@
             <td>
                 <a class="btn btn-secondary"
                    th:href="@{/driver/view_received_requests(rideId=${ride.rideId})}">View Requests</a>
+            </td>
+            <td>
+                <a class="btn btn-secondary"
+                   th:href="@{/driver/cancel_ride(rideId=${ride.rideId})}">Cancel Ride</a>
             </td>
         </tr>
         </tbody>

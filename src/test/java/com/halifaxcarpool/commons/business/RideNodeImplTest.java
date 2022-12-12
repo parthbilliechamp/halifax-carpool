@@ -4,6 +4,8 @@ import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderMockImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.driver.business.IRideNode;
+import com.halifaxcarpool.driver.business.RideNodeImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

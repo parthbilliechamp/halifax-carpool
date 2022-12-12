@@ -2,14 +2,14 @@ package com.halifaxcarpool.driver.database.dao;
 
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class DriverAuthenticationDaoImpl implements IDriverAuthenticationDao{
-
+public class DriverAuthenticationDaoImpl implements IUserAuthenticationDao {
     IDatabase database;
     Connection connection;
 
@@ -27,19 +27,14 @@ public class DriverAuthenticationDaoImpl implements IDriverAuthenticationDao{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            database.closeDatabaseConnection();
         }
     }
 
     private static Driver buildDriverFrom(ResultSet resultSet) throws SQLException {
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Driver driver = null;
+
         while (resultSet.next()) {
             int driver_id = Integer.parseInt(resultSet.getString("driver_id"));
             String driver_email = resultSet.getString("driver_email");
@@ -56,7 +51,10 @@ public class DriverAuthenticationDaoImpl implements IDriverAuthenticationDao{
 
             driver = new Driver(driver_id, driver_email, driver_password, driver_license, driver_name, registered_vehicle_number, license_expiry_date, vehicle_name, vehicle_model, vehicle_color, driver_approval_status);
         }
-
         return driver;
     }
+
+
+
+
 }

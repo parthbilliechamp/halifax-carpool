@@ -3,10 +3,10 @@ package com.halifaxcarpool.customer.business.beans;
 
 public class RideRequest {
 
-    public int rideRequestId;
-    public int customerId;
-    public String startLocation;
-    public String endLocation;
+    private int rideRequestId;
+    private int customerId;
+    private String startLocation;
+    private String endLocation;
 
     public RideRequest() {
 

@@ -1,5 +1,6 @@
 package com.halifaxcarpool.customer.database.dao;
 
+import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.customer.business.beans.Customer;
 
 import java.util.ArrayList;
@@ -7,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CustomerAuthenticationDaoMockImpl implements ICustomerAuthenticationDao{
+public class CustomerAuthenticationDaoMockImpl implements IUserAuthenticationDao {
 
-    private static Map<List<String>, Customer> mockCustomerData = new HashMap<>();
-    private static List<String> emailAndPasswordList = new ArrayList<>();
+    private static final Map<List<String>, Customer> mockCustomerData = new HashMap<>();
+    private static final List<String> emailAndPasswordList = new ArrayList<>();
 
     static {
         populateMockCustomerData();

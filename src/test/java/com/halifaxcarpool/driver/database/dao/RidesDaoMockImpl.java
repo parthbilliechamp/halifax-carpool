@@ -1,5 +1,6 @@
 package com.halifaxcarpool.driver.database.dao;
 
+import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.ArrayList;
@@ -9,8 +10,10 @@ import java.util.Map;
 
 public class RidesDaoMockImpl implements IRidesDao {
 
-    private static Map<Integer, List<Ride>> driverIdToRideListMap = new HashMap<>();
-    private static Map<Integer, Ride> rideIdToRideMap = new HashMap<>();
+    private static final Map<Integer, List<Ride>> driverIdToRideListMap = new HashMap<>();
+
+    private static final Map<Integer, List<Ride>> activeCustomerRidesMap = new HashMap<>();
+    private static final Map<Integer, Ride> rideIdToRideMap = new HashMap<>();
 
     static {
         populateMockData();
@@ -24,7 +27,19 @@ public class RidesDaoMockImpl implements IRidesDao {
 
     @Override
     public List<Ride> getRides(int driverId) {
-        return driverIdToRideListMap.get(driverId);
+        if (driverIdToRideListMap.containsKey(driverId)) {
+            return driverIdToRideListMap.get(driverId);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<Ride> getActiveRides(int customerId) {
+        if (activeCustomerRidesMap.containsKey(customerId)) {
+            return activeCustomerRidesMap.get(customerId);
+        }
+        return new ArrayList<>();
     }
 
     @Override
@@ -32,24 +47,59 @@ public class RidesDaoMockImpl implements IRidesDao {
         return rideIdToRideMap.get(rideId);
     }
 
+    @Override
+    public boolean cancelRide(int rideId) {
+        if (rideIdToRideMap.containsKey(rideId)) {
+            rideIdToRideMap.remove(rideId);
+            return true;
+        }
+        return false;
+    }
+
     private static void populateMockData() {
         populateDriverToListData();
 
-        String startLocation = "6056 University Ave, Halifax, NS B3H 1W5";
-        String endLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
-        populateRide(1, 1, startLocation, endLocation);
+        populateActiveRidesMapData();
 
-        startLocation = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
-        endLocation = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
-        populateRide(2, 5, startLocation, endLocation);
+        String startLocationRide1 = "6056 University Ave, Halifax, NS B3H 1W5";
+        String endLocationRide1 = "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5";
+        populateRide(1, 1, startLocationRide1, endLocationRide1);
 
-        startLocation = "Saint Mary's University, 923 Robie St, Halifax, NS B3H 3C3";
-        endLocation = "Dalplex, 6260 South St, Halifax, NS B3H 4R2";
-        populateRide(12, 10, startLocation, endLocation);
+        String startLocationRide2 = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
+        String endLocationRide2 = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
+        populateRide(2, 5, startLocationRide2, endLocationRide2);
 
-        startLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L";
-        endLocation = "6056 University Ave, Halifax, NS B3H";
+        String startLocationRide3 = "Saint Mary's University, 923 Robie St, Halifax, NS B3H 3C3";
+        String endLocationRide3 = "Dalplex, 6260 South St, Halifax, NS B3H 4R2";
+        populateRide(12, 10, startLocationRide3, endLocationRide3);
+
+        String startLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L";
+        String endLocation = "6056 University Ave, Halifax, NS B3H";
         populateRide(11, 11, startLocation, endLocation);
+
+        String startLocationRide4 = "6328-6276 Quinpool Rd, Halifax, NS B3L";
+        String endLocationRide4 = "6056 University Ave, Halifax, NS B3H";
+        populateRide(11, 11, startLocationRide4, endLocationRide4);
+
+        String startLocationRide5 = "6328-6276 Quinpool Rd, Halifax, NS B3L";
+        String endLocationRide5 = "6056 University Ave, Halifax, NS B3H";
+        populateRide(13, 11, startLocationRide5, endLocationRide5);
+
+        String startLocationRide6 = "THE TEN SPOT halifax, South Street, Halifax, NS";
+        String endLocationRide6 = "The Vuze, Fenwick Tower, Fenwick Street, Halifax, Nova Scotia";
+        populateRide(34, 42, startLocationRide6, endLocationRide6);
+
+        String startLocationRide7 = "The Vuze, Fenwick Tower, Fenwick Street, Halifax, Nova Scotia";
+        String endLocationRide7 = "Dalplex, South Street, Halifax, Nova Scotia";
+        populateRide(36, 46, startLocationRide7, endLocationRide7);
+
+        String startLocationRide8 = "THalifax Backpackers Hostel, Gottingen Street, Halifax, NS";
+        String endLocationRide8 = "Fort Needham Memorial Park, Stairs Place, Halifax, NS";
+        populateRide(101, 40, startLocationRide8, endLocationRide8);
+
+        String startLocationRide9 = "Fairview Variety Quik-Way, 130 Main Av, Halifax, NS";
+        String endLocationRide9 = "Tipico pasta restaurant, Dutch Village Road, Halifax, Nova Scotia";
+        populateRide(102, 31, startLocationRide9, endLocationRide9);
     }
 
     private static void populateDriverToListData() {
@@ -73,21 +123,43 @@ public class RidesDaoMockImpl implements IRidesDao {
         rideIdToRideMap.put(rideId, ride);
     }
 
-    private static void insertRideMockData(Ride ride){
+    private static void insertRideMockData(Ride ride) {
         int driverId = ride.getDriverId();
         List<Ride> rides = new ArrayList<>();
         rides.add(ride);
         driverIdToRideListMap.put(driverId, rides);
     }
 
-    public Ride findRide(int rideId, int driverId){
+    public Ride findRide(int rideId, int driverId) {
         List<Ride> rides = driverIdToRideListMap.get(driverId);
-        for(Ride ride : rides){
-            if(ride.getRideId() == rideId){
+        for (Ride ride : rides) {
+            if (ride.getRideId() == rideId) {
                 return ride;
             }
         }
         return new Ride();
+    }
+
+    private static void populateActiveRidesMapData() {
+        List<Ride> rides = new ArrayList<>();
+        Ride ride = new Ride(15, 15, "Citadel",
+                "Halifax Park", 4, 1, "");
+        Driver driver = new Driver();
+        driver.setDriverName("Hakim");
+        driver.setRegisteredVehicleNumber("132");
+        ride.withDriver(driver);
+        ride.withFare(2.0);
+
+        Ride secondRide = new Ride(16, 16, "Brunswick st.",
+                "Halifax Park", 2, 1, "");
+        Driver secondDriver = new Driver();
+        driver.setDriverName("Ben");
+        driver.setRegisteredVehicleNumber("132");
+        ride.withDriver(secondDriver);
+        ride.withFare(4.0);
+        rides.add(ride);
+        rides.add(secondRide);
+        activeCustomerRidesMap.put(1, rides);
     }
 
 }
