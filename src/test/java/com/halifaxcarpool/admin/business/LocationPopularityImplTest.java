@@ -1,8 +1,8 @@
 package com.halifaxcarpool.admin.business;
 
-import com.halifaxcarpool.admin.business.popular.LocationPopularity;
+import com.halifaxcarpool.admin.business.popular.ILocationPopularity;
 import com.halifaxcarpool.admin.business.popular.LocationPopularityImpl;
-import com.halifaxcarpool.admin.database.dao.LocationPopularityDao;
+import com.halifaxcarpool.admin.database.dao.ILocationPopularityDao;
 import com.halifaxcarpool.admin.database.dao.LocationPopularityDaoMock;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ActiveProfiles("test")
 public class LocationPopularityImplTest {
 
-    private LocationPopularityDao locationPopularityDao = new LocationPopularityDaoMock();
-    private LocationPopularity locationPopularity = new LocationPopularityImpl(locationPopularityDao);
+    private IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private IAdminDaoFactory adminDaoFactory = new AdminDaoTestFactory();
+    private ILocationPopularityDao locationPopularityDao = adminDaoFactory.getLocationPopularityDao();
+    private ILocationPopularity locationPopularity = adminModelFactory.getLocationPopularity(locationPopularityDao);
 
     @Test
     public void getPopularPickUpLocationsTest(){
