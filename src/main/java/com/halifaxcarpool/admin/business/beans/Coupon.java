@@ -22,21 +22,27 @@ public class Coupon {
     public int couponId;
     public double discountPercentage;
 
-    public Date getExpiry() {
+    public String getExpiry() {
         return expiry;
     }
 
-    public void setExpiry(LocalDate expiry) {
+    public void setExpiry(String expiry) {
         this.expiry = expiry;
     }
 
-    public LocalDate expiry;
+    public String expiry;
 
-    public Coupon(int couponId, double discountPercentage, LocalDate expiry){
+    public Coupon(int couponId, double discountPercentage, String expiry){
         this.couponId = couponId;
         this.discountPercentage = discountPercentage;
         this.expiry = expiry;
     }
+
+    public Coupon(){
+
+    }
+
+
     @Override
     public String toString(){
         return "Coupon{" +

@@ -13,16 +13,15 @@
 <br />
 
 <div class="new_ride_form">
-    <h3>New Ride Create</h3>
-    <form action="#" th:action="@{/driver/create_new_ride}" th:object="${ride}" method="post">
-        <label>Start Location:</label><br />
-        <input type="text" th:field="*{startLocation}"><br />
-        <label>End Location: </label><br />
-        <input type="text" th:field="*{endLocation}"><br />
-        <label>Time and Date of Planned Ride:</label><br />
-        <input type="datetime-local" th:field="*{dateTime}"><br />
-        <label>Seats Available: </label><br />
-        <input type="number" th:field="*{seatsOffered}"><br />
+    <h3>New Coupon Creation</h3>
+    <form action="#" th:action="@{/admin/create_new_coupon}" th:object="${coupon}" method="post">
+        <label>Coupon ID:</label><br />
+        <input type="text" th:field="*{couponId}"><br />
+        <label>Discount Offered in Percentage(%): </label><br />
+        <input type="text" th:field="*{discountPercentage}"><br />
+        <label>Expiry Date:</label><br />
+        <input type="text" th:field="*{expiry}"><br />
+
 
         <input type="submit" value="Create" />
     </form>

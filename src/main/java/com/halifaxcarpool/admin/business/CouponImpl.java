@@ -7,8 +7,8 @@ import java.util.List;
 
 public class CouponImpl implements ICoupon {
     @Override
-    public void createCoupon(Coupon coupon, ICouponDao couponDao) {
-        couponDao.createCoupon(coupon);
+    public boolean createCoupon(Coupon coupon, ICouponDao couponDao) {
+        return couponDao.createCoupon(coupon);
     }
 
     @Override
@@ -22,10 +22,6 @@ public class CouponImpl implements ICoupon {
         couponDao.deleteCoupon(couponId);
     }
 
-    @Override
-    public Coupon updateCoupon(double discountPercentage, LocalDate expiry) {
-        return null;
-    }
 
     @Override
     public Double getMaximumDiscountValidToday(ICouponDao couponDao) {

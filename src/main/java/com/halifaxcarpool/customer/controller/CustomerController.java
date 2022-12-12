@@ -6,7 +6,6 @@ import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.business.*;
-import com.halifaxcarpool.customer.business.authentication.*;
 import com.halifaxcarpool.customer.business.beans.InvalidCustomer;
 import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.IRide;

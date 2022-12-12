@@ -25,7 +25,7 @@ public class CouponDaoImpl implements ICouponDao {
             CallableStatement statement = connection.prepareCall("CALL insert_coupon_details(?,?,?)");
             statement.setInt(1,coupon.getCouponId());
             statement.setDouble(2, coupon.getDiscountPercentage());
-            statement.setDate(3,coupon.getExpiry());
+            statement.setDate(3,java.sql.Date.valueOf(coupon.getExpiry()));
             statement.execute();
             return true;
         }
@@ -43,6 +43,7 @@ public class CouponDaoImpl implements ICouponDao {
     @Override
     public List<Coupon> viewCoupons() {
         try{
+            connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("CALL view_coupon()");
             return buildCouponRequestsForm(resultSet);
@@ -52,12 +53,8 @@ public class CouponDaoImpl implements ICouponDao {
             e.printStackTrace();
         }
         finally {
-            try {
-                connection.close();
-            }
-            catch(SQLException e){
-                e.printStackTrace();
-            }
+            database.closeDatabaseConnection();
+
         }
         return new ArrayList<>();
     }
@@ -108,7 +105,7 @@ public class CouponDaoImpl implements ICouponDao {
         while(resultSet.next()){
             int couponId = Integer.parseInt(resultSet.getString("coupon_id"));
             double discountPercentage = Double.parseDouble(resultSet.getString("discount_percentage"));
-            LocalDate expiry = LocalDate.parse(resultSet.getString("expiry_date"));
+            String expiry = resultSet.getString("expiry_date");
             Coupon coupon = new Coupon(couponId, discountPercentage, expiry);
             coupons.add(coupon);
 

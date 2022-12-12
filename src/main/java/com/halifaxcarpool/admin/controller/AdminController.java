@@ -41,10 +41,15 @@ public class AdminController {
     private static final String DRIVER_STATISTICS = "view_driver_stats";
     private static final String CUSTOMER_STATISTICS = "view_customer_stats";
     private static final String DRIVER_APPROVAL_REQUESTS = "view_driver_approval_requests";
-
+    private static final String ADMIN_CREATE_NEW_COUPON = "create_coupon";
 
     @GetMapping("/admin/view_discounts")
-    String viewCoupons(Model model) {
+    String viewCoupons(HttpServletRequest request, Model model) {
+
+        if(request.getSession().getAttribute("loggedInAdmin")== null
+                || request.getSession().getAttribute("loggedInAdmin") == (Object)1){
+            return "redirect:/admin/login";
+        }
         String couponAttribute = "coupons";
         ICoupon coupon = new CouponImpl();
         ICouponDao couponDao = new CouponDaoImpl();
@@ -53,6 +58,35 @@ public class AdminController {
         return VIEW_COUPONS_UI;
     }
 
+    @GetMapping("/admin/create_new_coupon")
+    String addNewCoupon(HttpServletRequest request, Model model){
+        if(request.getSession().getAttribute("loggedInAdmin")== null
+                || request.getSession().getAttribute("loggedInAdmin") == (Object)1){
+            return "redirect:/admin/login";
+        }
+        model.addAttribute("coupon",new Coupon());
+        return ADMIN_CREATE_NEW_COUPON;
+    }
+
+    @PostMapping("/admin/create_new_coupon")
+    String insertNewCoupon(@ModelAttribute("coupon")Coupon coupon){
+        ICoupon coupon1 = new CouponImpl();
+        ICouponDao couponDao = new CouponDaoImpl();
+        coupon1.createCoupon(coupon, couponDao);
+        return "redirect:/admin/view_discounts";
+    }
+
+    @GetMapping("/admin/delete_coupon")
+    String deleteCoupon(@RequestParam("couponId")int couponId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInAdmin")== null
+                || request.getSession().getAttribute("loggedInAdmin") == (Object)1){
+            return "redirect:/admin/login";
+        }
+        ICoupon coupon = new CouponImpl();
+        ICouponDao couponDao = new CouponDaoImpl();
+        coupon.deleteCoupon(couponId, couponDao);
+        return "redirect:/admin/view_discounts";
+    }
 
     @GetMapping("/admin/login")
     String adminLogin(Model model, HttpServletRequest httpServletRequest) {

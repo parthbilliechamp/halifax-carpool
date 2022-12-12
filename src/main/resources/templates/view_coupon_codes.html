@@ -9,11 +9,20 @@
     <title class="header">
         View Coupons
     </title>
+
+
+
+
+
 </head>
 <body>
 <br />
 <div class="container">
     <h3>View Coupons </h3>
+    <a href="/admin/create_new_coupon"
+       class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+        + Add
+    </a>
     <hr>
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -21,6 +30,7 @@
             <th>Coupon Id</th>
             <th>Discount Percentage %</th>
             <th>Expiry</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +38,10 @@
             <td th:text="${coupon.couponId}"/>
             <td th:text="${coupon.discountPercentage}" />
             <td th:text="${coupon.expiry}"/>
+            <td>
+            <a class="btn btn-danger"
+               th:href="@{/admin/delete_coupon(couponId=${coupon.couponId})}">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
