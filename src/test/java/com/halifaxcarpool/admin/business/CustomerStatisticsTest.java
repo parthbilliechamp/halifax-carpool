@@ -1,20 +1,13 @@
 package com.halifaxcarpool.admin.business;
 
-import com.halifaxcarpool.admin.business.statistics.DriverStatistics;
 import com.halifaxcarpool.admin.business.statistics.IUserStatisticsBuilder;
 import com.halifaxcarpool.admin.business.statistics.UserStatistics;
-import com.halifaxcarpool.admin.database.dao.DriverDetailsDaoMock;
 import com.halifaxcarpool.admin.database.dao.IUserDetails;
-import com.halifaxcarpool.customer.business.CustomerModelFactory;
-import com.halifaxcarpool.customer.business.CustomerModelMainFactory;
-import com.halifaxcarpool.driver.business.*;
+import com.halifaxcarpool.customer.business.CustomerDaoFactory;
+import com.halifaxcarpool.customer.business.CustomerDaoTestFactory;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class DriverStatisticsTest {
+public class CustomerStatisticsTest {
 
     private static final int numberOfUsers = 19;
     private static final int numberOfRides = 45;
@@ -23,9 +16,9 @@ public class DriverStatisticsTest {
 
     private IAdminModelFactory adminModelFactory = new AdminModelFactory();
 
-    private DriverDaoFactory driverModelFactory = new DriverDaoTestFactory();
+    private CustomerDaoFactory customerDaoFactory = new CustomerDaoTestFactory();
 
-    protected IUserDetails userDetails = driverModelFactory.getDriverDetailsDao();
+    protected IUserDetails userDetails = customerDaoFactory.getCustomerDetailsDao();
 
     private IUserStatisticsBuilder userStatisticsBuilder = adminModelFactory.getDriverStatisticsBuilder(userDetails);
 

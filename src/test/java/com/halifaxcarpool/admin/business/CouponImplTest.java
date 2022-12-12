@@ -13,7 +13,11 @@ import java.util.List;
 @SpringBootTest
 @ActiveProfiles("test")
 public class CouponImplTest{
-    private ICouponDao couponDaoMock = new CouponDaoMock();
+
+    private IAdminDaoFactory adminDaoFactory = new AdminDaoTestFactory();
+
+    private ICouponDao couponDaoMock = adminDaoFactory.getCouponDao();
+
 
     @Test
     public void viewCouponsTest(){

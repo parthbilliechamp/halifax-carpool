@@ -1,5 +1,6 @@
 package com.halifaxcarpool.customer.business;
 
+import com.halifaxcarpool.admin.database.dao.IUserDetails;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.database.dao.*;
@@ -38,6 +39,11 @@ public class CustomerDaoMainFactory implements CustomerDaoFactory {
     @Override
     public IRideNodeDao createRideNodeDao() {
         return new RideNodeDaoImpl();
+    }
+
+    @Override
+    public IUserDetails getCustomerDetailsDao() {
+        return new CustomerDetailsDaoImpl();
     }
 
 }
