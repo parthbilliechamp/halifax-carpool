@@ -11,26 +11,18 @@
     </title>
     <style>
 
-        .gradient-custom-3 {
-            /* fallback for old browsers */
-            background: #84fab0;
-
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
-
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
         }
 
-        .gradient-custom-4 {
-            /* fallback for old browsers */
-            background: #84fab0;
+        .black-border-2 {
+            border-color: black;
+            border-width: thin;
+        }
 
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
-
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+        .black-border-3 {
+            border-radius: 30px;
         }
 
     </style>
@@ -39,79 +31,79 @@
 
 
 <section class="vh-200 bg-image"
-         style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
-    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                    <div class="card m-3" style="border-radius: 15px;">
+                    <div class="card m-3 black-border-3 container h-100" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
                         <div class="card-body p-6 m-2">
                             <h2 class="text-uppercase text-center mb-3">Driver Registration</h2>
-                            <div th:object="${registrationError}" th:if="${registrationError != null}" class="alert alert-danger">
+                            <div th:object="${registrationError}" th:if="${registrationError != null}" class="alert alert-danger black-border-3">
                                 <p th:text="${registrationError}"></p>
                             </div>
                             <form role="form" th:action="@{/driver/register/save}" method="post" th:object="${driver}">
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="driverName">Your Name</label>
                                     <input type="text" th:field="*{driverName}" id="driverName"
-                                           class="form-control form-control-lg" required/>
+                                           class="form-control form-control-lg black-border-3" required/>
                                 </div>
 
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="driver_email">Your Email</label>
                                     <input type="email" th:field="*{driverEmail}" id="driver_email"
-                                           class="form-control form-control-lg"/>
+                                           class="form-control form-control-lg black-border-3"/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="driver_password">Enter a Password</label>
                                     <input th:field="*{driverPassword}" type="password" id="driver_password"
-                                           class="form-control form-control-lg" required/>
+                                           class="form-control form-control-lg black-border-3" required/>
                                 </div>
 
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="driver_license">License Number</label>
                                     <input type="text" th:field="*{driverLicense}" id="driver_license"
-                                           class="form-control form-control-lg" required/>
+                                           class="form-control form-control-lg black-border-3" required/>
                                 </div>
 
                                 <div id="date-picker-example" class="form-outline mb-2 input-with-post-icon datepicker"
                                      inline="true">
                                     <label for="license_expiry_date">License Expiry Date</label>
                                     <input th:field="*{licenseExpiryDate}" placeholder="Select date" type="date"
-                                           id="license_expiry_date" class="form-control" required>
+                                           id="license_expiry_date" class="form-control black-border-3" required>
                                     <i class="fas fa-calendar input-prefix"></i>
                                 </div>
 
-                                <div class="form-outline mb-4">
+                                <div class="form-outline mb-2">
                                     <label class="form-label" for="registered_vehicle_number">Vehicle
                                         Number</label>
                                     <input type="text" th:field="*{registeredVehicleNumber}"
-                                           id="registered_vehicle_number" class="form-control form-control-lg"
+                                           id="registered_vehicle_number" class="form-control form-control-lg black-border-3"
                                            required/>
                                 </div>
 
-                                <div class="form-outline mb-4">
+                                <div class="form-outline mb-2">
                                     <label class="form-label" for="vehicle_name">Vehicle Name</label>
                                     <input type="text" th:field="*{vehicleName}" id="vehicle_name"
-                                           class="form-control form-control-lg" required/>
+                                           class="form-control form-control-lg black-border-3" required/>
                                 </div>
 
-                                <div class="form-outline mb-4">
+                                <div class="form-outline mb-2">
                                     <label class="form-label" for="vehicle_model">Vehicle Model</label>
                                     <input type="text" th:field="*{vehicleModel}" id="vehicle_model"
-                                           class="form-control form-control-lg" required/>
+                                           class="form-control form-control-lg black-border-3" required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="vehicle_color">Vehicle Color</label>
                                     <input type="text" th:field="*{vehicleColor}" id="vehicle_color"
-                                           class="form-control form-control-lg" required/>
+                                           class="form-control form-control-lg black-border-3" required/>
                                 </div>
 
                                 <div class="d-flex justify-content-center">
                                     <button type="submit" value="Request"
-                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                                            class="btn black-border-1 black-border-3 btn-block btn-lg text-body">
                                         Register
                                     </button>
                                 </div>

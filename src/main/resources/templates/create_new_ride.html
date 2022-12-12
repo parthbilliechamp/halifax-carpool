@@ -1,31 +1,97 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<head>-->
+<!--    <link rel="stylesheet" th:href="@{/css/demo.css}">-->
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
+<!--      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"-->
+<!--      crossorigin="anonymous">-->
+<!--    <title class="header">-->
+<!--        Create New Ride-->
+<!--    </title>-->
+<!--</head>-->
+<!--<br />-->
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--    <a class="navbar-brand" href="/driver/view_rides">Driver Home</a>-->
+<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        <span class="navbar-toggler-icon"></span>-->
+<!--    </button>-->
+<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--        <ul class="navbar-nav mr-auto">-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/driver/create_new_ride">Create New Ride<span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/driver/view_rides">View Rides <span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/driver/view_profile"> View Profile <span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/driver/logout">Logout <span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</nav>-->
+<!--<div class="new_ride_form">-->
+<!--    <h3>New Ride Create</h3>-->
+<!--    <form action="#" th:action="@{/driver/create_new_ride}" th:object="${ride}" method="post">-->
+<!--        <label>Start Location:</label><br />-->
+<!--        <input type="text" th:field="*{startLocation}"><br />-->
+<!--        <label>End Location: </label><br />-->
+<!--        <input type="text" th:field="*{endLocation}"><br />-->
+<!--        <label>Time and Date of Planned Ride:</label><br />-->
+<!--        <input type="datetime-local" th:field="*{dateTime}"><br />-->
+<!--        <label>Seats Available: </label><br />-->
+<!--        <input type="number" th:field="*{seatsOffered}"><br />-->
+
+<!--        <input type="submit" value="Create" />-->
+<!--    </form>-->
+<!--</div>-->
+<!--</html>-->
+
+<html>
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-      crossorigin="anonymous">
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
     <title class="header">
-        Create New Ride
+        Create a ride
     </title>
+    <style>
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
+        }
+
+        .black-border-2 {
+            border-color: black;
+            border-width: thin;
+        }
+
+        .black-border-3 {
+            border-radius: 30px;
+        }
+    </style>
 </head>
-<br />
+<body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/driver/view_rides">Driver Home</a>
+    <a class="navbar-brand" style="margin-left: 30px" href="/driver/view_rides">Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/driver/create_new_ride">Create New Ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/driver/create_new_ride">Add a ride<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/driver/view_rides">View Rides <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/driver/view_rides">Your Rides <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/driver/view_profile"> View Profile <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/driver/view_profile">Profile <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/driver/logout">Logout <span class="sr-only">(current)</span></a>
@@ -33,19 +99,45 @@
         </ul>
     </div>
 </nav>
-<div class="new_ride_form">
-    <h3>New Ride Create</h3>
-    <form action="#" th:action="@{/driver/create_new_ride}" th:object="${ride}" method="post">
-        <label>Start Location:</label><br />
-        <input type="text" th:field="*{startLocation}"><br />
-        <label>End Location: </label><br />
-        <input type="text" th:field="*{endLocation}"><br />
-        <label>Time and Date of Planned Ride:</label><br />
-        <input type="datetime-local" th:field="*{dateTime}"><br />
-        <label>Seats Available: </label><br />
-        <input type="number" th:field="*{seatsOffered}"><br />
+<section class="vh-100 bg-image"
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col -md-9 col-lg-7 col-xl-6">
+                    <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-5">Create a ride</h2>
+                            <form th:action="@{/driver/create_new_ride}" th:object="${ride}" method="post">
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="startLocation">Start Location</label>
+                                    <input type="text" th:field="*{startLocation}" id="startLocation"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="endLocation">End Location</label>
+                                    <input type="text" th:field="*{endLocation}" id="endLocation"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="seatsOffered">Seats Available</label>
+                                    <input type="number" th:field="*{seatsOffered}" id="seatsOffered"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" value="Request"
+                                            class="btn btn-block btn-lg text-body black-border-1 black-border-3">Create
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <input type="submit" value="Create" />
-    </form>
-</div>
+</body>
+
 </html>

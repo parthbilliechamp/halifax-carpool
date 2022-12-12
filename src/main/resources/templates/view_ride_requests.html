@@ -1,32 +1,115 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--<head>-->
+<!--    <link rel="stylesheet" th:href="@{/css/demo.css}">-->
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
+<!--          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"-->
+<!--          crossorigin="anonymous">-->
+<!--    <title class="header">-->
+<!--        View Ride Requests-->
+<!--    </title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<br />-->
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--    <a class="navbar-brand" href="/customer/view_ride_requests">Customer Home</a>-->
+<!--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        <span class="navbar-toggler-icon"></span>-->
+<!--    </button>-->
+<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--        <ul class="navbar-nav mr-auto">-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/customer/create_ride_request">Create New Ride<span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/customer/view_profile">Update Profile<span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/customer/view_ongoing_rides">View Ongoing Rides<span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--            <li class="nav-item active">-->
+<!--                <a class="nav-link" href="/customer/logout">Logout <span class="sr-only">(current)</span></a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</nav>-->
+<!--<div class="container">-->
+<!--    <h3>View Ride Requests</h3>-->
+<!--    <hr>-->
+<!--    <table class="table table-bordered table-striped">-->
+<!--        <thead class="thead-dark">-->
+<!--        <tr>-->
+<!--            <th>Request Id</th>-->
+<!--            <th>Start location</th>-->
+<!--            <th>End Location</th>-->
+<!--            <th>View Ride Recommendation</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="rideRequest : ${rideRequests}">-->
+<!--            <td th:text="${rideRequest.rideRequestId}"/>-->
+<!--            <td th:text="${rideRequest.startLocation}"/>-->
+<!--            <td th:text="${rideRequest.endLocation}"/>-->
+<!--            <td>-->
+<!--                <a class="btn btn-secondary"-->
+<!--                   th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},-->
+<!--                   startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended Rides</a>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <a class="btn btn-secondary btn-alert"-->
+<!--                   th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel Request</a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
     <title class="header">
-        View Ride Requests
+        Register Customer
     </title>
+    <style>
+
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
+        }
+
+        .black-border-2 {
+            border-color: red;
+            border-width: medium;
+        }
+
+        .black-border-3 {
+            border-radius: 30px;
+        }
+
+    </style>
 </head>
 <body>
-<br />
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/customer/view_ride_requests">Customer Home</a>
+    <a class="navbar-brand" style="margin-left: 30px" href="/customer/view_ride_requests">Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/create_ride_request">Create New Ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/create_ride_request">Request a ride<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/view_profile">Update Profile<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/view_ongoing_rides">Current Ride<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/view_ongoing_rides">View Ongoing Rides<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/view_profile">Profile<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/customer/logout">Logout <span class="sr-only">(current)</span></a>
@@ -34,36 +117,50 @@
         </ul>
     </div>
 </nav>
-<div class="container">
-    <h3>View Ride Requests</h3>
-    <hr>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>Request Id</th>
-            <th>Start location</th>
-            <th>End Location</th>
-            <th>View Ride Recommendation</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="rideRequest : ${rideRequests}">
-            <td th:text="${rideRequest.rideRequestId}"/>
-            <td th:text="${rideRequest.startLocation}"/>
-            <td th:text="${rideRequest.endLocation}"/>
-            <td>
-                <a class="btn btn-secondary"
-                   th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},
-                   startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended Rides</a>
-            </td>
-            <td>
-                <a class="btn btn-secondary btn-alert"
-                   th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel Request</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
-</div>
+<section class="vh-100 bg-image"
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div>
+                    <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-5">Your ride requests</h2>
+                            <table class="table black-border-3">
+                                <thead>
+                                <tr>
+                                    <th>Request Id</th>
+                                    <th>Start location</th>
+                                    <th>End Location</th>
+                                    <th>View Ride Recommendation</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="rideRequest : ${rideRequests}">
+                                    <td th:text="${rideRequest.rideRequestId}"/>
+                                    <td th:text="${rideRequest.startLocation}"/>
+                                    <td th:text="${rideRequest.endLocation}"/>
+                                    <td>
+                                        <a class="btn black-border-1 black-border-3"
+                                           th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},
+                   startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended Rides</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn black-border-2 black-border-3" style="color: red"
+                                           th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel Request</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 </body>
 </html>
