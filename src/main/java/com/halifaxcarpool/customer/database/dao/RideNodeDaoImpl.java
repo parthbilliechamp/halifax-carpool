@@ -69,7 +69,7 @@ public class RideNodeDaoImpl implements IRideNodeDao {
     }
 
     @Override
-    public int getLatestRideId() {
+    public int getLatestRideNodeId() {
         int rideId = 0;
         try {
             connection = database.openDatabaseConnection();
