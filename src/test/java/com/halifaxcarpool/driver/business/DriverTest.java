@@ -67,22 +67,22 @@ public class DriverTest {
             assertTrue(true);
         } catch (Exception e) {
             e.printStackTrace();
-            fail();
+            assertTrue(false);
         }
     }
 
     @Test
     public void driverRegistrationFailureTest() {
-        int driverId = 20;
-        driver = new Driver(driverId, "ab.love@gmail.com", "rekab.aL@654", "9631597562", "Alicia Baker", "OLK-9880", "2024-06-15", "Ford", "F9", "Red", 0);
+        int driver_id = 21;
+        Driver driver = new Driver(driver_id, "simonehot@gmail.com", "?isSimoneWell?@123", "9665235146", "Simon Taylor", "KJK-9090", "2026-09-22", "Ford", "Ecosport", "White", 0);
         IUserDao driverDao = driverDaoTestFactory.getDriverDao();
 
         try {
             driver.registerUser(driverDao);
-            assertTrue(true);
+            assertTrue(false);
         } catch (Exception e) {
             e.printStackTrace();
-            fail();
+            assertTrue(true);
         }
     }
 

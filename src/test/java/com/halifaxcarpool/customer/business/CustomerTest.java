@@ -61,21 +61,23 @@ public class CustomerTest {
             assertTrue(true);
         } catch (Exception e) {
             e.printStackTrace();
-            fail();
+            assertTrue(false);
         }
+
     }
 
     @Test
     public void customerRegistrationFailureTest() {
-        int customerId = 5;
-        Customer customer = new Customer(customerId, "Jake Firl", "8856041798", "jakeacceptsall@gmail.com", "rocker233<!>");
+        int customerId = 4;
+        Customer customer = new Customer(customerId, "Kane Lart", "9532120333", "klklkl@gmail.ca", "kllk9009@3");
         IUserDao customerDao = customerDaoTestFactory.getCustomerDao();
+
         try {
             customer.registerUser(customerDao);
-            assertTrue(true);
+            assertTrue(false);
         } catch (Exception e) {
             e.printStackTrace();
-            fail();
+            assertTrue(true);
         }
     }
 

@@ -220,7 +220,7 @@ public class CustomerController {
         Customer customer = (Customer) customerAttribute;
         RideRequest rideRequest = new RideRequest(rideRequestId, customer.getCustomerId(), startLocation, endLocation);
 
-        BaseRideFinder rideFinder = customerFactory.getDirectRouteRideFinder();
+        BaseRideFinder rideFinder = customerObjectFactory.getDirectRouteRideFinder();
         rideFinder = new MultipleRouteRideFinderDecorator(rideFinder);
 
         List<List<Ride>> ListOfRideList = rideFinder.findMatchingRides(rideRequest);
@@ -303,7 +303,6 @@ public class CustomerController {
     @PostMapping("/customer/create_ride_request")
     public String createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest,
                                     HttpServletRequest request) {
-        //TODO Not working fix the bug please
 
         String loggedInCustomerLiteral = "loggedInCustomer";
 
@@ -312,13 +311,8 @@ public class CustomerController {
         System.out.println(customer);
 
         rideRequest.setCustomerId(customer.getCustomerId());
-        IRideRequestsDao rideRequestsDao = customerDaoFactory.createRideRequestsDao();
-        rideRequest.createRideRequest(rideRequestsDao);
-
-        IRideRequest rideRequestForCreation = customerObjectFactory.getRideRequest();
         IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
-
-        rideRequestForCreation.createRideRequest(rideRequestsDao);
+        rideRequest.createRideRequest(rideRequestsDao);
 
         return "redirect:/customer/view_ride_requests";
     }

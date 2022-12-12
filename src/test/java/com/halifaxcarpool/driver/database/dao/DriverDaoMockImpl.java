@@ -74,10 +74,11 @@ public class DriverDaoMockImpl extends IUserDao {
         Driver driver = (Driver) user;
         int driverId;
         driverId = driver.getDriverId();
-        if(driverIdToDriverMap.containsKey(driverId)) {
+        if(mockDriverData.containsKey(driverId)) {
             throw new Exception("Driver Already Exists");
         }
-        driverIdToDriverMap.put(driverId, driver);
+        mockDriverData.put(driverId, driver);
+        System.out.println(mockDriverData);
     }
 
 
