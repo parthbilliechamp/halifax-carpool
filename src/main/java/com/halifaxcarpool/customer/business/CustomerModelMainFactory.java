@@ -1,19 +1,27 @@
 package com.halifaxcarpool.customer.business;
 
+import com.halifaxcarpool.commons.business.beans.User;
+import com.halifaxcarpool.customer.business.beans.Customer;
+import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.recommendation.DirectRouteRideFinder;
-import com.halifaxcarpool.customer.business.recommendation.RideFinder;
+import com.halifaxcarpool.customer.business.recommendation.BaseRideFinder;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 
-public class CustomerBusinessObjectFactoryMain implements ICustomerBusinessObjectFactory {
+public class CustomerModelMainFactory implements CustomerModelFactory {
 
     @Override
-    public IRideRequest getRideRequest() {
-        return new RideRequestImpl();
+    public User getCustomer() {
+        return new Customer();
     }
 
     @Override
-    public RideFinder getDirectRouteRideFinder() {
+    public IRideRequest getRideRequest() {
+        return new RideRequest();
+    }
+
+    @Override
+    public BaseRideFinder getDirectRouteRideFinder() {
         return new DirectRouteRideFinder();
     }
 

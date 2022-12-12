@@ -10,4 +10,6 @@ public interface IRideRequestsDao {
 
     List<RideRequest> viewRideRequests(int customerId);
 
+    void cancelRideRequest(RideRequest rideRequest);
+
 }

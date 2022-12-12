@@ -5,6 +5,12 @@ public class RideRequestNode {
     private double longitude;
     private int rideRequestId;
 
+    public RideRequestNode(double latitude, double longitude, int rideRequestId) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.rideRequestId = rideRequestId;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -26,12 +32,6 @@ public class RideRequestNode {
     }
 
     public void setRideRequestId(int rideRequestId) {
-        this.rideRequestId = rideRequestId;
-    }
-
-    public RideRequestNode(double latitude, double longitude, int rideRequestId) {
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.rideRequestId = rideRequestId;
     }
 

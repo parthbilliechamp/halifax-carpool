@@ -5,10 +5,7 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,12 +45,12 @@ public class DriverApprovalDaoImpl implements DriverApprovalDao{
     @Override
     public boolean acceptDriverRequest(String id) {
         connection = database.openDatabaseConnection();
-        Statement statement;
         try {
-            statement = connection.createStatement();
-            statement.executeQuery("CALL accept_driver_profile("+ id +")");
+            String SQL_STRING = "{CALL accept_driver_profile(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, id);
+            stmt.execute();
         } catch (SQLException e) {
-            System.err.println(e);
             return false;
         }finally {
             database.closeDatabaseConnection();
@@ -64,12 +61,12 @@ public class DriverApprovalDaoImpl implements DriverApprovalDao{
     @Override
     public boolean rejectDriverRequest(String id) {
         connection = database.openDatabaseConnection();
-        Statement statement;
         try {
-            statement = connection.createStatement();
-            statement.executeQuery("CALL reject_driver_profile("+ id +")");
+            String SQL_STRING = "{CALL reject_driver_profile(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, id);
+            stmt.execute();
         } catch (SQLException e) {
-            System.err.println(e);
             return false;
         }finally {
             database.closeDatabaseConnection();

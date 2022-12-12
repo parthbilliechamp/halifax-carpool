@@ -5,7 +5,7 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.List;
 
-public abstract class RideFinder {
+public abstract class BaseRideFinder {
 
     public abstract List<List<Ride>> findMatchingRides(RideRequest rideRequest);
 

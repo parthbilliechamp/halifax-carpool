@@ -16,9 +16,9 @@ import java.util.List;
 //TODO one of the test case is throwing NPE
 @SpringBootTest
 @ActiveProfiles("test")
-public class RideImplTest {
+public class RideTest {
     private final IRidesDao ridesDao = new RidesDaoMockImpl();
-    IRide ride = new RideImpl();
+    IRide ride = new Ride();
 
     @Test
     public void viewRidesTest() {
@@ -52,7 +52,7 @@ public class RideImplTest {
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderMockImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
         IRideNode rideNode = new RideNodeImpl();
-        assert ride.createNewRide(rideObject, ridesDao, rideNodeDao, directionPointsProvider, rideNode);
+        assert rideObject.createNewRide(ridesDao, rideNodeDao, directionPointsProvider, rideNode);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class RideImplTest {
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderMockImpl();
         IRideNodeDao rideNodeDao = new RideNodeDaoMockImpl();
         IRideNode rideNode = new RideNodeImpl();
-        boolean isRideCreated = ride.createNewRide(rideObject, ridesDao, rideNodeDao,
+        boolean isRideCreated = rideObject.createNewRide(ridesDao, rideNodeDao,
                 directionPointsProvider, rideNode);
         assert Boolean.FALSE.equals(isRideCreated);
     }

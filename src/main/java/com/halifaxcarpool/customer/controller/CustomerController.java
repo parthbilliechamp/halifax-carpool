@@ -1,23 +1,19 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.commons.business.CommonsObjectFactoryImpl;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
-import com.halifaxcarpool.commons.business.authentication.UserAuthenticationImpl;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.business.*;
-import com.halifaxcarpool.customer.business.beans.InvalidCustomer;
 import com.halifaxcarpool.customer.database.dao.*;
-import com.halifaxcarpool.driver.business.IRide;
-import com.halifaxcarpool.driver.business.IRideToRequestMapper;
+import com.halifaxcarpool.driver.business.*;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.recommendation.*;
-import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
-import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +35,11 @@ public class CustomerController {
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
     private static final String CUSTOMER_PROFILE_FORM = "update_customer_profile";
 
-    private final ICustomerBusinessObjectFactory customerObjectFactory = new CustomerBusinessObjectFactoryMain();
-    private final ICustomerDaoObjectFactory customerObjectDaoFactory = new CustomerDaoObjectFactoryImplMain();
+    private final CommonsObjectFactoryImpl commonsObjectFactory = new CommonsObjectFactoryImpl();
+    private final CustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
+    private final CustomerDaoFactory customerObjectDaoFactory = new CustomerDaoMainFactory();
+    private final DriverModelFactory driverModelFactory = new DriverModelMainFactory();
+    private final DriverDaoFactory driverDaoFactory = new DriverDaoMainFactory();
 
     private static final Map<String, String> redirectPageStorage = new HashMap<String, String>() {
         {
@@ -53,11 +52,12 @@ public class CustomerController {
         String customerLiteral = "customer";
         String loggedInCustomerLiteral = "loggedInCustomer";
         String loggedInErrorLiteral = "loggedInError";
+        Object customerAttribute = httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral);
 
         model.addAttribute(customerLiteral, new Customer());
-        if (httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral) == (Object) 1) {
+        if (customerAttribute == (Object) 1) {
             model.addAttribute(loggedInErrorLiteral, "noError");
-        } else if (httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral) == (Object) 0) {
+        } else if (customerAttribute == (Object) 0) {
             model.addAttribute(loggedInErrorLiteral, "error");
             httpServletRequest.getSession().setAttribute(loggedInCustomerLiteral, 1);
         }
@@ -71,19 +71,20 @@ public class CustomerController {
         String customerLiteral = "customer";
         String loggedInCustomerLiteral = "loggedInCustomer";
 
-        User customerUser = new Customer();
-        IUserAuthentication customerAuthentication = new UserAuthenticationImpl();
-        IUserAuthenticationDao customerAuthenticationDao = new CustomerAuthenticationDaoImpl();
-
         String email = customer.getCustomerEmail();
         String password = customer.getCustomerPassword();
+
+        User customerUser = customerObjectFactory.getCustomer();
+        IUserAuthentication customerAuthentication = commonsObjectFactory.authenticateUser();
+        IUserAuthenticationDao customerAuthenticationDao = customerObjectDaoFactory.getCustomerAuthenticationDao();
 
         User validCustomer =
                 customerUser.loginUser(email, password, customerAuthentication, customerAuthenticationDao);
 
-        model.addAttribute("customer", customer);
+        model.addAttribute(customerLiteral, customer);
         if (null == validCustomer) {
-            httpServletRequest.getSession().setAttribute("loggedInCustomer", new InvalidCustomer());
+            httpServletRequest.getSession().setAttribute(loggedInCustomerLiteral, 0);
+            System.out.println(httpServletRequest.getSession().getAttribute("loggedInCustomer"));
             return "redirect:/customer/login";
         }
 
@@ -95,35 +96,59 @@ public class CustomerController {
     String logoutCustomer(@ModelAttribute("customer") Customer customer, HttpServletRequest
             httpServletRequest) {
         Customer customerUser = (Customer) httpServletRequest.getSession().getAttribute("loggedInCustomer");
-        //TODO implement with invalid user feature
-        if (httpServletRequest.getSession().getAttribute("loggedInCustomer") != (Object) 0) {
+
+        if (customerUser != (Object) 0) {
             httpServletRequest.getSession().setAttribute("loggedInCustomer", 1);
         }
 
         return "redirect:/";
     }
-
     @GetMapping("/customer/register")
-    String registerCustomer(Model model) {
-        //call to factory to return object
-        Customer customer = new Customer();
-        model.addAttribute("customer", customer);
+    String registerCustomer(Model model, HttpServletRequest httpServletRequest) {
+        String customerLiteral = "customer";
+        String customerThatTriedToRegisterLiteral = "customerThatTriedToRegister";
+        String registrationErrorLiteral = "registrationError";
+
+        User customer = customerObjectFactory.getCustomer();
+        Object registrationSessionErrorAttribute = httpServletRequest.getSession().getAttribute(customerThatTriedToRegisterLiteral);
+
+        model.addAttribute(customerLiteral, customer);
+        if (registrationSessionErrorAttribute != null) {
+            model.addAttribute(registrationErrorLiteral, registrationSessionErrorAttribute.toString());
+            httpServletRequest.getSession().setAttribute(customerThatTriedToRegisterLiteral, null);
+        }
         return CUSTOMER_REGISTRATION_FORM;
     }
 
     @PostMapping("/customer/register/save")
-    String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer) {
-        IUserDao userDao = new CustomerDaoImpl();
-        customer.registerUser(userDao);
+    String saveRegisteredCustomer(@ModelAttribute("customer") Customer customer, HttpServletRequest httpServletRequest) {
+        String customerThatTriedToRegisterLiteral = "customerThatTriedToRegister";
+        IUserDao userDao = customerObjectDaoFactory.getCustomerDao();
+
+        try {
+            customer.registerUser(userDao);
+        } catch (Exception e) {
+            httpServletRequest.getSession().setAttribute(customerThatTriedToRegisterLiteral, e.getMessage());
+            return "redirect:/customer/register";
+        }
+
         return "redirect:/customer/login";
     }
 
     @GetMapping("/customer/view_profile")
     String getCustomerProfile(Model model,
                               HttpServletRequest request) {
+        String loggedInCustomerLiteral = "loggedInCustomer";
         String customerProfileLiteral = "customerProfile";
 
-        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
+        Object customerAttribute = request.getSession().getAttribute(loggedInCustomerLiteral);
+
+        if (customerAttribute == null || customerAttribute == (Object) 1) {
+            return "redirect:/customer/login";
+        }
+
+        Customer customer = (Customer) customerAttribute;
+
         model.addAttribute(customerProfileLiteral, customer);
         return CUSTOMER_PROFILE_FORM;
     }
@@ -139,11 +164,14 @@ public class CustomerController {
     @PostMapping("/customer/update_profile")
     String updateCustomerProfile(@ModelAttribute("customerProfile") Customer customerProfile, HttpServletRequest request) {
         String loggedInCustomerLiteral = "loggedInCustomer";
+
         Customer validCustomer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
         customerProfile.setCustomerId(validCustomer.getCustomerId());
         customerProfile.setCustomerPassword(validCustomer.getCustomerPassword());
-        IUserDao customerDao = new CustomerDaoImpl();
+
+        IUserDao customerDao = customerObjectDaoFactory.getCustomerDao();
         customerProfile.updateUser(customerDao);
+
         request.getSession().setAttribute(loggedInCustomerLiteral, customerProfile);
         return "redirect:/customer/view_ride_requests";
     }
@@ -151,16 +179,21 @@ public class CustomerController {
     @GetMapping("/customer/view_ride_requests")
     String viewRides(Model model,
                      HttpServletRequest request) {
-        if (request.getSession().getAttribute("loggedInCustomer") == null || request.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
+        String loggedInCustomerLiteral = "loggedInCustomer";
+        String rideRequestsAttribute = "rideRequests";
+        Object customerAttribute = request.getSession().getAttribute(loggedInCustomerLiteral);
+
+        if (customerAttribute == null || customerAttribute == (Object) 1) {
             return "redirect:/customer/login";
         }
-        String rideRequestsAttribute = "rideRequests";
-        String loggedInCustomerLiteral = "loggedInCustomer";
 
-        Customer customer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
+        Customer customer = (Customer) customerAttribute;
+
         IRideRequest viewRideRequests = customerObjectFactory.getRideRequest();
-        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.getRideRequestsDao();
+        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
+
         List<RideRequest> rideRequests = viewRideRequests.viewRideRequests(customer.getCustomerId(), rideRequestsDao);
+
         model.addAttribute(rideRequestsAttribute, rideRequests);
         return VIEW_RIDE_REQUESTS;
     }
@@ -171,22 +204,23 @@ public class CustomerController {
                                 @RequestParam("endLocation") String endLocation,
                                 HttpServletRequest httpServletRequest,
                                 Model model) {
-        //TODO refactor it
-        if (httpServletRequest.getSession().getAttribute("loggedInCustomer") == null ||
-                httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
-            return "redirect:/customer/login";
-        }
+        String loggedInCustomerLiteral = "loggedInCustomer";
         List<List<Ride>> singleRidesList = new ArrayList<>();
         List<List<Ride>> multiRidesList = new ArrayList<>();
-        String loggedInCustomerLiteral = "loggedInCustomer";
         String rideRequestIdLiteral = "rideRequestId";
         String recommendedSingleRidesAttribute = "recommendedSingleRides";
         String recommendedMultiRidesAttribute = "recommendedMultiRides";
+        Object customerAttribute = httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral);
 
-        Customer customer = (Customer) httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral);
+        if (customerAttribute == null ||
+                customerAttribute == (Object) 1) {
+            return "redirect:/customer/login";
+        }
+
+        Customer customer = (Customer) customerAttribute;
         RideRequest rideRequest = new RideRequest(rideRequestId, customer.getCustomerId(), startLocation, endLocation);
 
-        RideFinder rideFinder = customerObjectFactory.getDirectRouteRideFinder();
+        BaseRideFinder rideFinder = customerObjectFactory.getDirectRouteRideFinder();
         rideFinder = new MultipleRouteRideFinderDecorator(rideFinder);
 
         List<List<Ride>> ListOfRideList = rideFinder.findMatchingRides(rideRequest);
@@ -198,6 +232,7 @@ public class CustomerController {
                 multiRidesList.add(rideList);
             }
         }
+
         model.addAttribute(recommendedSingleRidesAttribute, singleRidesList);
         model.addAttribute(recommendedMultiRidesAttribute, multiRidesList);
         model.addAttribute(rideRequestIdLiteral, rideRequestId);
@@ -208,39 +243,59 @@ public class CustomerController {
     @GetMapping("/customer/send_ride_request")
     String sendRideRequest(@RequestParam("rideId") int rideId,
                            @RequestParam("rideRequestId") int rideRequestId, HttpServletRequest httpServletRequest) {
-        if (httpServletRequest.getSession().getAttribute("loggedInCustomer") == null || httpServletRequest.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
+        String loggedInCustomerLiteral = "loggedInCustomer";
+        Object customerAttribute = httpServletRequest.getSession().getAttribute(loggedInCustomerLiteral);
+
+        if (customerAttribute == null || customerAttribute == (Object) 1) {
             return "redirect:/customer/login";
         }
         IRideToRequestMapper rideToRequestMapper = customerObjectFactory.getRideToRequestMapper();
-        IRideToRequestMapperDao rideToRequestMapperDao = customerObjectDaoFactory.getRideToRequestMapperDao();
+        IRideToRequestMapperDao rideToRequestMapperDao = customerObjectDaoFactory.createRideToRequestMapperDao();
+
         rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
+
         return VIEW_RECOMMENDED_RIDES;
     }
 
     @GetMapping("/customer/view_ongoing_rides")
     public String viewOngoingRides(HttpServletRequest request,
                                    Model model) {
-        Customer customer = (Customer) request.getSession().getAttribute("loggedInCustomer");
-        //TODO call driver factory
-        IRide ride = new RideImpl();
-        IRidesDao ridesDao = new RidesDaoImpl();
+        String loggedInCustomerLiteral = "loggedInCustomer";
+        String activeRidesLiteral = "activeRides";
+        Object customerAttribute = request.getSession().getAttribute(loggedInCustomerLiteral);
+
+        if (customerAttribute == null || customerAttribute == (Object) 1) {
+            return "redirect:/customer/login";
+        }
+
+        Customer customer = (Customer) customerAttribute;
+
+        IRide ride = driverModelFactory.getDriverRide();
+        IRidesDao ridesDao = driverDaoFactory.getDriverRidesDao();
+
         List<Ride> ongoingRides = ride.viewOngoingRides(customer.getCustomerId(), ridesDao);
-        model.addAttribute("activeRides", ongoingRides);
+
+        model.addAttribute(activeRidesLiteral, ongoingRides);
         return "view_ongoing_rides";
     }
 
     @GetMapping("/customer/create_ride_request")
     public String showRideCreation(Model model,
                                    HttpServletRequest request) {
-        if (request.getSession().getAttribute("loggedInCustomer") == null || request.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
-            return "redirect:/customer/login";
-        }
+
         String loggedInCustomerLiteral = "loggedInCustomer";
         String rideRequestLiteral = "rideRequest";
+        Object customerAttribute = request.getSession().getAttribute(loggedInCustomerLiteral);
+
+        if (customerAttribute == null || customerAttribute == (Object) 1) {
+            return "redirect:/customer/login";
+        }
 
         Customer customer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
+
         RideRequest rideRequest = new RideRequest();
         rideRequest.setCustomerId(customer.getCustomerId());
+
         model.addAttribute(rideRequestLiteral, rideRequest);
         return "create_ride_request";
     }
@@ -248,16 +303,37 @@ public class CustomerController {
     @PostMapping("/customer/create_ride_request")
     public String createRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest,
                                     HttpServletRequest request) {
-        if (request.getSession().getAttribute("loggedInCustomer") == null || request.getSession().getAttribute("loggedInCustomer") == (Object) 1) {
-            return "redirect:/customer/login";
-        }
+
         String loggedInCustomerLiteral = "loggedInCustomer";
 
         Customer customer = (Customer) request.getSession().getAttribute(loggedInCustomerLiteral);
+
+        System.out.println(customer);
+
         rideRequest.setCustomerId(customer.getCustomerId());
-        IRideRequest rideRequestForCreation = customerObjectFactory.getRideRequest();
-        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.getRideRequestsDao();
-        rideRequestForCreation.createRideRequest(rideRequest, rideRequestsDao);
+        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
+        rideRequest.createRideRequest(rideRequestsDao);
+
+        return "redirect:/customer/view_ride_requests";
+    }
+
+    @GetMapping ("/customer/cancel_ride_request")
+    public String cancelRideRequest(@ModelAttribute("rideRequest") RideRequest rideRequest, HttpServletRequest request) {
+        String loggedInCustomerLiteral = "loggedInCustomer";
+        Object customerAttribute = request.getSession().getAttribute(loggedInCustomerLiteral);
+
+        if (customerAttribute == null || customerAttribute == (Object) 1) {
+            return "redirect:/customer/login";
+        }
+
+        Customer customer = (Customer) customerAttribute;
+        rideRequest.setCustomerId(customer.customerId);
+
+        IRideRequest rideRequestObj = customerObjectFactory.getRideRequest();
+        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.createRideRequestsDao();
+
+        rideRequestObj.cancelRideRequest(rideRequest, rideRequestsDao);
+
         return "redirect:/customer/view_ride_requests";
     }
 

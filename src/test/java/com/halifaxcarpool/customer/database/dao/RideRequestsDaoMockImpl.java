@@ -50,4 +50,13 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         mockData.put(customerId, rideRequests);
     }
 
+    public void cancelRideRequest(RideRequest rideRequest) {
+        int customerId = rideRequest.getCustomerId();
+        for(int i = 0; i < mockData.get(customerId).size(); i++) {
+            if(mockData.get(customerId).get(i).getRideRequestId() == rideRequest.getRideRequestId()) {
+                mockData.get(customerId).remove(i);
+            }
+        }
+    }
+
 }
