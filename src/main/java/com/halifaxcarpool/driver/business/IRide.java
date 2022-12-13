@@ -18,9 +18,9 @@ public interface IRide {
 
     Ride getRide(int rideId, IRidesDao ridesDao);
 
-    void startRide(int rideId, IRidesDao ridesDao);
+    boolean startRide(int rideId, IRidesDao ridesDao);
 
-    void stopRide(int rideId, IRidesDao ridesDao);
+    boolean stopRide(int rideId, IRidesDao ridesDao);
 
     boolean cancelRide(int rideId, IRidesDao ridesDao);
 

@@ -13,8 +13,8 @@ public interface IRidesDao {
     List<Ride> getActiveRides(int customerId);
 
     Ride getRide(int rideId);
-    void startRide(int rideId);
-    void stopRide(int rideId);
+    boolean startRide(int rideId);
+    boolean stopRide(int rideId);
 
     boolean cancelRide(int rideId);
 

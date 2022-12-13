@@ -17,9 +17,9 @@ public interface IPayment {
 
     public double getAmountDue(int paymentId, IPaymentDao paymentDao);
 
-    public  void updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao);
+    public  boolean updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao);
 
-    public void driverUpdatePaymentStatus(int paymentId, IPaymentDao paymentDao);
+    public boolean driverUpdatePaymentStatus(int paymentId, IPaymentDao paymentDao);
 
     public Payment fetchPaymentDetails(int customerId, int rideId, int driverId, IPaymentDao paymentDao);
 }

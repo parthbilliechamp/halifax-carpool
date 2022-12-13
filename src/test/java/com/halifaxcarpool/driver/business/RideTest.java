@@ -103,4 +103,18 @@ public class RideTest {
         assert 0 == rideList.size();
     }
 
+    @Test
+    public void startRideTest(){
+        int rideId=1;
+        IRide ride = new Ride();
+        assert (ride.startRide(rideId,ridesDao));
+    }
+
+    @Test
+    public void stopRideTest(){
+        int rideId=2;
+        IRide ride = new Ride();
+        assert (ride.stopRide(rideId, ridesDao));
+    }
+
 }

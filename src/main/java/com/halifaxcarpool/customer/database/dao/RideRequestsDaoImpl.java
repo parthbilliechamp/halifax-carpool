@@ -71,7 +71,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
             e.printStackTrace();
         }
         finally {
-            //database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
         return 0;
     }

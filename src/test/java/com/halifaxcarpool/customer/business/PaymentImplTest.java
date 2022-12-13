@@ -1,6 +1,7 @@
 package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.customer.business.beans.Payment;
+import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.IPaymentDao;
 import com.halifaxcarpool.customer.database.dao.PaymentDaoMockImpl;
 import org.junit.jupiter.api.Test;
@@ -22,25 +23,33 @@ public class PaymentImplTest {
     @Test
     public void getCustomerRideHistoryTest(){
         int customerId = 1;
-        assert paymentDaoMock.getCustomerRidePaymentList(customerId).size() ==1;
+        IPayment payment = new Payment();
+        assert payment.getCustomerRideHistory(customerId,paymentDaoMock).size()==1;
+
     }
 
     @Test
     public void getAmountDueTest(){
         int paymentId = 789;
-        assert (paymentDaoMock.getAmountDue(paymentId) == 100);
+        IPayment payment = new Payment();
+
+        assert (payment.getAmountDue(paymentId,paymentDaoMock) == 100);
     }
 
     @Test
     public void updatePaymentStatusToSuccessTest(){
         int paymentId = 123;
-        assert (paymentDaoMock.changePaymentStatusSuccess(paymentId));
+        IPayment payment = new Payment();
+        assert (payment.updatePaymentStatusToSuccess(paymentId, paymentDaoMock));
+
     }
 
     @Test
     public void driverUpdatePaymentStatusTest(){
         int paymentId = 456;
-        assert (paymentDaoMock.driverUpdatePaymentStatus(paymentId));
+        IPayment payment = new Payment();
+        assert (payment.driverUpdatePaymentStatus(paymentId, paymentDaoMock));
+
     }
 
     @Test
@@ -48,7 +57,8 @@ public class PaymentImplTest {
         int customerId =1;
         int driverId = 1;
         int rideId = 1;
-        assert (paymentDaoMock.fetchPaymentDetails(customerId, rideId, driverId) != null);
+        IPayment payment = new Payment();
+        assert (payment.fetchPaymentDetails(customerId, rideId, driverId,paymentDaoMock) != null);
 
     }
 

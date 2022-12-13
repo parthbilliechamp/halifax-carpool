@@ -80,13 +80,13 @@ public class Payment  implements IPayment {
     }
 
     @Override
-    public void updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao) {
-        paymentDao.changePaymentStatusSuccess(paymentId);
+    public boolean updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao) {
+        return paymentDao.changePaymentStatusSuccess(paymentId);
     }
 
     @Override
-    public void driverUpdatePaymentStatus(int paymentId, IPaymentDao paymentDao) {
-        paymentDao.driverUpdatePaymentStatus(paymentId);
+    public boolean driverUpdatePaymentStatus(int paymentId, IPaymentDao paymentDao) {
+        return paymentDao.driverUpdatePaymentStatus(paymentId);
     }
 
     @Override

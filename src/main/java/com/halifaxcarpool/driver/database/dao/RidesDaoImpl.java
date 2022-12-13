@@ -91,12 +91,13 @@ public class RidesDaoImpl implements IRidesDao {
     }
 
     @Override
-    public void startRide(int rideId) {
+    public boolean startRide(int rideId) {
         try{
             connection = database.openDatabaseConnection();
             CallableStatement statement = connection.prepareCall("CALL start_ride(?)");
             statement.setInt(1, rideId);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -104,15 +105,17 @@ public class RidesDaoImpl implements IRidesDao {
         finally {
             database.closeDatabaseConnection();
         }
+        return false;
     }
 
     @Override
-    public void stopRide(int rideId) {
+    public boolean stopRide(int rideId) {
         try{
             connection = database.openDatabaseConnection();
             CallableStatement statement = connection.prepareCall("CALL stop_ride(?)");
             statement.setInt(1, rideId);
             statement.executeUpdate();
+            return true;
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -120,6 +123,7 @@ public class RidesDaoImpl implements IRidesDao {
         finally {
             database.closeDatabaseConnection();
         }
+        return false;
     }
 
     @Override
