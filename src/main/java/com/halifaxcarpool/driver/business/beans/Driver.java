@@ -1,10 +1,13 @@
 package com.halifaxcarpool.driver.business.beans;
 
+import com.halifaxcarpool.commons.business.authentication.encrypter.IPasswordEncrypter;
+import com.halifaxcarpool.commons.business.authentication.encrypter.PasswordEncrypterImpl;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 
 public class Driver extends User {
 
+    private IPasswordEncrypter passwordEncrypter;
     private int driverId;
     private String driverEmail;
     private String driverPassword;
@@ -19,6 +22,7 @@ public class Driver extends User {
 
     public Driver() {
         this.driverApprovalStatus = 0;
+        this.passwordEncrypter = new PasswordEncrypterImpl();
     }
 
     public Driver(Builder builder) {
@@ -148,6 +152,8 @@ public class Driver extends User {
 
     @Override
     public void registerUser(IUserDao userDao) throws Exception {
+        String encryptedPassword = passwordEncrypter.encrypt(this.driverPassword);
+        setDriverPassword(encryptedPassword);
         try {
             userDao.registerUser(this);
         } catch (Exception e) {

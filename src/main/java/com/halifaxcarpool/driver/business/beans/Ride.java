@@ -23,6 +23,8 @@ public class Ride implements IRide {
 
     public double fare;
 
+    public long paymentId;
+
     public Ride(){
         this.rideStatus = 0;
     }
@@ -152,6 +154,10 @@ public class Ride implements IRide {
 
     public void withFare(double fare) {
         this.fare = fare;
+    }
+
+    public void withPaymentId(long paymentId) {
+        this.paymentId = paymentId;
     }
 
 }

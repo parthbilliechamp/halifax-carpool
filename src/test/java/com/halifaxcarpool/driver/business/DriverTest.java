@@ -64,7 +64,7 @@ public class DriverTest {
             assertTrue(true);
         } catch (Exception e) {
             e.printStackTrace();
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -76,7 +76,7 @@ public class DriverTest {
 
         try {
             driver.registerUser(driverDao);
-            assertTrue(false);
+            fail();
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(true);

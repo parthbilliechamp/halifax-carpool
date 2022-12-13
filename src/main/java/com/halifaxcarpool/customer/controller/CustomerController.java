@@ -36,21 +36,11 @@ import java.util.List;
 
 @Controller
 public class CustomerController {
-
-    //TODO unused variable
-    private static final String INDEX_PAGE = "index";
-    private static final String VIEW_RIDE_REQUESTS = "view_ride_requests";
-    private static final String VIEW_RECOMMENDED_RIDES = "view_recommended_rides";
-    private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
-    private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
     private static  final String VIEW_PAYMENT_FARE = "view_fare_price";
 
     private  static  final String CUSTOMER_VIEW_RIDES_PAYMENTS = "view_rides_payments_page";
 
     private static  final  String CUSTOMER_VIEW_BILL = "view_bill";
-
-    private RideFinderFacade rideFinderFacade;
-    private static final String CUSTOMER_PROFILE_FORM = "update_customer_profile";
 
     private final CommonsFactory commonsObjectFactory = new CommonsFactory();
     private final CustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();

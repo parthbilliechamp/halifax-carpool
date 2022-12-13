@@ -1,17 +1,20 @@
 package com.halifaxcarpool.customer.business.beans;
 
+import com.halifaxcarpool.commons.business.authentication.encrypter.IPasswordEncrypter;
+import com.halifaxcarpool.commons.business.authentication.encrypter.PasswordEncrypterImpl;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 
 public class Customer extends User {
 
+    private static IPasswordEncrypter passwordEncrypter;
     public int customerId;
     String customerName;
     String customerContact;
     String customerEmail;
     String customerPassword;
     public Customer() {
-
+        passwordEncrypter = new PasswordEncrypterImpl();
     }
 
     public Customer(Customer.Builder builder) {
@@ -32,6 +35,8 @@ public class Customer extends User {
 
     @Override
     public void registerUser(IUserDao userDao) throws Exception {
+        String encryptedPassword = passwordEncrypter.encrypt(this.customerPassword);
+        setCustomerPassword(encryptedPassword);
         try {
             userDao.registerUser(this);
         } catch (Exception e) {

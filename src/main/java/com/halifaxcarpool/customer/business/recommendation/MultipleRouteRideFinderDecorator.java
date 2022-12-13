@@ -7,6 +7,7 @@ import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MultipleRouteRideFinderDecorator extends RideFinderBaseDecorator {
 
@@ -23,8 +24,14 @@ public class MultipleRouteRideFinderDecorator extends RideFinderBaseDecorator {
         List<List<Ride>> recommendedRides = new ArrayList<>(super.rideFinder.findMatchingRides(rideRequest));
         List<List<Ride>> multipleRouteRides = navigator.findMatchingRides(rideRequest);
         recommendedRides.addAll(multipleRouteRides);
-        return recommendedRides;
+        return filterOutCompletedRides(recommendedRides);
     }
 
+    private List<List<Ride>> filterOutCompletedRides(List<List<Ride>> rides) {
+        return rides.stream()
+                .filter(rideList -> rideList.stream()
+                        .allMatch(ride -> 1 == ride.getRideStatus() || 0 == ride.getRideStatus()))
+                .collect(Collectors.toList());
+    }
 
 }
