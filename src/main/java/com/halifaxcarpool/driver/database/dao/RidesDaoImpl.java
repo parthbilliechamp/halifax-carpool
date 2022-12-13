@@ -4,7 +4,6 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +97,42 @@ public class RidesDaoImpl implements IRidesDao {
             database.closeDatabaseConnection();
         }
         return ride;
+    }
+
+    @Override
+    public boolean startRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL start_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean stopRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL stop_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return false;
     }
 
     @Override

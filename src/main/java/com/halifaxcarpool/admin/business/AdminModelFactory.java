@@ -6,6 +6,7 @@ import com.halifaxcarpool.admin.business.authentication.AdminAuthenticationImpl;
 import com.halifaxcarpool.admin.business.authentication.AdminImpl;
 import com.halifaxcarpool.admin.business.authentication.IAdmin;
 import com.halifaxcarpool.admin.business.authentication.IAdminAuthentication;
+import com.halifaxcarpool.admin.business.beans.Coupon;
 import com.halifaxcarpool.admin.business.popular.ILocationPopularity;
 import com.halifaxcarpool.admin.business.popular.LocationPopularityImpl;
 import com.halifaxcarpool.admin.business.statistics.CustomerStatistics;
@@ -20,7 +21,7 @@ public class AdminModelFactory implements IAdminModelFactory{
 
     @Override
     public ICoupon getCoupon() {
-        return new CouponImpl();
+        return new Coupon();
     }
 
     @Override

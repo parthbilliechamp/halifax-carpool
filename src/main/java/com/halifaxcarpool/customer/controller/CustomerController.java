@@ -1,19 +1,31 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.customer.business.beans.Payment;
+import com.halifaxcarpool.customer.business.payment.IPayment;
+import com.halifaxcarpool.customer.database.dao.IPaymentDao;
+import com.halifaxcarpool.customer.database.dao.PaymentDaoImpl;
+import com.halifaxcarpool.driver.business.IRideToRequestMapper;
+import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.CommonsObjectFactoryImpl;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.business.*;
-import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.*;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
+import com.halifaxcarpool.customer.business.IRideRequest;
+import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
+import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.business.recommendation.*;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
-import com.halifaxcarpool.driver.business.beans.Ride;
+import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
+import com.halifaxcarpool.customer.database.dao.RideRequestsDaoImpl;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
+import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
+import com.halifaxcarpool.driver.business.beans.Ride;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +45,13 @@ public class CustomerController {
     private static final String VIEW_RECOMMENDED_RIDES = "view_recommended_rides";
     private static final String CUSTOMER_REGISTRATION_FORM = "register_customer_form";
     private static final String CUSTOMER_LOGIN_FROM = "login_customer_form";
+    private static  final String VIEW_PAYMENT_FARE = "view_fare_price";
+
+    private  static  final String CUSTOMER_VIEW_RIDES_PAYMENTS = "view_rides_payments_page";
+
+    private static  final  String CUSTOMER_VIEW_BILL = "view_bill";
+
+    private RideFinderFacade rideFinderFacade;
     private static final String CUSTOMER_PROFILE_FORM = "update_customer_profile";
 
     private final CommonsObjectFactoryImpl commonsObjectFactory = new CommonsObjectFactoryImpl();
@@ -249,12 +268,14 @@ public class CustomerController {
         if (customerAttribute == null || customerAttribute == (Object) 1) {
             return "redirect:/customer/login";
         }
-        IRideToRequestMapper rideToRequestMapper = customerObjectFactory.getRideToRequestMapper();
-        IRideToRequestMapperDao rideToRequestMapperDao = customerObjectDaoFactory.createRideToRequestMapperDao();
-
-        rideToRequestMapper.sendRideRequest(rideId, rideRequestId, rideToRequestMapperDao);
-
-        return VIEW_RECOMMENDED_RIDES;
+        IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
+        IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        IFareCalculator fareCalculator = new FareCalculatorImpl();
+        double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
+        rideToRequestMapper.sendRideRequest(rideId, rideRequestId, fare, rideToRequestMapperDao);
+        return "redirect:/customer/view_ride_requests";
     }
 
     @GetMapping("/customer/view_ongoing_rides")
@@ -336,5 +357,64 @@ public class CustomerController {
 
         return "redirect:/customer/view_ride_requests";
     }
+
+    @GetMapping("/customer/view_payment_fare")
+    String viewPaymentFare(@RequestParam("rideId")int rideId, @RequestParam("rideRequestId")int rideRequestId, Model model){
+        //payment
+        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        IFareCalculator fareCalculator = new FareCalculatorImpl();
+        double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
+        model.addAttribute("fare",fare);
+        return VIEW_PAYMENT_FARE;
+    }
+
+    @GetMapping("/customer/view_payment_details")
+    String viewCustomerRidesPayment(Model model, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
+            return "redirect:/customer/login";
+        }
+        Customer customer = (Customer)request.getSession().getAttribute("loggedInCustomer");
+        IPayment payment = new Payment();
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        List<Payment> payments = payment.getCustomerRideHistory(customer.getCustomerId(),paymentDao);
+        model.addAttribute("visitedRides", payments);
+        return CUSTOMER_VIEW_RIDES_PAYMENTS;
+    }
+
+    @GetMapping("/customer/view_billing")
+    String makePayment(@RequestParam("paymentId") int paymentId, Model model, HttpServletRequest request){
+
+        if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
+            return "redirect:/customer/login";
+        }
+        //ICoupon coupon = new CouponImpl();
+        //ICouponDao couponDao = new CouponDao();
+        //double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
+        double discountPercentage = 15.00;
+        IPayment payment = new Payment();
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
+        Double deduction = originalAmount * discountPercentage /100;
+        Double finalAmount = originalAmount - deduction;
+        model.addAttribute("originalAmount", originalAmount);
+        model.addAttribute("discountPercentage", discountPercentage);
+        model.addAttribute("deduction", deduction);
+        model.addAttribute("finalAmount", finalAmount);
+        model.addAttribute("paymentId",paymentId);
+        return CUSTOMER_VIEW_BILL;
+    }
+
+    @GetMapping("/customer/payment_status_success")
+    String changePaymentStatus(@RequestParam("paymentId") int paymentId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
+            return "redirect:/customer/login";
+        }
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = new Payment();
+        payment.updatePaymentStatusToSuccess(paymentId, paymentDao);
+        return "redirect:/customer/view_payment_details";
+    }
+
 
 }
