@@ -360,7 +360,6 @@ public class CustomerController {
 
     @GetMapping("/customer/view_payment_fare")
     String viewPaymentFare(@RequestParam("rideId")int rideId, @RequestParam("rideRequestId")int rideRequestId, Model model){
-        //payment
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
         IFareCalculator fareCalculator = new FareCalculatorImpl();

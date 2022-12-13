@@ -222,7 +222,7 @@ public class DriverController {
         IRidesDao ridesDao = driverDaoFactory.getDriverRidesDao();
         IRide ride = driverModelFactory.getDriverRide();
 
-        List<Ride> rideList = ride.viewRides(driver.getDriverId(), ridesDao);
+        List<Ride> rideList = ride.viewAllRides(driver.getDriverId(), ridesDao);
         model.addAttribute(ridesAttribute, rideList);
         return VIEW_RIDES_UI_FILE;
     }
@@ -264,7 +264,7 @@ public class DriverController {
         List<RideRequest> receivedRideRequests =
                 rideToRequestMapper.viewReceivedRequest(rideId, rideToRequestMapperDao);
 
-        model.addAttribute(receivedRideRequestsAtrribute, receivedRideRequests);
+        model.addAttribute(receivedRideRequestsAttribute, receivedRideRequests);
         model.addAttribute("rideId", rideId);
         return VIEW_RECEIVED_REQUESTS;
     }
@@ -310,7 +310,6 @@ public class DriverController {
     public String updateRequestStatus(@RequestParam("status")String status,
         @RequestParam("rideId") int rideId, @RequestParam("rideRequestId") int rideRequestId){
         if((status.toUpperCase()).equals("ACCEPTED")){
-            //customer module payment table
             IPaymentDao paymentDao = new PaymentDaoImpl();
             IRidesDao ridesDao = new RidesDaoImpl();
             IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
@@ -321,7 +320,6 @@ public class DriverController {
                     rideRequestsDao, rideToRequestMapperDao);
 
         }
-        //ride to request mapping  status change.
         IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
         rideToRequestMapperDao.updateRideRequestStatus(rideId, rideRequestId,status);
         return "redirect:/driver/view_rides";
@@ -372,7 +370,7 @@ public class DriverController {
         Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
         IRide ride =  new Ride();
         IRidesDao ridesDao = new RidesDaoImpl();
-        List<Ride> rides = ride.viewRides(driver.getDriverId(), ridesDao);
+        List<Ride> rides = ride.viewRidesHistory(driver.getDriverId(), ridesDao);
         model.addAttribute("rides", rides);
         return DRIVER_VIEW_MY_RIDES;
 
@@ -385,7 +383,7 @@ public class DriverController {
         IRide ride = new Ride();
         IRidesDao ridesDao = new RidesDaoImpl();
         ride.startRide(rideId, ridesDao);
-        return "redirect: /driver/my_rides";
+        return "redirect:/driver/view_rides";
     }
 
     @GetMapping("/driver/stop_ride")

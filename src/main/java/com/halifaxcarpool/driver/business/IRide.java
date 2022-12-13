@@ -12,7 +12,9 @@ public interface IRide {
     boolean createNewRide(IRidesDao ridesDao, IRideNodeDao rideNodeDao,
                           IDirectionPointsProvider directionPointsProvider, IRideNode rideNode);
 
-    List<Ride> viewRides(int driverId, IRidesDao ridesDao);
+    List<Ride> viewAllRides(int driverId, IRidesDao ridesDao);
+
+    List<Ride> viewRidesHistory(int driverId, IRidesDao ridesDao);
 
     List<Ride> viewOngoingRides(int customerId, IRidesDao ridesDao);
 

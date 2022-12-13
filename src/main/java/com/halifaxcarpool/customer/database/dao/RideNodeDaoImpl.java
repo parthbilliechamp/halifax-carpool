@@ -35,8 +35,8 @@ public class RideNodeDaoImpl implements IRideNodeDao {
                 stmt.setDouble(2, rideNode.getLatitude());
                 stmt.setDouble(3, rideNode.getLongitude());
                 stmt.setInt(4, rideNode.getSequence());
+                stmt.execute();
             }
-            stmt.executeBatch();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
