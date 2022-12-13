@@ -252,21 +252,20 @@ public class DriverController {
     @GetMapping("/driver/update_ride_request_status")
     public String updateRequestStatus(@RequestParam("status")String status,
         @RequestParam("rideId") int rideId, @RequestParam("rideRequestId") int rideRequestId){
+
         if((status.toUpperCase()).equals("ACCEPTED")){
-            //customer module payment table
             IPaymentDao paymentDao = new PaymentDaoImpl();
             IRidesDao ridesDao = new RidesDaoImpl();
             IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
             IPayment payment = new Payment();
-
             IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
             payment.insertPaymentDetails(rideId, rideRequestId, paymentDao, ridesDao,
                     rideRequestsDao, rideToRequestMapperDao);
 
         }
-        //ride to request mapping  status change.
+        IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
         IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
-        rideToRequestMapperDao.updateRideRequestStatus(rideId, rideRequestId,status);
+        rideToRequestMapper.updateRideRequestStatus(rideId, rideRequestId, status,rideToRequestMapperDao);
         return "redirect:/driver/view_rides";
     }
     @GetMapping("/driver/view_ride_history")

@@ -1,5 +1,9 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.admin.business.ICoupon;
+import com.halifaxcarpool.admin.business.beans.Coupon;
+import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
+import com.halifaxcarpool.admin.database.dao.dao.CouponDaoImpl;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.IPaymentDao;
@@ -365,7 +369,7 @@ public class CustomerController {
         IRidesDao ridesDao = new RidesDaoImpl();
         IFareCalculator fareCalculator = new FareCalculatorImpl();
         double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
-        model.addAttribute("fare",fare);
+        model.addAttribute("fare",fareCalculator);
         return VIEW_PAYMENT_FARE;
     }
 
@@ -388,19 +392,19 @@ public class CustomerController {
         if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
             return "redirect:/customer/login";
         }
-        //ICoupon coupon = new CouponImpl();
-        //ICouponDao couponDao = new CouponDao();
-        //double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
-        double discountPercentage = 15.00;
+        ICoupon coupon = new Coupon();
+        ICouponDao couponDao = new CouponDaoImpl();
+        double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
+        System.out.println("DiscountPercentage:"+ discountPercentage);
         IPayment payment = new Payment();
         IPaymentDao paymentDao = new PaymentDaoImpl();
         Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
-        Double deduction = originalAmount * discountPercentage /100;
-        Double finalAmount = originalAmount - deduction;
-        model.addAttribute("originalAmount", originalAmount);
-        model.addAttribute("discountPercentage", discountPercentage);
-        model.addAttribute("deduction", deduction);
-        model.addAttribute("finalAmount", finalAmount);
+        FareCalculatorImpl fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
+        fareCalculator.calculateFinalAmount();
+        System.out.println("finalAmount: "+ fareCalculator.finalAmount);
+        System.out.println("Deduction:"+ fareCalculator.deduction);
+        System.out.println("DiscountPercentage:"+ fareCalculator.discountPercentage);
+        model.addAttribute("fare",fareCalculator);
         model.addAttribute("paymentId",paymentId);
         return CUSTOMER_VIEW_BILL;
     }

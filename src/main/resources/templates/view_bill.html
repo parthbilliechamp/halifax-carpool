@@ -48,22 +48,22 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr >
           <td>Original amount:</td>
-          <td th:text="${originalAmount}"/>
+          <td th:text="${fare.originalAmount}"/>
 
     </tr>
     <tr>
       <td>Discount Avaliable: %</td>
-      <td th:text="${discountPercentage}" />
+      <td th:text="${fare.discountPercentage}" />
     </tr>
       <tr>
         <td>Deduction: </td>
-        <td th:text="${deduction}" />
+        <td th:text="${fare.deduction}" />
       </tr>
       <tr>
         <td>Final Amount</td>
-        <td th:text="${finalAmount}"/>
+        <td th:text="${fare.finalAmount}"/>
       </tr>
     <tr>
       <td>
