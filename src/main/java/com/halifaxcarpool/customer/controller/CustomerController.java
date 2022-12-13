@@ -2,8 +2,8 @@ package com.halifaxcarpool.customer.controller;
 
 import com.halifaxcarpool.admin.business.ICoupon;
 import com.halifaxcarpool.admin.business.beans.Coupon;
-import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
-import com.halifaxcarpool.admin.database.dao.dao.CouponDaoImpl;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
+import com.halifaxcarpool.admin.database.dao.CouponDaoImpl;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.IPaymentDao;
