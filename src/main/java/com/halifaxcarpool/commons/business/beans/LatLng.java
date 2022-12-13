@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class LatLng {
 
-    private double latitude;
-    private double longitude;
+    private final double latitude;
+    private final double longitude;
 
     public LatLng(double latitude, double longitude) {
         this.latitude = latitude;
@@ -16,16 +16,8 @@ public class LatLng {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     @Override

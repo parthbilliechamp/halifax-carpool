@@ -1,10 +1,10 @@
 package com.halifaxcarpool.admin.business;
 
 import com.halifaxcarpool.admin.database.dao.*;
-import com.halifaxcarpool.admin.database.dao.dao.CouponDaoImpl;
-import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
+import com.halifaxcarpool.admin.database.dao.CouponDaoImpl;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
 
-public class AdminDaoFactory implements IAdminDaoFactory{
+public class AdminDaoFactory implements IAdminDaoFactory {
 
     @Override
     public IDriverApprovalDao getDriverApprovalDao() {
@@ -25,4 +25,5 @@ public class AdminDaoFactory implements IAdminDaoFactory{
     public ICouponDao getCouponDao() {
         return new CouponDaoImpl();
     }
+
 }

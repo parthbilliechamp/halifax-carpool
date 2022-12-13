@@ -1,15 +1,13 @@
 package com.halifaxcarpool.admin.business.beans;
 
 public class Admin {
+    public int adminId;
+    public String userName;
+    public String password;
 
     public Admin() {
 
     }
-
-
-    public int adminId;
-    public String userName;
-    public String password;
 
     public Admin(int adminId, String userName, String password) {
         this.adminId = adminId;
@@ -49,4 +47,5 @@ public class Admin {
                 ", password='" + password + '\'' +
                 '}';
     }
+
 }

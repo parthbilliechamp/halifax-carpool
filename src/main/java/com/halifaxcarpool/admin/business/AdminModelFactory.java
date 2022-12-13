@@ -17,7 +17,7 @@ import com.halifaxcarpool.admin.database.dao.IDriverApprovalDao;
 import com.halifaxcarpool.admin.database.dao.ILocationPopularityDao;
 import com.halifaxcarpool.admin.database.dao.IUserDetails;
 
-public class AdminModelFactory implements IAdminModelFactory{
+public class AdminModelFactory implements IAdminModelFactory {
 
     @Override
     public ICoupon getCoupon() {
@@ -58,4 +58,5 @@ public class AdminModelFactory implements IAdminModelFactory{
     public ILocationPopularity getLocationPopularity(ILocationPopularityDao locationPopularityDao) {
         return new LocationPopularityImpl(locationPopularityDao);
     }
+
 }

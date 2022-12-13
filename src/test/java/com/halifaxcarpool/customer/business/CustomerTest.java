@@ -1,7 +1,7 @@
 package com.halifaxcarpool.customer.business;
 
-import com.halifaxcarpool.commons.business.CommonsObjectFactoryImpl;
-import com.halifaxcarpool.commons.business.ICommonsObjectFactory;
+import com.halifaxcarpool.commons.business.CommonsFactory;
+import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SpringBootTest
 public class CustomerTest {
 
-    CustomerDaoFactory customerDaoTestFactory = new CustomerDaoTestFactory();
+    ICustomerDaoFactory customerDaoTestFactory = new CustomerDaoTestFactory();
     CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
-    ICommonsObjectFactory commonsObjectFactory = new CommonsObjectFactoryImpl();
+    ICommonsFactory commonsObjectFactory = new CommonsFactory();
     User customer;
 
     @Test

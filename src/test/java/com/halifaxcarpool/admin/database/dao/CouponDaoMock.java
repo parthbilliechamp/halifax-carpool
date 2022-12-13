@@ -1,13 +1,11 @@
 package com.halifaxcarpool.admin.database.dao;
 
 import com.halifaxcarpool.admin.business.beans.Coupon;
-import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 

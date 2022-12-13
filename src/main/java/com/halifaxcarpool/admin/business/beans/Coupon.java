@@ -1,10 +1,8 @@
 package com.halifaxcarpool.admin.business.beans;
 
 import com.halifaxcarpool.admin.business.ICoupon;
-import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 public class Coupon implements ICoupon {

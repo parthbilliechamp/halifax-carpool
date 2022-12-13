@@ -131,7 +131,6 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
             while (resultSet.next()) {
                 int rideRequestId = Integer.parseInt(resultSet.getString(1));
                 int customerId = Integer.parseInt(resultSet.getString(2));
-                String date = resultSet.getString(3);
                 String startLocation = resultSet.getString(4);
                 String endLocation = resultSet.getString(5);
                 RideRequest rideRequest = new RideRequest(rideRequestId, customerId, startLocation, endLocation);

@@ -10,9 +10,9 @@ import java.util.*;
 
 public class DriverApproval implements IUserApproval {
 
-    private IDriverApprovalDao driverApprovalDao;
+    private final IDriverApprovalDao driverApprovalDao;
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     private final Date currentDate;
 
@@ -20,7 +20,7 @@ public class DriverApproval implements IUserApproval {
 
         this.driverApprovalDao = driverApprovalDao;
         try {
-            this.currentDate = sdf.parse(sdf.format(new Date()));
+            this.currentDate = SIMPLE_DATE_FORMAT.parse(SIMPLE_DATE_FORMAT.format(new Date()));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +62,7 @@ public class DriverApproval implements IUserApproval {
     private Date parseDate(String date){
         Date newDate = null;
         try {
-            newDate = sdf.parse(date);
+            newDate = SIMPLE_DATE_FORMAT.parse(date);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

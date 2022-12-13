@@ -56,7 +56,6 @@ public class DatabaseConnection {
             InputStream inputStream =
                     Files.newInputStream(new File(this.getClass().getClassLoader().getResource(PROPERTIES_FILE_PATH)
                             .getFile()).toPath());
-
             properties.load(inputStream);
             userName = properties.getProperty(userProperty);
             password = properties.getProperty(passwordProperty);
@@ -65,4 +64,5 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+
 }

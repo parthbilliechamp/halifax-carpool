@@ -1,11 +1,9 @@
-package com.halifaxcarpool.admin.database.dao.dao;
+package com.halifaxcarpool.admin.database.dao;
 import com.halifaxcarpool.admin.business.beans.Coupon;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

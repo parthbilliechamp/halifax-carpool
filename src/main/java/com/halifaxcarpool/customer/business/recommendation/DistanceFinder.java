@@ -1,5 +1,7 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
+import com.halifaxcarpool.commons.business.beans.LatLng;
+
 public class DistanceFinder {
 
     private static final int EARTH_RADIUS_KM = 6371;
@@ -7,12 +9,12 @@ public class DistanceFinder {
     /**
      * Method to find distance between two geo coordinates with
      */
-    public static double findDistance(double latitudeA, double latitudeB, double longitudeA, double longitudeB) {
+    public static double findDistance(LatLng latLngStart, LatLng latLngEnd) {
 
-        longitudeA = convertDegreesToRadian(longitudeA);
-        longitudeB = convertDegreesToRadian(longitudeB);
-        latitudeA = convertDegreesToRadian(latitudeA);
-        latitudeB = convertDegreesToRadian(latitudeB);
+        double longitudeA = convertDegreesToRadian(latLngStart.getLongitude());
+        double longitudeB = convertDegreesToRadian(latLngEnd.getLongitude());
+        double latitudeA = convertDegreesToRadian(latLngStart.getLatitude());
+        double latitudeB = convertDegreesToRadian(latLngEnd.getLatitude());
 
         double longitudeDifference = longitudeB - longitudeA;
         double latitudeDifference = latitudeB - latitudeA;
