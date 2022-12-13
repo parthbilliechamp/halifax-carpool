@@ -1,13 +1,10 @@
 package com.halifaxcarpool.customer.controller;
 
-import com.halifaxcarpool.admin.business.ICoupon;
-import com.halifaxcarpool.admin.business.beans.Coupon;
+import com.halifaxcarpool.admin.business.*;
 import com.halifaxcarpool.admin.database.dao.ICouponDao;
-import com.halifaxcarpool.admin.database.dao.CouponDaoImpl;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.IPaymentDao;
-import com.halifaxcarpool.customer.database.dao.PaymentDaoImpl;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.CommonsFactory;
@@ -61,6 +58,8 @@ public class CustomerController {
     private final ICustomerDaoFactory customerObjectDaoFactory = new CustomerDaoFactory();
     private final DriverModelFactory driverModelFactory = new DriverModelMainFactory();
     private final IDriverDaoFactory driverDaoFactory = new DriverDaoFactory();
+    private final IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private final IAdminDaoFactory adminDaoFactory = new AdminDaoFactory();
 
     private static final String customerLiteral = "customer";
     private static final String activeRidesLiteral = "activeRides";
@@ -352,8 +351,8 @@ public class CustomerController {
             return "redirect:/customer/login";
         }
         Customer customer = (Customer)request.getSession().getAttribute("loggedInCustomer");
-        IPayment payment = new Payment();
-        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = customerObjectFactory.getPayment();
+        IPaymentDao paymentDao = customerObjectDaoFactory.getPaymentDao();
         List<Payment> payments = payment.getCustomerRideHistory(customer.getCustomerId(),paymentDao);
         model.addAttribute("visitedRides", payments);
         return CUSTOMER_VIEW_RIDES_PAYMENTS;
@@ -365,11 +364,12 @@ public class CustomerController {
         if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
             return "redirect:/customer/login";
         }
-        ICoupon coupon = new Coupon();
-        ICouponDao couponDao = new CouponDaoImpl();
+
+        ICoupon coupon = adminModelFactory.getCoupon();
+        ICouponDao couponDao = adminDaoFactory.getCouponDao();
         double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
-        IPayment payment = new Payment();
-        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = customerObjectFactory.getPayment();
+        IPaymentDao paymentDao = customerObjectDaoFactory.getPaymentDao();
         Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
         FareCalculatorImpl fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
         fareCalculator.calculateFinalAmount();
@@ -383,8 +383,8 @@ public class CustomerController {
         if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
             return "redirect:/customer/login";
         }
-        IPaymentDao paymentDao = new PaymentDaoImpl();
-        IPayment payment = new Payment();
+        IPaymentDao paymentDao = customerObjectDaoFactory.getPaymentDao();
+        IPayment payment = customerObjectFactory.getPayment();
         payment.updatePaymentStatusToSuccess(paymentId, paymentDao);
         return "redirect:/customer/view_payment_details";
     }

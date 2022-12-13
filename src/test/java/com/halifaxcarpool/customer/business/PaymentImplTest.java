@@ -12,7 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class PaymentImplTest {
 
-    private IPaymentDao paymentDaoMock = new PaymentDaoMockImpl();
+    private final ICustomerDaoFactory customerDaoFactory = new CustomerDaoTestFactory();
+    private final IPaymentDao paymentDaoMock = customerDaoFactory.getPaymentDao();
 
     @Test
     public void insertPaymentDetailsTest(){
