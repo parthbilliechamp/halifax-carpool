@@ -21,7 +21,7 @@ public class AdminAuthenticationDaoMockImpl implements IAdminAuthenticationDao{
 
         emailAndPasswordList.clear();
         emailAndPasswordList.add("admin");
-        emailAndPasswordList.add("admin");
+        emailAndPasswordList.add("21232f297a57a5a743894a0e4a801fc3");
         mockAdminData.put(emailAndPasswordList, new Admin(1, "admin", "admin"));
 
     }

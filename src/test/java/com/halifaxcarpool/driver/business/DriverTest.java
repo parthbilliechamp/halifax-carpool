@@ -16,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 public class DriverTest {
-
-    DriverModelFactory driverModelFactory = new DriverModelMainFactory();
     IDriverDaoFactory driverDaoTestFactory = new DriverDaoTestFactory();
     ICommonsFactory commonsObjectFactory = new CommonsFactory();
 

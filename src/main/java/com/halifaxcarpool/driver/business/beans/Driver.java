@@ -7,7 +7,7 @@ import com.halifaxcarpool.commons.database.dao.IUserDao;
 
 public class Driver extends User {
 
-    private IPasswordEncrypter passwordEncrypter;
+    private final IPasswordEncrypter passwordEncrypter = new PasswordEncrypterImpl();
     private int driverId;
     private String driverEmail;
     private String driverPassword;
@@ -22,7 +22,6 @@ public class Driver extends User {
 
     public Driver() {
         this.driverApprovalStatus = 0;
-        this.passwordEncrypter = new PasswordEncrypterImpl();
     }
 
     public Driver(Builder builder) {

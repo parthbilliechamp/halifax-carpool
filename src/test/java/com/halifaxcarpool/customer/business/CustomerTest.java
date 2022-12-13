@@ -74,7 +74,7 @@ public class CustomerTest {
 
         try {
             customer.registerUser(customerDao);
-            assertTrue(false);
+            fail();
         } catch (Exception e) {
             e.printStackTrace();
             assertTrue(true);
@@ -98,7 +98,12 @@ public class CustomerTest {
 
         customerId = 11;
         IUserDao customerDao = customerDaoTestFactory.getCustomerDao();
-        customer = new Customer.Builder().withCustomerId(customerId).withCustomerName("Kanely Lart").withCustomerContact("9532120333").withCustomerEmail("klklkl@gmail.ca").build();
+        customer = new Customer.Builder()
+                .withCustomerId(customerId)
+                .withCustomerName("Kanely Lart")
+                .withCustomerContact("9532120333")
+                .withCustomerEmail("klklkl@gmail.ca")
+                .build();
 
         assert Boolean.FALSE.equals(customer.updateUser(customerDao));
     }
