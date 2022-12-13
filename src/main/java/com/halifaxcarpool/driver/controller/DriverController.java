@@ -1,13 +1,13 @@
 package com.halifaxcarpool.driver.controller;
 
-import com.halifaxcarpool.commons.business.CommonsObjectFactoryImpl;
-import com.halifaxcarpool.commons.business.ICommonsObjectFactory;
+import com.halifaxcarpool.commons.business.CommonsFactoryImpl;
+import com.halifaxcarpool.commons.business.CommonsFactory;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
+import com.halifaxcarpool.customer.business.ICustomerDaoFactory;
 import com.halifaxcarpool.customer.business.CustomerDaoFactory;
-import com.halifaxcarpool.customer.business.CustomerDaoMainFactory;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
@@ -29,9 +29,9 @@ import java.util.List;
 @Controller
 public class DriverController {
     DriverModelFactory driverModelFactory = new DriverModelMainFactory();
-    DriverDaoFactory driverDaoFactory = new DriverDaoMainFactory();
-    CustomerDaoFactory customerDaoFactory = new CustomerDaoMainFactory();
-    ICommonsObjectFactory commonsObjectFactory = new CommonsObjectFactoryImpl();
+    IDriverDaoFactory driverDaoFactory = new DriverDaoFactory();
+    ICustomerDaoFactory customerDaoFactory = new CustomerDaoFactory();
+    CommonsFactory commonsObjectFactory = new CommonsFactoryImpl();
 
     private static final String driverLiteral = "driver";
     private static final String loggedInDriverLiteral = "loggedInDriver";
@@ -176,7 +176,7 @@ public class DriverController {
     String viewReceivedRequests(@RequestParam(rideIdLiteral) int rideId,
                                 Model model) {
         IRideToRequestMapper rideToRequestMapper = driverModelFactory.getRideToRequestMapper();
-        IRideToRequestMapperDao rideToRequestMapperDao = driverDaoFactory.getRidetoRequestMapperDao();
+        IRideToRequestMapperDao rideToRequestMapperDao = driverDaoFactory.getRideToRequestMapperDao();
 
         List<RideRequest> receivedRideRequests =
                 rideToRequestMapper.viewReceivedRequest(rideId, rideToRequestMapperDao);
@@ -199,7 +199,7 @@ public class DriverController {
 
         IRidesDao ridesDao = driverDaoFactory.getDriverRidesDao();
         IRideNode rideNode = driverModelFactory.getRideNode();
-        IRideNodeDao rideNodeDao = customerDaoFactory.createRideNodeDao();
+        IRideNodeDao rideNodeDao = customerDaoFactory.getRideNodeDao();
 
         IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderImpl();
 

@@ -1,16 +1,13 @@
 package com.halifaxcarpool.driver.business;
 
 
-import com.halifaxcarpool.commons.business.CommonsObjectFactoryImpl;
-import com.halifaxcarpool.commons.business.ICommonsObjectFactory;
+import com.halifaxcarpool.commons.business.CommonsFactoryImpl;
+import com.halifaxcarpool.commons.business.CommonsFactory;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
-import com.halifaxcarpool.commons.business.authentication.UserAuthenticationImpl;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.driver.business.beans.Driver;
-import com.halifaxcarpool.driver.database.dao.DriverAuthenticationDaoMockImpl;
-import com.halifaxcarpool.driver.database.dao.DriverDaoMockImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class DriverTest {
 
     DriverModelFactory driverModelFactory = new DriverModelMainFactory();
-    DriverDaoFactory driverDaoTestFactory = new DriverDaoTestFactory();
-    ICommonsObjectFactory commonsObjectFactory = new CommonsObjectFactoryImpl();
+    IDriverDaoFactory driverDaoTestFactory = new DriverDaoTestFactory();
+    CommonsFactory commonsObjectFactory = new CommonsFactoryImpl();
 
     User driver;
 

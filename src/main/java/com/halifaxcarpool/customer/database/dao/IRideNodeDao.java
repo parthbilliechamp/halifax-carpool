@@ -8,6 +8,7 @@ import java.util.List;
 public interface IRideNodeDao {
 
     boolean insertRideNodes(List<RideNode> rideNodes);
+
     List<RideNode> getRideNodes(LatLng latLng);
 
     int getLatestRideNodeId();

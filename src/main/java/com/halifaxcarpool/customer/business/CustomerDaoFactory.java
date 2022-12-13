@@ -2,23 +2,42 @@ package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
-import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
-import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
+import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
+import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 
-public interface CustomerDaoFactory {
+public class CustomerDaoFactory implements ICustomerDaoFactory {
 
-    IUserDao getCustomerDao();
+    @Override
+    public IUserDao getCustomerDao() {
+        return new CustomerDaoImpl();
+    }
 
-    IUserAuthenticationDao getCustomerAuthenticationDao();
+    @Override
+    public IUserAuthenticationDao getCustomerAuthenticationDao() {
+        return new CustomerAuthenticationDaoImpl();
+    }
 
-    IRidesDao createRidesDao();
+    @Override
+    public IRidesDao getRidesDao() {
+        return new RidesDaoImpl();
+    }
 
-    IRideRequestsDao createRideRequestsDao();
+    @Override
+    public IRideRequestsDao getRideRequestsDao() {
+        return new RideRequestsDaoImpl();
+    }
 
-    IRideToRequestMapperDao createRideToRequestMapperDao();
+    @Override
+    public IRideToRequestMapperDao getRideToRequestMapperDao() {
+        return new RideToRequestMapperDaoImpl();
+    }
 
-    IRideNodeDao createRideNodeDao();
+    @Override
+    public IRideNodeDao getRideNodeDao() {
+        return new RideNodeDaoImpl();
+    }
 
 }

@@ -5,7 +5,7 @@ import com.halifaxcarpool.commons.business.authentication.UserAuthenticationImpl
 import com.halifaxcarpool.commons.business.geocoding.GeoCodingImpl;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 
-public class CommonsObjectFactoryImpl implements ICommonsObjectFactory {
+public class CommonsFactoryImpl implements CommonsFactory {
 
     @Override
     public IUserAuthentication authenticateUser() {

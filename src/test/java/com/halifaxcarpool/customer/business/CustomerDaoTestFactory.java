@@ -9,7 +9,7 @@ import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 import com.halifaxcarpool.driver.database.dao.RidesDaoMockImpl;
 
-public class CustomerDaoTestFactory implements CustomerDaoFactory {
+public class CustomerDaoTestFactory implements ICustomerDaoFactory {
 
     @Override
     public IUserDao getCustomerDao() {
@@ -22,22 +22,22 @@ public class CustomerDaoTestFactory implements CustomerDaoFactory {
     }
 
     @Override
-    public IRidesDao createRidesDao() {
+    public IRidesDao getRidesDao() {
         return new RidesDaoMockImpl();
     }
 
     @Override
-    public IRideRequestsDao createRideRequestsDao() {
+    public IRideRequestsDao getRideRequestsDao() {
         return new RideRequestsDaoMockImpl();
     }
 
     @Override
-    public IRideToRequestMapperDao createRideToRequestMapperDao() {
+    public IRideToRequestMapperDao getRideToRequestMapperDao() {
         return new RideToRequestMapperDaoMockImpl();
     }
 
     @Override
-    public IRideNodeDao createRideNodeDao() {
+    public IRideNodeDao getRideNodeDao() {
         return new RideNodeDaoMockImpl();
     }
 

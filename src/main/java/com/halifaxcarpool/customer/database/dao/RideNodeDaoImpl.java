@@ -4,7 +4,6 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.customer.business.beans.RideNode;
-import com.halifaxcarpool.driver.business.beans.Ride;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -91,10 +90,14 @@ public class RideNodeDaoImpl implements IRideNodeDao {
 
         List<RideNode> rideNodes = new ArrayList<>();
         while (resultSet.next()) {
-            int rideId = Integer.parseInt(resultSet.getString("ride_id"));
-            double latitude = Double.parseDouble(resultSet.getString("latitude"));
-            double longitude = Double.parseDouble(resultSet.getString("longitude"));
-            int sequence = Integer.parseInt(resultSet.getString("sequence"));
+            String rideIdLabel = "ride_id";
+            String latitudeLabel = "latitude";
+            String longitudeLabel = "longitude";
+            String sequenceLabel = "sequence";
+            int rideId = Integer.parseInt(resultSet.getString(rideIdLabel));
+            double latitude = Double.parseDouble(resultSet.getString(latitudeLabel));
+            double longitude = Double.parseDouble(resultSet.getString(longitudeLabel));
+            int sequence = Integer.parseInt(resultSet.getString(sequenceLabel));
             RideNode rideNode = new RideNode(latitude, longitude, rideId, sequence);
             rideNodes.add(rideNode);
         }

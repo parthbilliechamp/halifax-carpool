@@ -1,7 +1,7 @@
 package com.halifaxcarpool.customer.business.beans;
+
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
-import com.halifaxcarpool.driver.business.beans.Driver;
 
 public class Customer extends User {
 
@@ -21,7 +21,8 @@ public class Customer extends User {
         this.customerEmail = builder.customerEmail;
     }
 
-    public Customer(int customerId, String customerName, String customerContact, String customerEmail, String customerPassword) {
+    public Customer(int customerId, String customerName, String customerContact,
+                    String customerEmail, String customerPassword) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerContact = customerContact;
@@ -34,7 +35,7 @@ public class Customer extends User {
         try {
             userDao.registerUser(this);
         } catch (Exception e) {
-            if(e.getMessage().contains("customer_email_UNIQUE")) {
+            if(isExistingCustomer(e.getMessage())) {
                 throw new Exception("Customer already exists");
             }
             else {
@@ -99,6 +100,10 @@ public class Customer extends User {
                 '}';
     }
 
+    private static boolean isExistingCustomer(String exceptionMessage) {
+        return exceptionMessage.contains("customer_email_UNIQUE");
+    }
+
     public static class Builder {
         private int customerId;
         private String customerName;
@@ -125,4 +130,5 @@ public class Customer extends User {
             return new Customer(this);
         }
     }
+
 }
