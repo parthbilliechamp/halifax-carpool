@@ -9,9 +9,9 @@ public class RideToRequestMapperImpl implements IRideToRequestMapper {
     private static final String STATUS = "PENDING";
 
     @Override
-    public void sendRideRequest(int rideId, int rideRequestId, double amount,
+    public boolean sendRideRequest(int rideId, int rideRequestId, double amount,
                                 IRideToRequestMapperDao rideToRequestMapperDao) {
-        rideToRequestMapperDao.insertRideToRequestMapper(rideId, rideRequestId, STATUS, amount);
+        return rideToRequestMapperDao.insertRideToRequestMapper(rideId, rideRequestId, STATUS, amount);
     }
 
     @Override
@@ -23,5 +23,16 @@ public class RideToRequestMapperImpl implements IRideToRequestMapper {
     public List<RideRequest> viewApprovedRequest(int rideId, IRideToRequestMapperDao rideToRequestMapperDao) {
         return  rideToRequestMapperDao.viewRidePassengers(rideId);
     }
+
+    @Override
+    public boolean updateRideRequestStatus(int rideId, int rideRequestId, String status, IRideToRequestMapperDao rideToRequestMapperDao) {
+        return rideToRequestMapperDao.updateRideRequestStatus(rideId, rideRequestId, status);
+    }
+
+    @Override
+    public double getPaymentAmount(int rideId, int rideRequestId, IRideToRequestMapperDao rideToRequestMapperDao) {
+        return rideToRequestMapperDao.getPaymentAmount(rideId, rideRequestId);
+    }
+
 
 }

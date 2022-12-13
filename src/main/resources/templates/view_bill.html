@@ -25,7 +25,6 @@
   </style>
 </head>
 <body>
-<br />
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" style="margin-left: 30px" href="/customer/view_payment_details">< Back</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -44,28 +43,27 @@
             <div class="card-body p-5">
               <h2 class="text-center mb-5">Your bill</h2>
               <table class="table black-border-1">
-                <thead>
-                </thead>
                 <tbody>
-                <tr>
+                <tr >
                   <td>Original amount:</td>
-                  <td th:text="${originalAmount}"/>
+                  <td th:text="${fare.originalAmount}"/>
+
                 </tr>
                 <tr>
                   <td>Discount Avaliable: %</td>
-                  <td th:text="${discountPercentage}" />
+                  <td th:text="${fare.discountPercentage}" />
                 </tr>
                 <tr>
                   <td>Deduction: </td>
-                  <td th:text="${deduction}" />
+                  <td th:text="${fare.deduction}" />
                 </tr>
                 <tr>
                   <td>Final Amount</td>
-                  <td th:text="${finalAmount}"/>
+                  <td th:text="${fare.finalAmount}"/>
                 </tr>
                 <tr>
                   <td>
-                    <a class="btn black-border-4 black-border-3"  th:href="@{/customer/payment_status_success(paymentId=${paymentId})}">Confirm?</a>
+                    <a class="btn black-border-4 black-border-3" style="color: green" th:href="@{/customer/payment_status_success(paymentId=${paymentId})}">Confirm?</a>
                   </td>
                 </tr>
                 </tbody>
@@ -77,12 +75,5 @@
     </div>
   </div>
 </section>
-
-<div class="container">
-  <h3>Bill</h3>
-  <hr>
-
-
-</div>
 </body>
 </html>

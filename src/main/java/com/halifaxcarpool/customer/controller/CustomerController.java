@@ -1,9 +1,10 @@
 package com.halifaxcarpool.customer.controller;
 
+import com.halifaxcarpool.admin.business.*;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.IPaymentDao;
-import com.halifaxcarpool.customer.database.dao.PaymentDaoImpl;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.CommonsFactory;
@@ -57,6 +58,8 @@ public class CustomerController {
     private final ICustomerDaoFactory customerObjectDaoFactory = new CustomerDaoFactory();
     private final DriverModelFactory driverModelFactory = new DriverModelMainFactory();
     private final IDriverDaoFactory driverDaoFactory = new DriverDaoFactory();
+    private final IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private final IAdminDaoFactory adminDaoFactory = new AdminDaoFactory();
 
     private static final String customerLiteral = "customer";
     private static final String activeRidesLiteral = "activeRides";
@@ -338,7 +341,7 @@ public class CustomerController {
         IRidesDao ridesDao = new RidesDaoImpl();
         IFareCalculator fareCalculator = new FareCalculatorImpl();
         double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
-        model.addAttribute("fare",fare);
+        model.addAttribute("fare",fareCalculator);
         return VIEW_PAYMENT_FARE;
     }
 
@@ -348,8 +351,8 @@ public class CustomerController {
             return "redirect:/customer/login";
         }
         Customer customer = (Customer)request.getSession().getAttribute("loggedInCustomer");
-        IPayment payment = new Payment();
-        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = customerObjectFactory.getPayment();
+        IPaymentDao paymentDao = customerObjectDaoFactory.getPaymentDao();
         List<Payment> payments = payment.getCustomerRideHistory(customer.getCustomerId(),paymentDao);
         model.addAttribute("visitedRides", payments);
         return CUSTOMER_VIEW_RIDES_PAYMENTS;
@@ -361,19 +364,16 @@ public class CustomerController {
         if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
             return "redirect:/customer/login";
         }
-        //ICoupon coupon = new CouponImpl();
-        //ICouponDao couponDao = new CouponDao();
-        //double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
-        double discountPercentage = 15.00;
-        IPayment payment = new Payment();
-        IPaymentDao paymentDao = new PaymentDaoImpl();
+
+        ICoupon coupon = adminModelFactory.getCoupon();
+        ICouponDao couponDao = adminDaoFactory.getCouponDao();
+        double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
+        IPayment payment = customerObjectFactory.getPayment();
+        IPaymentDao paymentDao = customerObjectDaoFactory.getPaymentDao();
         Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
-        Double deduction = originalAmount * discountPercentage /100;
-        Double finalAmount = originalAmount - deduction;
-        model.addAttribute("originalAmount", originalAmount);
-        model.addAttribute("discountPercentage", discountPercentage);
-        model.addAttribute("deduction", deduction);
-        model.addAttribute("finalAmount", finalAmount);
+        FareCalculatorImpl fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
+        fareCalculator.calculateFinalAmount();
+        model.addAttribute("fare",fareCalculator);
         model.addAttribute("paymentId",paymentId);
         return CUSTOMER_VIEW_BILL;
     }
@@ -383,8 +383,8 @@ public class CustomerController {
         if(request.getSession().getAttribute("loggedInCustomer")== null || request.getSession().getAttribute("loggedInCustomer") == (Object)1){
             return "redirect:/customer/login";
         }
-        IPaymentDao paymentDao = new PaymentDaoImpl();
-        IPayment payment = new Payment();
+        IPaymentDao paymentDao = customerObjectDaoFactory.getPaymentDao();
+        IPayment payment = customerObjectFactory.getPayment();
         payment.updatePaymentStatusToSuccess(paymentId, paymentDao);
         return "redirect:/customer/view_payment_details";
     }

@@ -2,7 +2,9 @@ package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.customer.business.beans.Customer;
+import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
+import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.business.recommendation.*;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
@@ -47,6 +49,11 @@ public class CustomerModelMainFactory implements CustomerModelFactory {
     @Override
     public RideFinderFacade getRideFinderFacade() {
         return new RideFinderFacade();
+    }
+
+    @Override
+    public IPayment getPayment() {
+        return new Payment();
     }
 
 }
