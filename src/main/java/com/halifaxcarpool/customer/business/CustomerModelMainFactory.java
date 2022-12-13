@@ -4,12 +4,14 @@ import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.customer.business.beans.Customer;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
+import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
+import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.business.recommendation.*;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 
-public class CustomerModelMainFactory implements CustomerModelFactory {
+public class CustomerModelMainFactory implements ICustomerModelFactory {
 
     @Override
     public User getCustomer() {
@@ -54,6 +56,16 @@ public class CustomerModelMainFactory implements CustomerModelFactory {
     @Override
     public IPayment getPayment() {
         return new Payment();
+    }
+
+    @Override
+    public IFareCalculator getFareCalculator() {
+        return new FareCalculatorImpl();
+    }
+
+    @Override
+    public FareCalculatorImpl getFareCalculatorWithParameters(double originalAmount, double discountPercentage) {
+        return new FareCalculatorImpl(originalAmount, discountPercentage);
     }
 
 }

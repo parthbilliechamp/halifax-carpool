@@ -2,19 +2,17 @@ package com.halifaxcarpool.driver.controller;
 
 import com.halifaxcarpool.commons.business.CommonsFactory;
 import com.halifaxcarpool.commons.business.ICommonsFactory;
-import com.halifaxcarpool.customer.business.CustomerModelFactory;
+import com.halifaxcarpool.customer.business.ICustomerModelFactory;
 import com.halifaxcarpool.customer.business.CustomerModelMainFactory;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.*;
 import com.halifaxcarpool.driver.business.IRideNode;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
-import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
-import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
@@ -44,7 +42,7 @@ public class DriverController {
     private final IDriverDaoFactory driverDaoFactory = new DriverDaoFactory();
     private final ICustomerDaoFactory customerDaoFactory = new CustomerDaoFactory();
 
-    private final CustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
+    private final ICustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
     private final ICommonsFactory commonsObjectFactory = new CommonsFactory();
 
     private static final String driverLiteral = "driver";

@@ -16,4 +16,6 @@ public interface IRideRequestsDao {
 
     void cancelRideRequest(RideRequest rideRequest);
 
+    RideRequest getRideRequest(int rideId);
+
 }

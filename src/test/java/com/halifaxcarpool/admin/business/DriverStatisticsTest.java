@@ -1,12 +1,8 @@
 package com.halifaxcarpool.admin.business;
 
-import com.halifaxcarpool.admin.business.statistics.DriverStatistics;
 import com.halifaxcarpool.admin.business.statistics.IUserStatisticsBuilder;
 import com.halifaxcarpool.admin.business.statistics.UserStatistics;
-import com.halifaxcarpool.admin.database.dao.DriverDetailsDaoMock;
 import com.halifaxcarpool.admin.database.dao.IUserDetails;
-import com.halifaxcarpool.customer.business.CustomerModelFactory;
-import com.halifaxcarpool.customer.business.CustomerModelMainFactory;
 import com.halifaxcarpool.driver.business.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -2,6 +2,7 @@ package com.halifaxcarpool.customer.controller;
 
 import com.halifaxcarpool.admin.business.*;
 import com.halifaxcarpool.admin.database.dao.ICouponDao;
+import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.IPaymentDao;
@@ -44,7 +45,7 @@ public class CustomerController {
     private static  final  String CUSTOMER_VIEW_BILL = "view_bill";
 
     private final CommonsFactory commonsObjectFactory = new CommonsFactory();
-    private final CustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
+    private final ICustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
     private final ICustomerDaoFactory customerObjectDaoFactory = new CustomerDaoFactory();
     private final DriverModelFactory driverModelFactory = new DriverModelMainFactory();
     private final IDriverDaoFactory driverDaoFactory = new DriverDaoFactory();
@@ -251,8 +252,9 @@ public class CustomerController {
         IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
-        IFareCalculator fareCalculator = new FareCalculatorImpl();
-        double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
+        IFareCalculator fareCalculator = customerObjectFactory.getFareCalculator();
+        IDirectionPointsProvider directionPointsProvider = commonsObjectFactory.getDirectionPointsProvider();
+        double fare = fareCalculator.calculateFair(rideId, rideRequestId, rideRequestsDao, ridesDao, directionPointsProvider);
         rideToRequestMapper.sendRideRequest(rideId, rideRequestId, fare, rideToRequestMapperDao);
         return "redirect:/customer/view_ride_requests";
     }
@@ -327,11 +329,12 @@ public class CustomerController {
 
     @GetMapping("/customer/view_payment_fare")
     String viewPaymentFare(@RequestParam("rideId")int rideId, @RequestParam("rideRequestId")int rideRequestId, Model model){
-        IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
-        IRidesDao ridesDao = new RidesDaoImpl();
-        IFareCalculator fareCalculator = new FareCalculatorImpl();
-        double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
-        model.addAttribute("fare",fareCalculator);
+        IRideRequestsDao rideRequestsDao = customerObjectDaoFactory.getRideRequestsDao();
+        IRidesDao ridesDao = driverDaoFactory.getDriverRidesDao();
+        IDirectionPointsProvider directionPointsProvider = commonsObjectFactory.getDirectionPointsProvider();
+        IFareCalculator fareCalculator = customerObjectFactory.getFareCalculator();
+        double fare = fareCalculator.calculateFair(rideId,rideRequestId ,rideRequestsDao, ridesDao, directionPointsProvider);
+        model.addAttribute("fare",fare);
         return VIEW_PAYMENT_FARE;
     }
 
@@ -361,7 +364,7 @@ public class CustomerController {
         IPayment payment = customerObjectFactory.getPayment();
         IPaymentDao paymentDao = customerObjectDaoFactory.getPaymentDao();
         Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
-        FareCalculatorImpl fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
+        FareCalculatorImpl fareCalculator = customerObjectFactory.getFareCalculatorWithParameters(originalAmount, discountPercentage);
         fareCalculator.calculateFinalAmount();
         model.addAttribute("fare",fareCalculator);
         model.addAttribute("paymentId",paymentId);

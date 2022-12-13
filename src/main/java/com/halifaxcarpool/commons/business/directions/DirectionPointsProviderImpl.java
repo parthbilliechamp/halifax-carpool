@@ -32,7 +32,8 @@ public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
     public long getDistanceBetweenSourceAndDestination(String source, String destination) {
         try {
             DirectionsResult directionsResult = directionResult.getDirectionsResult(source, destination);
-            return directionsResult.routes[0].legs[0].distance.inMeters;
+            long distanceInMeters = directionsResult.routes[0].legs[0].distance.inMeters;
+            return distanceInMeters / 1000;
         } catch (Exception e) {
             throw new RuntimeException("Error fetching Ride distance between : " + source + "and " + destination);
         }

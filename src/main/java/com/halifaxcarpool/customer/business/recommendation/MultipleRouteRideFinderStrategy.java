@@ -4,7 +4,7 @@ import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImp
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.business.ICustomerDaoFactory;
 import com.halifaxcarpool.customer.business.CustomerDaoFactory;
-import com.halifaxcarpool.customer.business.CustomerModelFactory;
+import com.halifaxcarpool.customer.business.ICustomerModelFactory;
 import com.halifaxcarpool.customer.business.CustomerModelMainFactory;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MultipleRouteRideFinderStrategy implements RideFinderStrategy {
 
-    CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
+    ICustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
     ICustomerDaoFactory customerDaoFactory = new CustomerDaoFactory();
     RideFinderFacade rideFinderFacade = customerModelFactory.getRideFinderFacade();
     IRideNodeDao rideNodeDao = customerDaoFactory.getRideNodeDao();

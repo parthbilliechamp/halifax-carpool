@@ -5,7 +5,7 @@ import com.halifaxcarpool.commons.business.CommonsFactory;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.ICustomerDaoFactory;
 import com.halifaxcarpool.customer.business.CustomerDaoFactory;
-import com.halifaxcarpool.customer.business.CustomerModelFactory;
+import com.halifaxcarpool.customer.business.ICustomerModelFactory;
 import com.halifaxcarpool.customer.business.CustomerModelMainFactory;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class DirectRouteRideFinderStrategy implements RideFinderStrategy {
 
-    CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
+    ICustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
     ICustomerDaoFactory customerDaoFactory = new CustomerDaoFactory();
 
     ICommonsFactory commonsFactory = new CommonsFactory();

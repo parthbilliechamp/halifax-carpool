@@ -1,11 +1,13 @@
 package com.halifaxcarpool.customer.business;
 
 import com.halifaxcarpool.commons.business.beans.User;
+import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
+import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.business.recommendation.*;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 
-public interface CustomerModelFactory {
+public interface ICustomerModelFactory {
 
     User getCustomer();
 
@@ -25,5 +27,8 @@ public interface CustomerModelFactory {
 
     IPayment getPayment();
 
+    IFareCalculator getFareCalculator();
+
+    FareCalculatorImpl getFareCalculatorWithParameters(double originalAmount, double discountPercentage);
 
 }

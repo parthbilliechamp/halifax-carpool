@@ -108,4 +108,10 @@ public class RideRequestsDaoMockImpl implements IRideRequestsDao {
         }
     }
 
+    @Override
+    public RideRequest getRideRequest(int rideRequestId) {
+        RideRequest mockRideRequest = new RideRequest(rideRequestId,1,"Lane1","Lane2");
+        return mockRideRequest;
+    }
+
 }

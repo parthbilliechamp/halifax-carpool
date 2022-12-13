@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CustomerTest {
 
     ICustomerDaoFactory customerDaoTestFactory = new CustomerDaoTestFactory();
-    CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
+    ICustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
     ICommonsFactory commonsObjectFactory = new CommonsFactory();
     User customer;
 

@@ -91,7 +91,7 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
             e.printStackTrace();
         }
         finally {
-            //database.closeDatabaseConnection();
+            database.closeDatabaseConnection();
         }
         return 0;
     }
@@ -106,6 +106,24 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public RideRequest getRideRequest(int rideRequestId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL get_ride_request(?)");
+            statement.setInt(1, rideRequestId);
+            ResultSet resultSet = statement.executeQuery();
+            return buildRideRequestsFrom(resultSet).get(0);
+
+        }
+        catch (SQLException e){
+            throw  new RuntimeException(e);
+        }
+        finally {
+            database.closeDatabaseConnection();
         }
     }
 

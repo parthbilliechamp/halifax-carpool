@@ -1,5 +1,8 @@
 package com.halifaxcarpool.customer.business;
 
+import com.halifaxcarpool.commons.business.CommonsFactoryTest;
+import com.halifaxcarpool.commons.business.ICommonsFactory;
+import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
 import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
@@ -14,14 +17,17 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("test")
 public class FareCalculatorImplTest{
+
+    private final ICommonsFactory commonsFactory = new CommonsFactoryTest();
     @Test
     public void calculateFairTest(){
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoMockImpl();
         IRidesDao ridesDao = new RidesDaoMockImpl();
+        IDirectionPointsProvider directionPointsProvider = commonsFactory.getDirectionPointsProvider();
         int rideId = 1;
+        int rideRequestId =1;
         IFareCalculator fareCalculator = new FareCalculatorImpl();
-        assert true;
-        //assert (fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao) ==0.0);
+        assert (fareCalculator.calculateFair(rideId, rideRequestId, rideRequestsDao, ridesDao, directionPointsProvider) !=0.0);
     }
 
     @Test
