@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
@@ -32,19 +31,23 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/customer/view_ride_requests" style="margin-left: 10px;">Home</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/create_ride_request">Request a ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/create_ride_request">Request a ride<span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/view_ride_requests">My ride requests<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/view_ride_requests">My ride requests<span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/view_ongoing_rides">Current ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/view_ongoing_rides">Current ride<span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/customer/view_profile">Profile<span class="sr-only">(current)</span></a>
@@ -81,9 +84,10 @@
                                     <td th:text="${ride.rideId}"/>
                                     <td th:text="${ride.driverId}"/>
                                     <td th:text="${ride.amountDue}"/>
-                                    <td th:text="${ride.status}" />
+                                    <td th:text="${ride.status}"/>
                                     <td>
-                                        <a class="btn black-border-2 black-border-3" th:if="${ride.status =='NOT_INITIATED'}"
+                                        <a class="btn black-border-2 black-border-3"
+                                           th:if="${ride.status =='NOT_INITIATED'}"
                                            th:href="@{/customer/view_billing(paymentId=${ride.paymentId})}">Pay</a>
                                     </td>
 

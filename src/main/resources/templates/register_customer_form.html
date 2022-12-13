@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
@@ -14,11 +13,6 @@
         .black-border-1 {
             border-color: black;
             border-width: medium;
-        }
-
-        .black-border-2 {
-            border-color: black;
-            border-width: thin;
         }
 
         .black-border-3 {
@@ -39,7 +33,8 @@
                     <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-6">Customer Registration</h2>
-                            <div th:object="${registrationError}" th:if="${registrationError != null}" class="alert alert-danger black-border-3">
+                            <div th:object="${registrationError}" th:if="${registrationError != null}"
+                                 class="alert alert-danger black-border-3">
                                 <p th:text="${registrationError}"></p>
                             </div>
                             <form role="form" th:action="@{/customer/register/save}" th:object="${customer}"
@@ -70,8 +65,9 @@
                                         Register
                                     </button>
                                 </div>
-                                <p class="text-center text-muted mt-3 mb-0">Have already an account? <a th:href="@{/customer/login}"
-                                                                                                        class="fw-bold text-body"><u>Login
+                                <p class="text-center text-muted mt-3 mb-0">Have already an account? <a
+                                        th:href="@{/customer/login}"
+                                        class="fw-bold text-body"><u>Login
                                     here</u></a></p>
                             </form>
                         </div>

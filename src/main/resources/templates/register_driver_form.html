@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
@@ -16,11 +15,6 @@
             border-width: medium;
         }
 
-        .black-border-2 {
-            border-color: black;
-            border-width: thin;
-        }
-
         .black-border-3 {
             border-radius: 30px;
         }
@@ -28,18 +22,18 @@
     </style>
 </head>
 <body>
-
-
 <section class="vh-200 bg-image"
          style="background-color: white">
     <div class="mask d-flex align-items-center h-100">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                    <div class="card m-3 black-border-3 container h-100" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                    <div class="card m-3 black-border-3 container h-100"
+                         style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
                         <div class="card-body p-6 m-2">
                             <h2 class="text-uppercase text-center mb-3">Driver Registration</h2>
-                            <div th:object="${registrationError}" th:if="${registrationError != null}" class="alert alert-danger black-border-3">
+                            <div th:object="${registrationError}" th:if="${registrationError != null}"
+                                 class="alert alert-danger black-border-3">
                                 <p th:text="${registrationError}"></p>
                             </div>
                             <form role="form" th:action="@{/driver/register/save}" method="post" th:object="${driver}">
@@ -79,7 +73,8 @@
                                     <label class="form-label" for="registered_vehicle_number">Vehicle
                                         Number</label>
                                     <input type="text" th:field="*{registeredVehicleNumber}"
-                                           id="registered_vehicle_number" class="form-control form-control-lg black-border-3"
+                                           id="registered_vehicle_number"
+                                           class="form-control form-control-lg black-border-3"
                                            required/>
                                 </div>
 
@@ -107,8 +102,9 @@
                                         Register
                                     </button>
                                 </div>
-                                <p class="text-center text-muted mt-4 mb-0">Have already an account? <a th:href="@{/driver/login}"
-                                                                                                        class="fw-bold text-body"><u>Login
+                                <p class="text-center text-muted mt-4 mb-0">Have already an account? <a
+                                        th:href="@{/driver/login}"
+                                        class="fw-bold text-body"><u>Login
                                     here</u></a></p>
                             </form>
                         </div>

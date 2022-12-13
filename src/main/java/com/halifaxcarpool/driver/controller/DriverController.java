@@ -47,20 +47,17 @@ public class DriverController {
     private static final String loggedInDriverLiteral = "loggedInDriver";
     private static final String loggedInErrorLiteral = "loggedInError";
     private static final String noErrorLiteral = "noError";
-    private static final String errorLiteral = "error";
+    private static final String notRegisteredLiteral = "not registered";
+    private static final String notAuthorizedLiteral = "not authorized";
     private static final String driverThatTriedToRegisterLiteral = "driverThatTriedToRegister";
     private static final String registrationErrorLiteral = "registrationError";
     private static final String driverProfileLiteral = "driverProfile";
     private static final String receivedRideRequestsAttribute = "receivedRideRequests";
     private static final String rideLiteral = "ride";
     private static final String rideIdLiteral = "rideId";
-
     private static final String ridesAttribute = "rides";
-
     private static final String DRIVER_VIEW_RIDE_HISTORY = "view_ride_history";
-
     private static final String DRIVER_VIEW_MY_RIDES = "view_driver_my_rides";
-
     private static final String VIEW_PAYMENT_DETAILS = "view_driver_payment_status";
 
     @GetMapping("/driver/login")
@@ -69,25 +66,14 @@ public class DriverController {
 
         model.addAttribute(driverLiteral, new Driver());
         if (driverAttribute == (Object) 1) {
-            model.addAttribute(loggedInErrorLiteral, "noError");
-        } else if (driverAttribute == (Object) "not registered") {
-            model.addAttribute(loggedInErrorLiteral, "not registered");
-            httpServletRequest.getSession().setAttribute(loggedInDriverLiteral, 1);
-        } else if (driverAttribute == (Object) "not authorized") {
-            model.addAttribute(loggedInErrorLiteral, "not authorized");
-            httpServletRequest.getSession().setAttribute(loggedInDriverLiteral, 1);
-        }
-
-
-
-        model.addAttribute(driverLiteral, new Driver());
-        if (null != driverAttribute && 1 == (Integer) driverAttribute) {
             model.addAttribute(loggedInErrorLiteral, noErrorLiteral);
-        } else if (null != driverAttribute && (Integer) driverAttribute == 0) {
-            model.addAttribute(loggedInErrorLiteral, errorLiteral);
+        } else if (driverAttribute == (Object) notRegisteredLiteral) {
+            model.addAttribute(loggedInErrorLiteral, notRegisteredLiteral);
+            httpServletRequest.getSession().setAttribute(loggedInDriverLiteral, 1);
+        } else if (driverAttribute == (Object) notAuthorizedLiteral) {
+            model.addAttribute(loggedInErrorLiteral, notAuthorizedLiteral);
             httpServletRequest.getSession().setAttribute(loggedInDriverLiteral, 1);
         }
-        return "login_driver_form";
 
         return "login_driver_form";
     }

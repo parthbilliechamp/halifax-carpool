@@ -6,7 +6,7 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
     <title class="header">
-        Register Customer
+        Your Rides
     </title>
     <style>
 
@@ -29,13 +29,15 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/driver/view_rides" style="margin-left: 10px">Home</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/driver/create_new_ride">Create a ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/driver/create_new_ride">Create a ride<span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/driver/my_rides">History<span class="sr-only">(current)</span></a>
@@ -64,7 +66,7 @@
                                 <tr>
                                     <th>Start location</th>
                                     <th>End location</th>
-                                    <th>Seats offered </th>
+                                    <th>Seats offered</th>
                                     <th>Requests</th>
                                     <th>Action</th>
                                     <th>Cancel ride</th>
@@ -77,13 +79,16 @@
                                     <td th:text="${ride.seatsOffered}"/>
                                     <td>
                                         <a class="btn black-border-1 black-border-3"
-                                           th:href="@{/driver/view_received_requests(rideId=${ride.rideId})}">View Requests</a>
+                                           th:href="@{/driver/view_received_requests(rideId=${ride.rideId})}">View
+                                            Requests</a>
                                     </td>
                                     <td th:switch="${ride.rideStatus}">
                                         <a class="btn black-border-1 black-border-3"
-                                           th:case="0" th:href="@{/driver/start_ride(rideId=${ride.rideId})}">Start ride</a>
+                                           th:case="0" th:href="@{/driver/start_ride(rideId=${ride.rideId})}">Start
+                                            ride</a>
                                         <a class="btn black-border-2 black-border-3"
-                                           th:case="1" th:href="@{/driver/stop_ride(rideId=${ride.rideId})}">Stop ride</a>
+                                           th:case="1" th:href="@{/driver/stop_ride(rideId=${ride.rideId})}">Stop
+                                            ride</a>
                                     </td>
                                     <td>
                                         <a class="btn black-border-2 black-border-3" style="color: red"

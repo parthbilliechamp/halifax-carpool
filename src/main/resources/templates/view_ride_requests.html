@@ -7,7 +7,7 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
     <title class="header">
-        Register Customer
+        Ride Requests
     </title>
     <style>
 
@@ -30,16 +30,19 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" style="margin-left: 30px" href="/customer/view_ride_requests">Home</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/create_ride_request">Request a ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/create_ride_request">Request a ride<span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/customer/view_ongoing_rides">Current Ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/customer/view_ongoing_rides">Current Ride<span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/customer/view_payment_details">Payments History<span class="sr-only">(current)</span></a>
@@ -81,11 +84,13 @@
                                     <td>
                                         <a class="btn black-border-1 black-border-3"
                                            th:href="@{/customer/view_recommended_rides(rideRequestId=${rideRequest.rideRequestId},
-                   startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended Rides</a>
+                   startLocation=${rideRequest.startLocation},endLocation=${rideRequest.endLocation})}">View Recommended
+                                            Rides</a>
                                     </td>
                                     <td>
                                         <a class="btn black-border-2 black-border-3" style="color: red"
-                                           th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel Request</a>
+                                           th:href="@{/customer/cancel_ride_request(rideRequestId=${rideRequest.rideRequestId})}">Cancel
+                                            Request</a>
                                     </td>
                                 </tr>
                                 </tbody>

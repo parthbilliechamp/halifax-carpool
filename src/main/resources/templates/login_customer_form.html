@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
@@ -13,11 +12,6 @@
         .black-border-1 {
             border-color: black;
             border-width: medium;
-        }
-
-        .black-border-2 {
-            border-color: black;
-            border-width: thin;
         }
 
         .black-border-3 {
@@ -36,7 +30,8 @@
                     <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Customer Login</h2>
-                            <div th:object="${loggedInError}" th:if="${loggedInError == 'error'}" class="alert alert-danger black-border-3">
+                            <div th:object="${loggedInError}" th:if="${loggedInError == 'error'}"
+                                 class="alert alert-danger black-border-3">
                                 We couldn't find you...
                             </div>
                             <form th:action="@{/customer/login/check}" method="post" th:object="${customer}">

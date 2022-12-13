@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
@@ -67,7 +66,7 @@
                                 <tbody>
                                 <tr th:each="coupon : ${coupons}">
                                     <td th:text="${coupon.couponId}"/>
-                                    <td th:text="${coupon.discountPercentage}" />
+                                    <td th:text="${coupon.discountPercentage}"/>
                                     <td th:text="${coupon.expiry}"/>
                                     <td>
                                         <a class="btn black-border-2 black-border-3"
@@ -77,7 +76,8 @@
                                 </tbody>
                             </table>
                             <a href="/admin/create_new_coupon"
-                               class="btn black-border-1 black-border-3 btn-lg gradient-custom-4 text-body" style="float: right; color: green">
+                               class="btn black-border-1 black-border-3 btn-lg gradient-custom-4 text-body"
+                               style="float: right; color: green">
                                 Add +
                             </a>
                         </div>
