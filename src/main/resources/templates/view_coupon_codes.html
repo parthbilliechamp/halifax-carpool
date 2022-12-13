@@ -10,42 +10,82 @@
         View Coupons
     </title>
 
+    <style>
 
+        .black-border-1 {
+            border-color: green;
+            border-width: medium;
+        }
 
+        .black-border-2 {
+            border-color: red;
+            border-width: medium;
+        }
 
+        .black-border-3 {
+            border-radius: 30px;
+        }
+
+    </style>
 
 </head>
 <body>
-<br />
-<div class="container">
-    <h3>View Coupons </h3>
-    <a href="/admin/create_new_coupon"
-       class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
-        + Add
-    </a>
-    <hr>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>Coupon Id</th>
-            <th>Discount Percentage %</th>
-            <th>Expiry</th>
-            <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="coupon : ${coupons}">
-            <td th:text="${coupon.couponId}"/>
-            <td th:text="${coupon.discountPercentage}" />
-            <td th:text="${coupon.expiry}"/>
-            <td>
-            <a class="btn btn-danger"
-               th:href="@{/admin/delete_coupon(couponId=${coupon.couponId})}">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" style="margin-left: 10px" href="/admin/home">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="vh-100 bg-image"
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div>
+                    <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-5">Coupons</h2>
+                            <table class="table black-border-3">
+                                <thead>
+                                <tr>
+                                    <th>Coupon Id</th>
+                                    <th>Discount Percentage %</th>
+                                    <th>Expiry</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="coupon : ${coupons}">
+                                    <td th:text="${coupon.couponId}"/>
+                                    <td th:text="${coupon.discountPercentage}" />
+                                    <td th:text="${coupon.expiry}"/>
+                                    <td>
+                                        <a class="btn black-border-2 black-border-3"
+                                           th:href="@{/admin/delete_coupon(couponId=${coupon.couponId})}">Delete</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <a href="/admin/create_new_coupon"
+                               class="btn black-border-1 black-border-3 btn-lg gradient-custom-4 text-body" style="float: right; color: green">
+                                Add +
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

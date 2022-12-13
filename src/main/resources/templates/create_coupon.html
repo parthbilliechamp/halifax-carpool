@@ -9,21 +9,76 @@
     <title class="header">
         Create New Coupon
     </title>
+
+    <style>
+
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
+        }
+
+        .black-border-2 {
+            border-color: red;
+            border-width: medium;
+        }
+
+        .black-border-3 {
+            border-radius: 30px;
+        }
+
+    </style>
 </head>
-<br />
 
-<div class="new_ride_form">
-    <h3>New Coupon Creation</h3>
-    <form action="#" th:action="@{/admin/create_new_coupon}" th:object="${coupon}" method="post">
-        <label>Coupon ID:</label><br />
-        <input type="text" th:field="*{couponId}"><br />
-        <label>Discount Offered in Percentage(%): </label><br />
-        <input type="text" th:field="*{discountPercentage}"><br />
-        <label>Expiry Date:</label><br />
-        <input type="text" th:field="*{expiry}"><br />
+<body>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" style="margin-left: 30px" href="/admin/view_discounts">< Back</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
 
-        <input type="submit" value="Create" />
-    </form>
-</div>
+<section class="vh-100 bg-image"
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                        <div class="card-body p-5">
+                            <h2 class="text-uppercase text-center mb-5">Create Coupon</h2>
+                            <form action="#" th:action="@{/admin/create_new_coupon}" th:object="${coupon}"
+                                  method="post">
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="couponId">Coupon ID</label>
+                                    <input type="text" th:field="*{couponId}" id="couponId"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="discountPercentage">Discount Offered in
+                                        Percentage(%)</label>
+                                    <input type="text" th:field="*{discountPercentage}" id="discountPercentage"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="expiry">Expiry Date</label>
+                                    <input type="text" th:field="*{expiry}" id="expiry"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" value="Create"
+                                            class="btn black-border-1 black-border-3 btn-block btn-lg gradient-custom-4 text-body">
+                                        Create
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
 </html>

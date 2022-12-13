@@ -1,42 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" th:href="@{/css/demo.css}">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-        crossorigin="anonymous">
-  <title class="header">
-    Customer Statistics
-  </title>
-</head>
-<br />
-<div class="container">
-  <h3>Customer Statistics</h3>
-  <hr>
-  <table class="table table-bordered table-striped">
-    <thead class="thead-dark">
-    <tr>
-      <th>Number of Customers</th>
-      <th>Total rides completed</th>
-      <th>Number of seats offered</th>
-      <th>Average seats offered</th>
-      <th>Average ride distance (in kilometers)</th>
-      <th>CO2 Emissions saved (in kilograms)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="userStats: ${userStats}">
-      <td th:text="${userStats.numberOfUsers}"/>
-      <td th:text="${userStats.ridesCompleted}"/>
-      <td th:text="${userStats.numberOfSeats}"/>
-      <td th:text="${userStats.averageNumberOfSeats}"/>
-      <td th:text="${userStats.averageRideDistance}"/>
-      <td th:text="${userStats.cO2Emissions}"/>
-    </tr>
-    </tbody>
-  </table>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        Customer Statistics
+    </title>
+    <style>
 
-</div>
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
+        }
+
+        .black-border-2 {
+            border-color: red;
+            border-width: medium;
+        }
+
+        .black-border-3 {
+            border-radius: 30px;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" style="margin-left: 10px" href="/admin/home">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="vh-100 bg-image"
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div>
+                    <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-5">Customer Statistics</h2>
+                            <table class="table black-border-3">
+                                <thead>
+                                <tr>
+                                    <th>Number of Customers</th>
+                                    <th>Total rides completed</th>
+                                    <th>Number of seats offered</th>
+                                    <th>Average seats offered</th>
+                                    <th>Average ride distance (in kilometers)</th>
+                                    <th>CO2 Emissions saved (in kilograms)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="userStats: ${userStats}">
+                                    <td th:text="${userStats.numberOfUsers}"/>
+                                    <td th:text="${userStats.ridesCompleted}"/>
+                                    <td th:text="${userStats.numberOfSeats}"/>
+                                    <td th:text="${userStats.averageNumberOfSeats}"/>
+                                    <td th:text="${userStats.averageRideDistance}"/>
+                                    <td th:text="${userStats.cO2Emissions}"/>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
