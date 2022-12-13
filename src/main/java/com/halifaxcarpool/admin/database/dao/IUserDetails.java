@@ -84,7 +84,7 @@ public abstract class IUserDetails {
             return rideLocations;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             database.closeDatabaseConnection();
         }
     }

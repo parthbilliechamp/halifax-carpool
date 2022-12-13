@@ -7,5 +7,7 @@ import java.io.IOException;
 
 public interface IDirectionResult {
 
-    DirectionsResult getDirectionsResult(String source, String destination) throws IOException, InterruptedException, ApiException;
+    DirectionsResult getDirectionsResult(String source, String destination)
+            throws IOException, InterruptedException, ApiException;
+
 }

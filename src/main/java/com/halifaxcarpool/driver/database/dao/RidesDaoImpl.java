@@ -173,11 +173,16 @@ public class RidesDaoImpl implements IRidesDao {
 
         List<Ride> rideList = new ArrayList<>();
         while (resultSet.next()) {
-            String driverName = resultSet.getString("driver_name");
-            String vehicleNumber = resultSet.getString("registered_vehicle_number");
-            String startLocation = resultSet.getString("start_location");
-            String endLocation = resultSet.getString("end_location");
-            double fare = Double.parseDouble(resultSet.getString("fair_price"));
+            String driverNameLiteral = "driver_name";
+            String registeredVehicleNumberLiteral = "registered_vehicle_number";
+            String startLocationLiteral = "start_location";
+            String endLocationLiteral = "end_location";
+            String fairPriceLiteral = "fair_price";
+            String driverName = resultSet.getString(driverNameLiteral);
+            String vehicleNumber = resultSet.getString(registeredVehicleNumberLiteral);
+            String startLocation = resultSet.getString(startLocationLiteral);
+            String endLocation = resultSet.getString(endLocationLiteral);
+            double fare = Double.parseDouble(resultSet.getString(fairPriceLiteral));
             Ride ride = new Ride();
             ride.setStartLocation(startLocation);
             ride.setEndLocation(endLocation);

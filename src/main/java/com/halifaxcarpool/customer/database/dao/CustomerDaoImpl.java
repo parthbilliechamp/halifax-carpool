@@ -16,18 +16,21 @@ public class CustomerDaoImpl extends IUserDao {
     IDatabase database;
     Connection connection;
 
+    public CustomerDaoImpl() {
+        database = new DatabaseImpl();
+    }
+
     public void registerUser(User user) throws Exception{
         Customer customer = (Customer) user;
         try {
-            database = new DatabaseImpl();
             connection = database.openDatabaseConnection();
             String SQL_STRING = "{CALL insert_customer_details(?,?,?,?)}";
-            CallableStatement stmt = connection.prepareCall(SQL_STRING);
-            stmt.setString(1, customer.getCustomerName());
-            stmt.setString(2, customer.getCustomerContact());
-            stmt.setString(3, customer.getCustomerEmail());
-            stmt.setString(4, customer.getCustomerPassword());
-            stmt.execute();
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setString(1, customer.getCustomerName());
+            statement.setString(2, customer.getCustomerContact());
+            statement.setString(3, customer.getCustomerEmail());
+            statement.setString(4, customer.getCustomerPassword());
+            statement.execute();
         } catch (SQLException e) {
             throw new Exception(e.getMessage());
         } finally {
@@ -38,27 +41,22 @@ public class CustomerDaoImpl extends IUserDao {
     public boolean updateUser(User user) {
         Customer customer = (Customer) user;
         try {
-            database = new DatabaseImpl();
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-
             String SQL_STRING = "{CALL update_customer_details(?,?,?,?,?)}";
-            CallableStatement stmt = connection.prepareCall(SQL_STRING);
-            stmt.setInt(1, customer.getCustomerId());
-            stmt.setString(2, customer.getCustomerName());
-            stmt.setString(3, customer.getCustomerContact());
-            stmt.setString(4, customer.getCustomerEmail());
-            stmt.setString(5, customer.getCustomerPassword());
-            stmt.execute();
-
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(1, customer.getCustomerId());
+            statement.setString(2, customer.getCustomerName());
+            statement.setString(3, customer.getCustomerContact());
+            statement.setString(4, customer.getCustomerEmail());
+            statement.setString(5, customer.getCustomerPassword());
+            statement.execute();
             return true;
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             database.closeDatabaseConnection();
         }
-
         return false;
     }
+
 }

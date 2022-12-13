@@ -1,9 +1,9 @@
 package com.halifaxcarpool.customer.business.beans;
 
 public class RideRequestNode {
-    private double latitude;
-    private double longitude;
-    private int rideRequestId;
+    private final double latitude;
+    private final double longitude;
+    private final int rideRequestId;
 
     public RideRequestNode(double latitude, double longitude, int rideRequestId) {
         this.latitude = latitude;
@@ -15,24 +15,12 @@ public class RideRequestNode {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public int getRideRequestId() {
         return rideRequestId;
-    }
-
-    public void setRideRequestId(int rideRequestId) {
-        this.rideRequestId = rideRequestId;
     }
 
 }

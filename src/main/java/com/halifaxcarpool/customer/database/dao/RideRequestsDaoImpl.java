@@ -113,10 +113,14 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
 
         List<RideRequest> rideRequests = new ArrayList<>();
         while (resultSet.next()) {
-            int rideRequestId = Integer.parseInt(resultSet.getString("ride_req_id"));
-            int customerId = Integer.parseInt(resultSet.getString("customer_id"));
-            String startLocation = resultSet.getString("start_location");
-            String endLocation = resultSet.getString("end_location");
+            String rideReqIdLabel = "ride_req_id";
+            String customerIdLabel = "customer_id";
+            String startLocationLabel = "start_location";
+            String endLocationLabel = "end_location";
+            int rideRequestId = Integer.parseInt(resultSet.getString(rideReqIdLabel));
+            int customerId = Integer.parseInt(resultSet.getString(customerIdLabel));
+            String startLocation = resultSet.getString(startLocationLabel);
+            String endLocation = resultSet.getString(endLocationLabel);
             RideRequest rideRequest = new RideRequest(rideRequestId, customerId, startLocation, endLocation);
             rideRequests.add(rideRequest);
         }

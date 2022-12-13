@@ -5,6 +5,7 @@ import com.halifaxcarpool.admin.business.statistics.UserStatistics;
 import com.halifaxcarpool.admin.database.dao.IUserDetails;
 import com.halifaxcarpool.customer.business.CustomerDaoFactory;
 import com.halifaxcarpool.customer.business.CustomerDaoTestFactory;
+import com.halifaxcarpool.customer.business.ICustomerDaoFactory;
 import org.junit.jupiter.api.Test;
 
 public class CustomerStatisticsTest {
@@ -14,13 +15,14 @@ public class CustomerStatisticsTest {
     private static final int numberOfSeats = 65;
     private static final int averageSeats = 4;
 
-    private IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private final IAdminModelFactory adminModelFactory = new AdminModelFactory();
 
-    private CustomerDaoFactory customerDaoFactory = new CustomerDaoTestFactory();
+    private final ICustomerDaoFactory customerDaoFactory = new CustomerDaoTestFactory();
 
     protected IUserDetails userDetails = customerDaoFactory.getCustomerDetailsDao();
 
-    private IUserStatisticsBuilder userStatisticsBuilder = adminModelFactory.getDriverStatisticsBuilder(userDetails);
+    private final IUserStatisticsBuilder userStatisticsBuilder =
+            adminModelFactory.getDriverStatisticsBuilder(userDetails);
 
     @Test
     public void calculateNumberOfUsersTest(){

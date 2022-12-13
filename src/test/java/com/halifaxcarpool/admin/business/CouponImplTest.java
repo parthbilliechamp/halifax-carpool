@@ -1,14 +1,10 @@
 package com.halifaxcarpool.admin.business;
 
 import com.halifaxcarpool.admin.business.beans.Coupon;
-import com.halifaxcarpool.admin.database.dao.CouponDaoMock;
-import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")

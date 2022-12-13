@@ -35,7 +35,7 @@ public class RideNodeDaoMockImpl implements IRideNodeDao {
     }
 
     @Override
-    public int getLatestRideId() {
+    public int getLatestRideNodeId() {
         int latestRideId = -1;
         for (RideNode rideNode: resultList) {
             if (rideNode.getRideId() > latestRideId) {

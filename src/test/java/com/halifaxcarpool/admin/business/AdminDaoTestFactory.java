@@ -1,7 +1,7 @@
 package com.halifaxcarpool.admin.business;
 
 import com.halifaxcarpool.admin.database.dao.*;
-import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
 
 public class AdminDaoTestFactory implements IAdminDaoFactory{
 

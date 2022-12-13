@@ -21,13 +21,13 @@ public class DriverStatisticsTest {
     private static final int numberOfSeats = 65;
     private static final int averageSeats = 4;
 
-    private IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private final IAdminModelFactory adminModelFactory = new AdminModelFactory();
 
-    private DriverDaoFactory driverModelFactory = new DriverDaoTestFactory();
+    private final IDriverDaoFactory driverModelFactory = new DriverDaoTestFactory();
 
     protected IUserDetails userDetails = driverModelFactory.getDriverDetailsDao();
 
-    private IUserStatisticsBuilder userStatisticsBuilder = adminModelFactory.getDriverStatisticsBuilder(userDetails);
+    private final IUserStatisticsBuilder userStatisticsBuilder = adminModelFactory.getDriverStatisticsBuilder(userDetails);
 
     @Test
     public void calculateNumberOfUsersTest(){

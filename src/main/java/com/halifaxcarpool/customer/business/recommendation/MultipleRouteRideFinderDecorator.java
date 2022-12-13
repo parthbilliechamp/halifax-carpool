@@ -1,5 +1,7 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
+import com.halifaxcarpool.customer.business.CustomerModelFactory;
+import com.halifaxcarpool.customer.business.CustomerModelMainFactory;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.beans.Ride;
 
@@ -8,8 +10,9 @@ import java.util.List;
 
 public class MultipleRouteRideFinderDecorator extends RideFinderBaseDecorator {
 
-    RideFinderStrategy rideFinderStrategy = new MultipleRouteRideFinderStrategy();
-    RideFinderNavigator navigator = new RideFinderNavigator(rideFinderStrategy);
+    CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
+    RideFinderStrategy rideFinderStrategy = customerModelFactory.getMultiRouteRideFinderStrategy();
+    RideFinderNavigator navigator = customerModelFactory.getRideFinderNavigator(rideFinderStrategy);
 
     public MultipleRouteRideFinderDecorator(BaseRideFinder rideFinder) {
         super(rideFinder);

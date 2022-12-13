@@ -3,31 +3,26 @@ import java.util.List;
 
 import com.halifaxcarpool.admin.business.*;
 import com.halifaxcarpool.admin.business.beans.Coupon;
-import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
+import com.halifaxcarpool.admin.database.dao.ICouponDao;
 import com.halifaxcarpool.customer.business.CustomerDaoFactory;
-import com.halifaxcarpool.customer.business.CustomerDaoMainFactory;
+import com.halifaxcarpool.customer.business.ICustomerDaoFactory;
 import com.halifaxcarpool.driver.business.DriverDaoFactory;
-import com.halifaxcarpool.driver.business.DriverDaoMainFactory;
+import com.halifaxcarpool.driver.business.IDriverDaoFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import com.halifaxcarpool.admin.business.approve.DriverApproval;
 import com.halifaxcarpool.admin.business.approve.IUserApproval;
 import com.halifaxcarpool.admin.business.authentication.*;
 import com.halifaxcarpool.admin.business.popular.ILocationPopularity;
-import com.halifaxcarpool.admin.business.popular.LocationPopularityImpl;
 import com.halifaxcarpool.admin.business.statistics.*;
 import com.halifaxcarpool.admin.database.dao.*;
-import com.halifaxcarpool.admin.business.statistics.DriverStatistics;
 import com.halifaxcarpool.admin.business.statistics.IUserStatisticsBuilder;
-import com.halifaxcarpool.admin.business.statistics.UserAnalysis;
 import com.halifaxcarpool.admin.business.statistics.UserStatistics;
 import com.halifaxcarpool.admin.business.beans.Admin;
 import com.halifaxcarpool.commons.business.beans.User;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
-
 
 @Controller
 public class AdminController {
@@ -40,10 +35,10 @@ public class AdminController {
     private static final String CUSTOMER_STATISTICS = "view_customer_stats";
     private static final String DRIVER_APPROVAL_REQUESTS = "view_driver_approval_requests";
     private static final String ADMIN_CREATE_NEW_COUPON = "create_coupon";
-    private DriverDaoFactory driverDaoFactory = new DriverDaoMainFactory();
-    private CustomerDaoFactory customerDaoFactory = new CustomerDaoMainFactory();
-    private IAdminDaoFactory adminDaoFactory = new AdminDaoFactory();
-    private IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private final IDriverDaoFactory driverDaoFactory = new DriverDaoFactory();
+    private final ICustomerDaoFactory customerDaoFactory = new CustomerDaoFactory();
+    private final IAdminDaoFactory adminDaoFactory = new AdminDaoFactory();
+    private final IAdminModelFactory adminModelFactory = new AdminModelFactory();
 
 
     @GetMapping("/admin/view_discounts")
@@ -219,13 +214,13 @@ public class AdminController {
         Map<Integer, List<String>> popularStreetNames = locationPopularity.getPopularPickUpLocations();
         Map.Entry<Integer,List<String>> entry = popularStreetNames.entrySet().iterator().next();
 
-        int occurrences = entry.getKey().intValue();
+        int occurrences = entry.getKey();
         List<String> streetNames = entry.getValue();
 
         model.addAttribute(maxOccurrenceAttribute, occurrences);
         model.addAttribute(streetNamesAttribute, streetNames);
 
         return "view_popular_locations";
-
     }
+
 }

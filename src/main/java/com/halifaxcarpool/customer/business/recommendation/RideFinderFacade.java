@@ -8,6 +8,8 @@ import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
 import com.halifaxcarpool.customer.business.beans.RouterFinderParameter;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.driver.business.DriverModelFactory;
+import com.halifaxcarpool.driver.business.DriverModelMainFactory;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
@@ -17,10 +19,12 @@ import java.util.*;
 public class RideFinderFacade {
 
     private static final double MAXIMUM_RIDE_THRESHOLD_KM = 0.2;
+
     private final IRide ride;
 
     public RideFinderFacade() {
-        ride = new Ride();
+        DriverModelFactory driverModelFactory = new DriverModelMainFactory();
+        ride = driverModelFactory.getDriverRide();
     }
 
     public List<List<Ride>> findDirectRouteRidesInvoker(RideRequest rideRequest,
@@ -35,7 +39,8 @@ public class RideFinderFacade {
             throw new RuntimeException("Error finding coordinates of the ride request : " +
                     rideRequest.getRideRequestId());
         }
-        RouterFinderParameter routerFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, startLocationPoint, endLocationPoint);
+        RouterFinderParameter routerFinderParameter =
+                new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, startLocationPoint, endLocationPoint);
         List<Ride> recommendedRides = findDirectRouteRides(routerFinderParameter);
         List<List<Ride>> recommendedRidesWrapper = new ArrayList<>();
         convertListOfRidesToListOfListOfRides(recommendedRidesWrapper, recommendedRides);
@@ -59,10 +64,12 @@ public class RideFinderFacade {
 
         for (int i = 1; i < rideRequestNodes.size() - 1 && ridesCache.size() <= 3; i += 3) {
             LatLng intermediateNode = rideRequestNodes.get(i);
-            RouterFinderParameter firstRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, rideRequestStartNode, intermediateNode);
+            RouterFinderParameter firstRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao,
+                    ridesDao, rideRequestStartNode, intermediateNode);
             List<Ride> ridesForFirstRoute =
                     findDirectRouteRides(firstRouterFinderParameter);
-            RouterFinderParameter secondRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, intermediateNode, endPointOfRideRequest);
+            RouterFinderParameter secondRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao,
+                    ridesDao, intermediateNode, endPointOfRideRequest);
             List<Ride> ridesForSecondRoute =
                     findDirectRouteRides(secondRouterFinderParameter);
 
@@ -81,7 +88,6 @@ public class RideFinderFacade {
                 }
             }
         }
-
         return new ArrayList<>(ridesCache.values());
     }
 
@@ -115,8 +121,9 @@ public class RideFinderFacade {
                                                               RideRequestNode startNode) {
         Set<RideNode> validRidesForStartNode = new HashSet<>();
         for (RideNode rideNode : rideNodesNearToStartLocation) {
-            double distanceFromStartNode = DistanceFinder.findDistance(startNode.getLatitude(), rideNode.getLatitude(),
-                    startNode.getLongitude(), rideNode.getLongitude());
+            LatLng startLocationLatLng = new LatLng(startNode.getLatitude(), startNode.getLongitude());
+            LatLng intermediateLocationLatLng = new LatLng(rideNode.getLatitude(), rideNode.getLongitude());
+            double distanceFromStartNode = DistanceFinder.findDistance(startLocationLatLng, intermediateLocationLatLng);
             if (distanceFromStartNode < MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForStartNode.contains(rideNode)) {
                 validRidesForStartNode.add(rideNode);
             }
@@ -128,8 +135,9 @@ public class RideFinderFacade {
                                                                       RideRequestNode endNode) {
         Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
         for (RideNode rideNode : rideNodesNearToEndLocation) {
-            double distanceFromEndNode = DistanceFinder.findDistance(endNode.getLatitude(), rideNode.getLatitude(),
-                    endNode.getLongitude(), rideNode.getLongitude());
+            LatLng endLocationLatLng = new LatLng(endNode.getLatitude(), endNode.getLongitude());
+            LatLng intermediateLocationLatLng = new LatLng(rideNode.getLatitude(), rideNode.getLongitude());
+            double distanceFromEndNode = DistanceFinder.findDistance(endLocationLatLng, intermediateLocationLatLng);
             if (distanceFromEndNode <= MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForEndNode.containsKey(rideNode)) {
                 validRidesForEndNode.put(rideNode, rideNode);
             }
