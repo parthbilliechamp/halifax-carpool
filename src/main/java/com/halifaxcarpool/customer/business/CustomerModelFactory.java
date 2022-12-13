@@ -14,5 +14,4 @@ public interface CustomerModelFactory {
 
     IRideToRequestMapper getRideToRequestMapper();
 
-
 }

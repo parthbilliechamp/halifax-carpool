@@ -5,10 +5,7 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class AdminAuthenticationDaoImpl implements IAdminAuthenticationDao {
 
@@ -22,10 +19,14 @@ public class AdminAuthenticationDaoImpl implements IAdminAuthenticationDao {
 
     @Override
     public Admin authenticate(String userName, String password) {
+        ResultSet resultSet;
+
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = null;
-            resultSet = statement.executeQuery("CALL login_admin('" + userName + "', '" + password + "')");
+            String SQL_STRING = "{CALL login_admin(?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, userName);
+            stmt.setString(2, password);
+            resultSet = stmt.executeQuery();
             return buildAdminFrom(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);

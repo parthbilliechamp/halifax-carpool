@@ -11,15 +11,18 @@ import org.junit.jupiter.api.Test;
 
 public class AdminTest {
 
+    private IAdminModelFactory adminModelFactory = new AdminModelFactory();
+    private IAdminDaoFactory adminDaoFactory = new AdminDaoTestFactory();
+
     @Test
     public void adminLoginSuccessTest() {
         String userName = "admin";
         String password = "admin";
         int expectedAdminId = 1;
 
-        IAdmin admin = new AdminImpl();
-        IAdminAuthentication adminAuthentication = new AdminAuthenticationImpl();
-        IAdminAuthenticationDao adminAuthenticationDao = new AdminAuthenticationDaoMockImpl();
+        IAdmin admin = adminModelFactory.getAdmin();
+        IAdminAuthentication adminAuthentication = adminModelFactory.getAdminAuthentication();
+        IAdminAuthenticationDao adminAuthenticationDao = adminDaoFactory.getAdminAuthenticationDao();
 
         Admin validAdmin = admin.login(userName, password, adminAuthentication, adminAuthenticationDao);
         assert expectedAdminId == validAdmin.getAdminId();
@@ -30,9 +33,9 @@ public class AdminTest {
         String userName = "admin1";
         String password = "admin";
 
-        IAdmin admin = new AdminImpl();
-        IAdminAuthentication adminAuthentication = new AdminAuthenticationImpl();
-        IAdminAuthenticationDao adminAuthenticationDao = new AdminAuthenticationDaoMockImpl();
+        IAdmin admin = adminModelFactory.getAdmin();
+        IAdminAuthentication adminAuthentication = adminModelFactory.getAdminAuthentication();
+        IAdminAuthenticationDao adminAuthenticationDao = adminDaoFactory.getAdminAuthenticationDao();
 
         Admin validAdmin = admin.login(userName, password, adminAuthentication, adminAuthenticationDao);
         assert null == validAdmin;

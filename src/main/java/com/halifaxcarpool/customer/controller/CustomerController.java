@@ -275,7 +275,7 @@ public class CustomerController {
         IFareCalculator fareCalculator = new FareCalculatorImpl();
         double fare = fareCalculator.calculateFair(rideId, rideRequestsDao, ridesDao);
         rideToRequestMapper.sendRideRequest(rideId, rideRequestId, fare, rideToRequestMapperDao);
-        return VIEW_RECOMMENDED_RIDES;
+        return "redirect:/customer/view_ride_requests";
     }
 
     @GetMapping("/customer/view_ongoing_rides")
@@ -401,6 +401,7 @@ public class CustomerController {
         model.addAttribute("discountPercentage", discountPercentage);
         model.addAttribute("deduction", deduction);
         model.addAttribute("finalAmount", finalAmount);
+        model.addAttribute("paymentId",paymentId);
         return CUSTOMER_VIEW_BILL;
     }
 
@@ -412,7 +413,7 @@ public class CustomerController {
         IPaymentDao paymentDao = new PaymentDaoImpl();
         IPayment payment = new Payment();
         payment.updatePaymentStatusToSuccess(paymentId, paymentDao);
-        return "redirect: /customer/view_payment_details";
+        return "redirect:/customer/view_payment_details";
     }
 
 

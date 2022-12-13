@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DriverDetailsDaoMock extends IUserDetails{
+public class CustomerDetailsDaoMock extends IUserDetails {
 
     private static final int numberOfUsers = 19;
     private static final int numberOfRides = 45;
     private static final int numberOfSeats = 65;
     private static final int averageSeats = 4;
 
-    public DriverDetailsDaoMock(){
+    public CustomerDetailsDaoMock(){
         super();
     }
 
@@ -45,4 +45,5 @@ public class DriverDetailsDaoMock extends IUserDetails{
         distances.put(1,locations);
         return distances;
     }
+
 }
