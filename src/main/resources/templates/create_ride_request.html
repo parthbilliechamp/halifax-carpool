@@ -87,4 +87,31 @@
     </div>
 </section>
 </body>
+<script>
+    const center = { lat: 44.6476, lng: -63.5728 };
+    const defaultBounds = {
+        north: center.lat + 0.4,
+        south: center.lat - 0.4,
+        east: center.lng + 0.4,
+        west: center.lng - 0.4,
+    };
+    let input1 = document.getElementById("startLocation");
+    let input2 = document.getElementById("endLocation");
+    let options = {
+        bounds: defaultBounds,
+        componentRestrictions: { 'country': ['ca'] },
+        fields: ["address_components", "geometry", "icon", "name"],
+        strictBounds: false,
+        types: ["establishment"]
+    };
+
+    let autocomplete;
+
+    function initMap() {
+        autocomplete = new google.maps.places.Autocomplete(input1, options);
+        autocomplete = new google.maps.places.Autocomplete(input2, options);
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8ImVWuK61HyvAM3XeRmLj2bBXUA7cjoc&libraries=places&callback=initMap" async defer>
+</script>
 </html>
