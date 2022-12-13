@@ -7,6 +7,7 @@ import com.halifaxcarpool.driver.business.IRideNode;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Ride implements IRide {
 
@@ -23,7 +24,7 @@ public class Ride implements IRide {
     public double fare;
 
     public Ride(){
-        this.rideStatus = 1;
+        this.rideStatus = 0;
     }
 
     public Ride(int rideId, int driverId, String startLocation, String endLocation, int seatsOffered,
@@ -52,8 +53,16 @@ public class Ride implements IRide {
     }
 
     @Override
-    public List<Ride> viewRides(int driverId, IRidesDao ridesDao) {
-        return ridesDao.getRides(driverId);
+    public List<Ride> viewAllRides(int driverId, IRidesDao ridesDao) {
+        List<Ride> rides = ridesDao.getRides(driverId);
+        return rides.stream().filter((x) -> 0 == x.getRideStatus() ||
+                1 == x.getRideStatus()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ride> viewRidesHistory(int driverId, IRidesDao ridesDao) {
+        List<Ride> rides = ridesDao.getRides(driverId);
+        return rides.stream().filter((x) -> 2 == x.getRideStatus()).collect(Collectors.toList());
     }
 
     @Override

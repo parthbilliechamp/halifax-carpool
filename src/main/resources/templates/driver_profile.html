@@ -2,31 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
     <title class="header">
         Driver Rides
     </title>
+    <style>
+
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
+        }
+
+        .black-border-3 {
+            border-radius: 30px;
+        }
+    </style>
 </head>
 <body>
-<br />
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/driver/view_rides">Driver Profile</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="/driver/view_rides" style="margin-left: 10px;">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/driver/create_new_ride">Create New Ride<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/driver/create_new_ride">Create a ride<span
+                        class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/driver/view_rides"> View Rides <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/driver/view_profile"> View Profile <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/driver/view_rides">Your rides<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/driver/logout">Logout <span class="sr-only">(current)</span></a>
@@ -34,28 +42,67 @@
         </ul>
     </div>
 </nav>
-<div class="container">
-    <h3>Driver Rides</h3>
-    <hr>
-    <form action="#" th:action="@{/driver/update_profile}" th:object="${driverProfile}" method="post">
-        <label>Email:</label><br />
-        <input type="text" th:field="*{driverEmail}"><br />
-        <label>Approval Status:</label><br />
-        <input type="text" th:field="*{driverApprovalStatus}"><br />
-        <label>License:</label><br />
-        <input type="text" th:field="*{driverLicense}"><br />
-        <label>Driver Name:</label><br />
-        <input type="text" th:field="*{driverName}"><br />
-        <label>Vehicle Name:</label><br />
-        <input type="text" th:field="*{vehicleName}"><br />
-        <label>Vehicle Model:</label><br />
-        <input type="text" th:field="*{vehicleModel}"><br />
-        <label>Vehicle Color:</label><br />
-        <input type="text" th:field="*{vehicleColor}"><br />
-        <label>Vehicle Number:</label><br />
-        <input type="text" th:field="*{registeredVehicleNumber}"><br />
-        <button type="submit" class="btn btn-info col-2">Update</button>
-    </form>
-</div>
+<section class="vh-100 bg-image"
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-50">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card black-border-3 mt-5 mb-5"
+                         style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                        <div class="card-body p-5">
+                            <h2 class="text-uppercase text-center mb-5">Edit your profile</h2>
+                            <form th:action="@{/driver/update_profile}" th:object="${driverProfile}" method="post">
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="driverEmail">Your Email</label>
+                                    <input type="email" th:field="*{driverEmail}" id="driverEmail"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="driverLicense">Your License</label>
+                                    <input type="text" th:field="*{driverLicense}" id="driverLicense"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="driverName">Your Name</label>
+                                    <input type="text" th:field="*{driverName}" id="driverName"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="vehicleName">Vehicle Name</label>
+                                    <input type="text" th:field="*{vehicleName}" id="vehicleName"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="vehicleModel">Vehicle Model</label>
+                                    <input type="text" th:field="*{vehicleModel}" id="vehicleModel"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="vehicleColor">Vehicle Color</label>
+                                    <input type="text" th:field="*{vehicleColor}" id="vehicleColor"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="registeredVehicleNumber">Vehicle Number</label>
+                                    <input type="text" th:field="*{registeredVehicleNumber}"
+                                           id="registeredVehicleNumber"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <br>
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" value="Request"
+                                            class="btn black-border-1 black-border-3 btn-block btn-lg gradient-custom-4 text-body">
+                                        Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

@@ -6,7 +6,6 @@ import com.halifaxcarpool.customer.business.beans.RideRequest;
 import java.text.DecimalFormat;
 import java.sql.*;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 

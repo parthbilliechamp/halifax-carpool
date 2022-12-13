@@ -338,7 +338,6 @@ public class CustomerController {
 
     @GetMapping("/customer/view_payment_fare")
     String viewPaymentFare(@RequestParam("rideId")int rideId, @RequestParam("rideRequestId")int rideRequestId, Model model){
-        //payment
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
         IRidesDao ridesDao = new RidesDaoImpl();
         IFareCalculator fareCalculator = new FareCalculatorImpl();
@@ -369,15 +368,11 @@ public class CustomerController {
         ICoupon coupon = new Coupon();
         ICouponDao couponDao = new CouponDaoImpl();
         double discountPercentage = coupon.getMaximumDiscountValidToday(couponDao);
-        System.out.println("DiscountPercentage:"+ discountPercentage);
         IPayment payment = new Payment();
         IPaymentDao paymentDao = new PaymentDaoImpl();
         Double originalAmount = payment.getAmountDue(paymentId, paymentDao);
         FareCalculatorImpl fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
         fareCalculator.calculateFinalAmount();
-        System.out.println("finalAmount: "+ fareCalculator.finalAmount);
-        System.out.println("Deduction:"+ fareCalculator.deduction);
-        System.out.println("DiscountPercentage:"+ fareCalculator.discountPercentage);
         model.addAttribute("fare",fareCalculator);
         model.addAttribute("paymentId",paymentId);
         return CUSTOMER_VIEW_BILL;

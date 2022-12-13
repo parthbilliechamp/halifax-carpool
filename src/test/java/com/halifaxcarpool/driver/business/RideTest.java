@@ -23,7 +23,7 @@ public class RideTest {
     @Test
     public void viewRidesTest() {
         int driverId = 1;
-        List<Ride> rideList = ride.viewRides(driverId, ridesDao);
+        List<Ride> rideList = ride.viewAllRides(driverId, ridesDao);
         assert 2 == rideList.size();
         for (Ride currentRide: rideList) {
             assert driverId == currentRide.getDriverId();
@@ -33,7 +33,7 @@ public class RideTest {
     @Test
     public void viewRidesEmptySetTest() {
         int driverId = 43;
-        List<Ride> rideList = ride.viewRides(driverId, ridesDao);
+        List<Ride> rideList = ride.viewAllRides(driverId, ridesDao);
         assert rideList.isEmpty();
     }
 

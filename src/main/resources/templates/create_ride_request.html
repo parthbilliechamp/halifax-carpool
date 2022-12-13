@@ -1,50 +1,117 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" th:href="@{/css/demo.css}">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-        crossorigin="anonymous">
-  <title class="header">
-    Create Ride Request
-  </title>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+          crossorigin="anonymous">
+    <title class="header">
+        Create a ride
+    </title>
+    <style>
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
+        }
+
+        .black-border-2 {
+            border-color: black;
+            border-width: thin;
+        }
+
+        .black-border-3 {
+            border-radius: 30px;
+        }
+    </style>
 </head>
 <body>
-<br />
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/customer/view_ride_requests">Customer Home</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/customer/view_ride_requests">View Rides <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/customer/view_profile">Update Profile<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/customer/view_ongoing_rides">View Ongoing Rides<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/customer/logout">Logout <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-  </div>
+    <a class="navbar-brand" style="margin-left: 30px" href="/customer/view_ride_requests">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/customer/view_ride_requests">My Ride Requests<span
+                        class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/customer/view_ongoing_rides">Current Ride<span
+                        class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/customer/view_payment_details">Payments History<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/customer/view_profile">Profile<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/customer/logout">Logout <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
 </nav>
-<div class="request_form">
-  <h3>Customer Ride Request</h3>
-  <form action="#" th:action="@{/customer/create_ride_request}" th:object="${rideRequest}" method="post">
-    <label>Start Location:</label><br />
-    <input type="text" th:field="*{startLocation}"><br />
-    <label>End Location: </label><br />
-    <input type="text" th:field="*{endLocation}"><br />
-
-    <input type="submit" value="Request" />
-  </form>
-
-</div>
+<section class="vh-100 bg-image"
+         style="background-color: white">
+    <div class="mask d-flex align-items-center h-100">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col -md-9 col-lg-7 col-xl-6">
+                    <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-5">Request a ride</h2>
+                            <form th:action="@{/customer/create_ride_request}" th:object="${rideRequest}" method="post">
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="startLocation">Source</label>
+                                    <input type="text" th:field="*{startLocation}" id="startLocation"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="endLocation">Destination</label>
+                                    <input type="text" th:field="*{endLocation}" id="endLocation"
+                                           class="form-control form-control-lg black-border-3" required/>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" value="Request"
+                                            class="btn btn-block btn-lg text-body black-border-1 black-border-3">Request
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
+<script>
+    const center = { lat: 44.6476, lng: -63.5728 };
+    const defaultBounds = {
+        north: center.lat + 0.4,
+        south: center.lat - 0.4,
+        east: center.lng + 0.4,
+        west: center.lng - 0.4,
+    };
+    let input1 = document.getElementById("startLocation");
+    let input2 = document.getElementById("endLocation");
+    let options = {
+        bounds: defaultBounds,
+        componentRestrictions: { 'country': ['ca'] },
+        fields: ["address_components", "geometry", "icon", "name"],
+        strictBounds: false,
+        types: ["establishment"]
+    };
+
+    let autocomplete;
+
+    function initMap() {
+        autocomplete = new google.maps.places.Autocomplete(input1, options);
+        autocomplete = new google.maps.places.Autocomplete(input2, options);
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8ImVWuK61HyvAM3XeRmLj2bBXUA7cjoc&libraries=places&callback=initMap" async defer>
+</script>
 </html>
