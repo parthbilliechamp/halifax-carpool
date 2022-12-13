@@ -67,6 +67,16 @@ public class Ride implements IRide {
     }
 
     @Override
+    public boolean startRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.startRide(rideId);
+    }
+
+    @Override
+    public boolean stopRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.stopRide(rideId);
+    }
+
+    @Override
     public boolean cancelRide(int rideId, IRidesDao ridesDao) {
         return ridesDao.cancelRide(rideId);
     }

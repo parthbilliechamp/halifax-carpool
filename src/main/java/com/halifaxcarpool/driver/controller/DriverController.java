@@ -1,10 +1,20 @@
 package com.halifaxcarpool.driver.controller;
 
+import com.halifaxcarpool.customer.business.beans.Payment;
+import com.halifaxcarpool.customer.business.payment.IPayment;
+import com.halifaxcarpool.customer.database.dao.*;
+import com.halifaxcarpool.driver.business.IRideNode;
+import com.halifaxcarpool.driver.business.IRideToRequestMapper;
+import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 import com.halifaxcarpool.commons.business.CommonsObjectFactoryImpl;
 import com.halifaxcarpool.commons.business.ICommonsObjectFactory;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
+import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
+import com.halifaxcarpool.driver.database.dao.RideToRequestMapperDaoImpl;
+import com.halifaxcarpool.customer.business.beans.RideRequest;
+import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
 import com.halifaxcarpool.customer.business.CustomerDaoFactory;
 import com.halifaxcarpool.customer.business.CustomerDaoMainFactory;
@@ -13,7 +23,6 @@ import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.driver.business.*;
 import com.halifaxcarpool.driver.database.dao.*;
-import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import org.springframework.stereotype.Controller;
@@ -22,6 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -40,6 +50,12 @@ public class DriverController {
     DriverDaoFactory driverDaoFactory = new DriverDaoMainFactory();
     CustomerDaoFactory customerDaoFactory = new CustomerDaoMainFactory();
     ICommonsObjectFactory commonsObjectFactory = new CommonsObjectFactoryImpl();
+
+    private static final String DRIVER_VIEW_RIDE_HISTORY = "view_ride_history";
+
+    private static final String DRIVER_VIEW_MY_RIDES = "view_driver_my_rides";
+
+    private static final String VIEW_PAYMENT_DETAILS = "view_driver_payment_status";
 
     @GetMapping("/driver/login")
     String login(Model model, HttpServletRequest httpServletRequest) {
@@ -200,6 +216,7 @@ public class DriverController {
                 rideToRequestMapper.viewReceivedRequest(rideId, rideToRequestMapperDao);
 
         model.addAttribute(receivedRideRequestsAtrribute, receivedRideRequests);
+        model.addAttribute("rideId", rideId);
         return VIEW_RECEIVED_REQUESTS;
     }
 
@@ -231,5 +248,97 @@ public class DriverController {
         } else {
             return CREATE_NEW_RIDE_PAGE;
         }
+    }
+    @GetMapping("/driver/update_ride_request_status")
+    public String updateRequestStatus(@RequestParam("status")String status,
+        @RequestParam("rideId") int rideId, @RequestParam("rideRequestId") int rideRequestId){
+        if((status.toUpperCase()).equals("ACCEPTED")){
+            //customer module payment table
+            IPaymentDao paymentDao = new PaymentDaoImpl();
+            IRidesDao ridesDao = new RidesDaoImpl();
+            IRideRequestsDao rideRequestsDao = new RideRequestsDaoImpl();
+            IPayment payment = new Payment();
+
+            IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+            payment.insertPaymentDetails(rideId, rideRequestId, paymentDao, ridesDao,
+                    rideRequestsDao, rideToRequestMapperDao);
+
+        }
+        //ride to request mapping  status change.
+        IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+        rideToRequestMapperDao.updateRideRequestStatus(rideId, rideRequestId,status);
+        return "redirect:/driver/view_rides";
+    }
+    @GetMapping("/driver/view_ride_history")
+    public String getRideHistory(@RequestParam("rideId") int rideId, Model model){
+        IRideToRequestMapperDao rideToRequestMapperDao = new RideToRequestMapperDaoImpl();
+        IRideToRequestMapper rideToRequestMapper = new RideToRequestMapperImpl();
+        List<RideRequest> rideRequests = rideToRequestMapper.viewApprovedRequest(rideId, rideToRequestMapperDao);
+        model.addAttribute("approvedRequest", rideRequests);
+        model.addAttribute("rideId", rideId);
+
+        return DRIVER_VIEW_RIDE_HISTORY;
+    }
+
+    @GetMapping("/driver/update_payment_status")
+    public String updatePaymentStatus(@RequestParam("paymentId") int paymentId, HttpServletRequest request, RedirectAttributes redirectAttributes){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = new Payment();
+        payment.driverUpdatePaymentStatus(paymentId, paymentDao);
+
+        return "redirect:/driver/my_rides";
+    }
+
+    @GetMapping("/driver/view_payment_status")
+    String viewPaymentStatus(@RequestParam("customerId") int customerId, @RequestParam("rideId") int rideId, HttpServletRequest request,  Model model){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
+        IPaymentDao paymentDao = new PaymentDaoImpl();
+        IPayment payment = new Payment();
+        Payment paymentDetails= payment.fetchPaymentDetails(customerId,rideId,driver.getDriverId(), paymentDao);
+        model.addAttribute("payment",paymentDetails);
+
+        return VIEW_PAYMENT_DETAILS;
+    }
+
+    @GetMapping("/driver/my_rides")
+    public String viewMyRides(HttpServletRequest request, Model model){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        Driver driver = (Driver)request.getSession().getAttribute("loggedInDriver");
+        IRide ride =  new Ride();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        List<Ride> rides = ride.viewRides(driver.getDriverId(), ridesDao);
+        model.addAttribute("rides", rides);
+        return DRIVER_VIEW_MY_RIDES;
+
+    }
+    @GetMapping("/driver/start_ride")
+    public String changeRideStatusToStart(@RequestParam("rideId") int rideId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        IRide ride = new Ride();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        ride.startRide(rideId, ridesDao);
+        return "redirect: /driver/my_rides";
+    }
+
+    @GetMapping("/driver/stop_ride")
+    public String changeRideStatusToStop(@RequestParam("rideId") int rideId, HttpServletRequest request){
+        if(request.getSession().getAttribute("loggedInDriver")== null || request.getSession().getAttribute("loggedInDriver") == (Object)1){
+            return "redirect:/driver/login";
+        }
+        IRide ride = new Ride();
+        IRidesDao ridesDao = new RidesDaoImpl();
+        ride.stopRide(rideId, ridesDao);
+        return "redirect:/driver/my_rides";
     }
 }

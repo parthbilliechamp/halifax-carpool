@@ -9,14 +9,19 @@ public class RideToRequestMapperImpl implements IRideToRequestMapper {
     private static final String STATUS = "PENDING";
 
     @Override
-    public void sendRideRequest(int rideId, int rideRequestId,
+    public void sendRideRequest(int rideId, int rideRequestId, double amount,
                                 IRideToRequestMapperDao rideToRequestMapperDao) {
-        rideToRequestMapperDao.insertRideToRequestMapper(rideId, rideRequestId, STATUS);
+        rideToRequestMapperDao.insertRideToRequestMapper(rideId, rideRequestId, STATUS, amount);
     }
 
     @Override
     public List<RideRequest> viewReceivedRequest(int rideId, IRideToRequestMapperDao rideToRequestMapperDao) {
         return rideToRequestMapperDao.viewReceivedRequests(rideId);
+    }
+
+    @Override
+    public List<RideRequest> viewApprovedRequest(int rideId, IRideToRequestMapperDao rideToRequestMapperDao) {
+        return  rideToRequestMapperDao.viewRidePassengers(rideId);
     }
 
 }

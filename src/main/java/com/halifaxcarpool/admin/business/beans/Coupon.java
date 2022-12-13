@@ -1,8 +1,13 @@
 package com.halifaxcarpool.admin.business.beans;
 
+import com.halifaxcarpool.admin.business.ICoupon;
+import com.halifaxcarpool.admin.database.dao.dao.ICouponDao;
+
 import java.sql.Date;
 import java.time.LocalDate;
-public class Coupon {
+import java.util.List;
+
+public class Coupon implements ICoupon {
     public double getDiscountPercentage() {
         return discountPercentage;
     }
@@ -41,7 +46,28 @@ public class Coupon {
     public Coupon(){
 
     }
+    @Override
+    public boolean createCoupon(Coupon coupon, ICouponDao couponDao) {
+        return couponDao.createCoupon(coupon);
+    }
 
+    @Override
+    public List<Coupon> viewCoupons(ICouponDao iCouponDao) {
+
+        return iCouponDao.viewCoupons();
+    }
+
+    @Override
+    public boolean deleteCoupon(int couponId, ICouponDao couponDao) {
+
+        return couponDao.deleteCoupon(couponId);
+    }
+
+
+    @Override
+    public Double getMaximumDiscountValidToday(ICouponDao couponDao) {
+        return couponDao.getMaximumDiscount();
+    }
 
     @Override
     public String toString(){

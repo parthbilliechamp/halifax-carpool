@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <title class="header">
+    Received Requests
+  </title>
+</head>
+<body>
+<br />
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/driver/view_rides">Driver Home</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/driver/create_new_ride">Create New Ride<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/driver/view_rides">View Rides <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/driver/my_rides">Ride Status <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/driver/logout">Logout <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <h3>Visited Rides</h3>
+  <hr>
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Ride ID</th>
+      <th>DriverID</th>
+      <th>Amount Due</th>
+      <th>Status</th>
+      <th></th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:object="${payment}">
+      <td th:text="*{paymentId}"/>
+      <td th:text="*{customerId}"/>
+      <td th:text="*{rideId}"/>
+      <td th:text="*{amountDue}" />
+    <td th:text="*{status}" />
+      <td>
+        <a class="btn btn-success"
+           th:href="@{/driver/update_payment_status(paymentId=*{paymentId})}">Pay</a>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>

@@ -10,6 +10,6 @@ public interface ICoupon {
 
     List<Coupon> viewCoupons(ICouponDao couponDao);
 
-    void deleteCoupon(int couponId, ICouponDao couponDao);
+    boolean deleteCoupon(int couponId, ICouponDao couponDao);
     Double getMaximumDiscountValidToday(ICouponDao couponDao);
 }

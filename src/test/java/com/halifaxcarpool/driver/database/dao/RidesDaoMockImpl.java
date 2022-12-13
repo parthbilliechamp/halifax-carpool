@@ -48,6 +48,18 @@ public class RidesDaoMockImpl implements IRidesDao {
     }
 
     @Override
+    public boolean startRide(int rideId) {
+        rideIdToRideMap.get(rideId).setRideStatus(1);
+        return true;
+    }
+
+    @Override
+    public boolean stopRide(int rideId) {
+        rideIdToRideMap.get(rideId).setRideStatus(2);
+        return  true;
+    }
+
+    @Override
     public boolean cancelRide(int rideId) {
         if (rideIdToRideMap.containsKey(rideId)) {
             rideIdToRideMap.remove(rideId);
