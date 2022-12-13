@@ -1,7 +1,7 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
+import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.CommonsFactory;
-import com.halifaxcarpool.commons.business.CommonsFactoryImpl;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.ICustomerDaoFactory;
 import com.halifaxcarpool.customer.business.CustomerDaoFactory;
@@ -19,7 +19,7 @@ public class DirectRouteRideFinderStrategy implements RideFinderStrategy {
     CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
     ICustomerDaoFactory customerDaoFactory = new CustomerDaoFactory();
 
-    CommonsFactory commonsFactory = new CommonsFactoryImpl();
+    ICommonsFactory commonsFactory = new CommonsFactory();
     RideFinderFacade rideFinderFacade = customerModelFactory.getRideFinderFacade();
     IRideNodeDao rideNodeDao = customerDaoFactory.getRideNodeDao();
     IGeoCoding geoCoding = commonsFactory.getGeoCoding();

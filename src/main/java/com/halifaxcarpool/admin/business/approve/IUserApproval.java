@@ -4,7 +4,7 @@ import com.halifaxcarpool.commons.business.beans.User;
 
 import java.util.List;
 
-public interface UserApproval {
+public interface IUserApproval {
     List<User> getValidUserRequests();
     boolean acceptUserRequest(String id);
 

@@ -13,7 +13,7 @@ public class RideToRequestMapperImplTest {
 
     @Test
     public void sendRideRequestTest() {
-        rideToRequestMapperDao.insertRideToRequestMapper(4, 6, "");
+        rideToRequestMapperDao.insertRideToRequestMapper(4, 6, "",0.0);
         assert 3 == rideToRequestMapMockData.size();
     }
 

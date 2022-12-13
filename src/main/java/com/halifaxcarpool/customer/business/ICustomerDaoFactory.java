@@ -1,5 +1,6 @@
 package com.halifaxcarpool.customer.business;
 
+import com.halifaxcarpool.admin.database.dao.IUserDetails;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.commons.database.dao.IUserDao;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
@@ -20,5 +21,7 @@ public interface ICustomerDaoFactory {
     IRideNodeDao getRideNodeDao();
 
     IRidesDao getRidesDao();
+
+    IUserDetails getCustomerDetailsDao();
 
 }

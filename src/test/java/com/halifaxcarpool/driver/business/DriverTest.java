@@ -1,8 +1,8 @@
 package com.halifaxcarpool.driver.business;
 
 
-import com.halifaxcarpool.commons.business.CommonsFactoryImpl;
 import com.halifaxcarpool.commons.business.CommonsFactory;
+import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
@@ -19,7 +19,7 @@ public class DriverTest {
 
     DriverModelFactory driverModelFactory = new DriverModelMainFactory();
     IDriverDaoFactory driverDaoTestFactory = new DriverDaoTestFactory();
-    CommonsFactory commonsObjectFactory = new CommonsFactoryImpl();
+    ICommonsFactory commonsObjectFactory = new CommonsFactory();
 
     User driver;
 

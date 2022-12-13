@@ -21,9 +21,13 @@ public class DriverAuthenticationDaoImpl implements IUserAuthenticationDao {
     public Driver authenticate(String username, String password) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet =
-                    statement.executeQuery("CALL login_driver('" + username + "', '" + password + "')");
+            String SQL_STRING = "{CALL login_driver(?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            ResultSet resultSet = stmt.executeQuery();
+
             return buildDriverFrom(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -11,8 +11,6 @@ public class DriverDetailsDaoMock extends IUserDetails{
     private static final int numberOfRides = 45;
     private static final int numberOfSeats = 65;
     private static final int averageSeats = 4;
-    private static final double averageRideDistance = 5.2;
-    private static final double averageCo2Emissions = 44;
 
     public DriverDetailsDaoMock(){
         super();

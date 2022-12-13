@@ -1,17 +1,16 @@
 package com.halifaxcarpool.admin.business.popular;
 
-import com.halifaxcarpool.admin.database.dao.LocationPopularityDao;
+import com.halifaxcarpool.admin.database.dao.ILocationPopularityDao;
 
 import java.util.*;
 
-public class LocationPopularityImpl implements LocationPopularity {
+public class LocationPopularityImpl implements ILocationPopularity {
 
-    private final LocationPopularityDao locationPopularityDao;
+    private final ILocationPopularityDao locationPopularityDao;
     private final Map<Integer, List<String>> popularLocations;
-
     private static final String COMMA_SEPARATOR = ",";
 
-    public LocationPopularityImpl(LocationPopularityDao halifaxPopularityDao) {
+    public LocationPopularityImpl(ILocationPopularityDao halifaxPopularityDao){
         this.locationPopularityDao = halifaxPopularityDao;
         popularLocations = new HashMap<>();
     }

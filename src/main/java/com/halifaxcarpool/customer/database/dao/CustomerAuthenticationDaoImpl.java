@@ -5,10 +5,7 @@ import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.customer.business.beans.Customer;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CustomerAuthenticationDaoImpl implements IUserAuthenticationDao {
 
@@ -21,10 +18,15 @@ public class CustomerAuthenticationDaoImpl implements IUserAuthenticationDao {
 
     @Override
     public Customer authenticate(String username, String password) {
+        ResultSet resultSet;
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL login_customer('" + username + "', '" + password + "')");
+            String SQL_STRING = "{CALL login_customer(?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            resultSet = stmt.executeQuery();
+
             return buildCustomerFrom(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);

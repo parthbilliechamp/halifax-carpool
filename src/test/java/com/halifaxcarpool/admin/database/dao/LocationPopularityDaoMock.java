@@ -3,7 +3,7 @@ package com.halifaxcarpool.admin.database.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationPopularityDaoMock implements LocationPopularityDao{
+public class LocationPopularityDaoMock implements ILocationPopularityDao {
 
     private List<String> locations;
 

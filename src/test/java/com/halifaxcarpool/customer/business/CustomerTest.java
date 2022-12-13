@@ -1,7 +1,7 @@
 package com.halifaxcarpool.customer.business;
 
-import com.halifaxcarpool.commons.business.CommonsFactoryImpl;
 import com.halifaxcarpool.commons.business.CommonsFactory;
+import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.beans.User;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
@@ -18,7 +18,7 @@ public class CustomerTest {
 
     ICustomerDaoFactory customerDaoTestFactory = new CustomerDaoTestFactory();
     CustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
-    CommonsFactory commonsObjectFactory = new CommonsFactoryImpl();
+    ICommonsFactory commonsObjectFactory = new CommonsFactory();
     User customer;
 
     @Test

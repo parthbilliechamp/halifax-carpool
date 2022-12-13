@@ -1,7 +1,7 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
-import com.halifaxcarpool.commons.business.CommonsObjectFactoryTest;
-import com.halifaxcarpool.commons.business.CommonsFactory;
+import com.halifaxcarpool.commons.business.CommonsFactoryTest;
+import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.CustomerDaoTestFactory;
 import com.halifaxcarpool.customer.business.ICustomerDaoFactory;
@@ -19,7 +19,7 @@ import java.util.*;
 public class RideFinderFacadeTest {
 
     ICustomerDaoFactory customerDaoObjectFactory = new CustomerDaoTestFactory();
-    CommonsFactory commonsObjectFactory = new CommonsObjectFactoryTest();
+    ICommonsFactory commonsObjectFactory = new CommonsFactoryTest();
 
     RideFinderFacade rideFinderFacade = new RideFinderFacade();
     IRideNodeDao rideNodeDao = customerDaoObjectFactory.getRideNodeDao();

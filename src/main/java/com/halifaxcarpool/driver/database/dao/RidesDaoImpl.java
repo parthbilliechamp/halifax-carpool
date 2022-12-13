@@ -4,7 +4,6 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +21,17 @@ public class RidesDaoImpl implements IRidesDao {
     public boolean createNewRide(Ride ride) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            // TODO Get method which return date time.
-            // TODO: Research on calling this method better
 
-            //ride.setDateTime(ride.getDateTime().replace("T", " "));
+            String SQL_STRING = "{CALL create_new_ride(?, ?, ?, ?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, ride.getDriverId());
+            stmt.setString(2, ride.getStartLocation());
+            stmt.setString(3, ride.getEndLocation());
+            stmt.setInt(4, ride.getSeatsOffered());
+            stmt.setInt(5, ride.getRideStatus());
 
-            String sqlString = "CALL create_new_ride(" + ride.getDriverId() + ", \"" +
-                    ride.getStartLocation() + "\", \"" + ride.getEndLocation() + "\", " + ride.getSeatsOffered() + ", "
-                    + ride.getRideStatus() + ")";
+            stmt.executeQuery();
 
-            statement.executeQuery(sqlString);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,8 +45,13 @@ public class RidesDaoImpl implements IRidesDao {
     public List<Ride> getRides(int driverId) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL view_rides(" + driverId + ")");
+
+            String SQL_STRING = "{CALL view_rides(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, driverId);
+
+            ResultSet resultSet = stmt.executeQuery();
+
             return buildRidesFrom(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,8 +83,13 @@ public class RidesDaoImpl implements IRidesDao {
         Ride ride = null;
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL view_ride(" + rideId + ")");
+
+            String SQL_STRING = "{CALL view_ride(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, rideId);
+
+            ResultSet resultSet = stmt.executeQuery();
+
             ride = buildRidesFrom(resultSet).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,6 +97,42 @@ public class RidesDaoImpl implements IRidesDao {
             database.closeDatabaseConnection();
         }
         return ride;
+    }
+
+    @Override
+    public boolean startRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL start_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean stopRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL stop_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return false;
     }
 
     @Override
