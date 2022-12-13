@@ -48,4 +48,9 @@ public class CustomerDaoTestFactory implements ICustomerDaoFactory {
         return new CustomerDetailsDaoMock();
     }
 
+    @Override
+    public IPaymentDao getPaymentDao() {
+        return new PaymentDaoMockImpl();
+    }
+
 }

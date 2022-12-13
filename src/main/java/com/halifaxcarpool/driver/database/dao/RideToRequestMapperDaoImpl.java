@@ -18,7 +18,7 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
         database = new DatabaseImpl();
     }
     @Override
-    public void insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount) {
+    public boolean insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount) {
         try {
             connection = database.openDatabaseConnection();
 
@@ -30,12 +30,14 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
             stmt.setDouble(4,amount);
 
             stmt.executeQuery();
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             database.closeDatabaseConnection();
         }
+        return false;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
     }
 
     @Override
-    public void updateRideRequestStatus(int rideId, int rideRequestId, String status) {
+    public boolean updateRideRequestStatus(int rideId, int rideRequestId, String status) {
         try{
             connection = database.openDatabaseConnection();
             String query = "CALL update_ride_request_status(?,?,?);";
@@ -90,31 +92,18 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
 
             System.out.println(query);
             int result = statement.executeUpdate();
-            System.out.println("updated cols:"+result);
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            //database.closeDatabaseConnection();
-        }
-
-    }
-
-    @Override
-    public void updatePaymentAmount(int rideId, int rideRequestId, double amount) {
-        try{
-            connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery
-                    ("CALL update_ride_request_fair_price("+
-                            rideId+","+rideRequestId+","+amount+")");
+            return true;
 
         }catch (SQLException e) {
             e.printStackTrace();
         } finally {
             database.closeDatabaseConnection();
         }
+        return false;
+
     }
+
+
 
     @Override
     public double getPaymentAmount(int rideId,int rideRequestId) {
@@ -132,7 +121,7 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
         finally {
             database.closeDatabaseConnection();
         }
-        return 0;
+        return 0.0;
     }
 
     private List<RideRequest> buildReceivedRideRequestsFrom(ResultSet resultSet) {

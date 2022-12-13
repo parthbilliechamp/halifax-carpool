@@ -1,5 +1,6 @@
 package com.halifaxcarpool.commons.business;
 
+import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.business.beans.RideToRequestMapper;
 import com.halifaxcarpool.driver.database.dao.IRideToRequestMapperDao;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
@@ -10,21 +11,21 @@ public class RideToRequestMapperDaoMockImpl implements IRideToRequestMapperDao {
 
     public static Map<Integer, Integer> rideToRequestMapMockData = new HashMap<>();
     public static Map<Integer, List<RideRequest>> rideRequestMockData = new HashMap<>();
+    public static List<RideToRequestMapper> rideToRequestMapperList = new ArrayList<>();
 
-    public static Map<Integer, List<RideToRequestMapper>> rideToRequestMockData = new HashMap<>();
+    public static Map<Integer, List<RideRequest>> rideToApproveRequestMockData = new HashMap<>();
 
     static {
         populateMockData();
-        RideToRequestMapper ride1 = new RideToRequestMapper(1,5,"PENDING");
-        RideToRequestMapper ride2 = new RideToRequestMapper(2,7,"APPROVED",50.0);
-        List<RideToRequestMapper> rideToRequestMapperList = new ArrayList<>();
-        rideToRequestMapperList.add(ride1);
-        rideToRequestMapperList.add(ride2);
-        rideToRequestMockData.put(1,rideToRequestMapperList);
+        populateApprovedMockData();
     }
     @Override
-    public void insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount) {
+    public boolean insertRideToRequestMapper(int rideId, int rideRequestId, String status, double amount) {
         rideToRequestMapMockData.put(rideId, rideRequestId);
+        if(rideToRequestMapMockData.get(rideId) != null){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -34,32 +35,34 @@ public class RideToRequestMapperDaoMockImpl implements IRideToRequestMapperDao {
 
     @Override
     public List<RideRequest> viewRidePassengers(int rideId) {
-        List<RideRequest> result = new ArrayList<>();
-        Iterator<RideToRequestMapper> iter = rideToRequestMockData.get(rideId).iterator();
+        return rideToApproveRequestMockData.get(rideId);
+    }
+
+    @Override
+    public boolean updateRideRequestStatus(int rideId, int rideRequestId, String status) {
+        Iterator<RideToRequestMapper> iter = rideToRequestMapperList.iterator();
         while(iter.hasNext()){
-            RideToRequestMapper ride = (RideToRequestMapper) iter.next();
-            if(ride.getStatus() == "ACCEPTED"){
-                //result.add(rideToRequestMockData.get(ride.getRideRequestId()));
+            RideToRequestMapper rideToRequestMapper = (RideToRequestMapper) iter.next();
+            if(rideToRequestMapper.getRideId() ==rideId && rideToRequestMapper.getRideRequestId()==rideRequestId){
+                rideToRequestMapper.setStatus(status);
+                return true;
             }
         }
-        return result;
-    }
-
-    @Override
-    public void updateRideRequestStatus(int rideId, int rideRequestId, String status) {
-
+        return false;
     }
 
 
-
-    @Override
-    public void updatePaymentAmount(int rideId, int rideRequestId, double amount) {
-
-    }
 
     @Override
     public double getPaymentAmount(int rideId, int rideRequestId) {
-        return 0;
+        Iterator<RideToRequestMapper> iter = rideToRequestMapperList.iterator();
+        while(iter.hasNext()){
+            RideToRequestMapper data = (RideToRequestMapper) iter.next();
+            if(data.getRideId() == rideId && data.getRideRequestId() == rideRequestId){
+                return data.getFairPrice();
+            }
+        }
+        return 0.0;
     }
 
     private static void populateMockData() {
@@ -81,7 +84,25 @@ public class RideToRequestMapperDaoMockImpl implements IRideToRequestMapperDao {
         rideRequest = new RideRequest(rideRequestId, customerId, startLocation, endLocation);
         list = new ArrayList<>();
         list.add(rideRequest);
-        rideRequestMockData.put(rideRequestId, new ArrayList<>(list));
+        List<RideRequest> rideRequestsList = new ArrayList<>();
+        rideRequestsList.add(rideRequest);
+        rideRequestMockData.put(rideRequestId, rideRequestsList);
+    }
+
+    private static void populateApprovedMockData(){
+
+        RideToRequestMapper mapper = new RideToRequestMapper(1,1,"APPROVED",50.0);
+        rideToRequestMapperList.add(mapper);
+        RideToRequestMapper map = new RideToRequestMapper(1,4,"APPROVED",33.33);
+        rideToRequestMapperList.add(map);
+        RideRequest rideRequest = new RideRequest(1,2,"Lane1","Lane2");
+        List<RideRequest> list = new ArrayList<>();
+        list.add(rideRequest);
+        rideToApproveRequestMockData.put(1,list);
+        RideToRequestMapper mapper2 = new RideToRequestMapper(2,2,"PENDING");
+        RideToRequestMapper mapper3 = new RideToRequestMapper(2,3,"PENDING");
+        rideToRequestMapperList.add(mapper2);
+        rideToRequestMapperList.add(mapper3);
     }
 
 }

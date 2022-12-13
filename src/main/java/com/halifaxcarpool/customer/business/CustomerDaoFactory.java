@@ -32,6 +32,11 @@ public class CustomerDaoFactory implements ICustomerDaoFactory {
     }
 
     @Override
+    public IPaymentDao getPaymentDao() {
+        return new PaymentDaoImpl();
+    }
+
+    @Override
     public IRideRequestsDao getRideRequestsDao() {
         return new RideRequestsDaoImpl();
     }

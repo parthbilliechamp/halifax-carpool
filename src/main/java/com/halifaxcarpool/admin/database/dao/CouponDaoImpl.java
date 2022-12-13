@@ -89,6 +89,7 @@ public class CouponDaoImpl implements ICouponDao {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             Double discountPercentage = Double.parseDouble(resultSet.getString(1));
+            return discountPercentage;
         }catch(SQLException e){
             e.printStackTrace();
         }
