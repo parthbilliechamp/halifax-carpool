@@ -5,10 +5,7 @@ import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.commons.database.dao.IUserAuthenticationDao;
 import com.halifaxcarpool.customer.business.beans.Customer;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CustomerAuthenticationDaoImpl implements IUserAuthenticationDao {
 
@@ -17,23 +14,24 @@ public class CustomerAuthenticationDaoImpl implements IUserAuthenticationDao {
 
     public CustomerAuthenticationDaoImpl() {
         database = new DatabaseImpl();
-        connection = database.openDatabaseConnection();
     }
 
     @Override
     public Customer authenticate(String username, String password) {
+        ResultSet resultSet;
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL login_customer('" + username + "', '" + password + "')");
+            connection = database.openDatabaseConnection();
+            String SQL_STRING = "{CALL login_customer(?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            resultSet = stmt.executeQuery();
+
             return buildCustomerFrom(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            database.closeDatabaseConnection();
         }
     }
 
@@ -41,12 +39,19 @@ public class CustomerAuthenticationDaoImpl implements IUserAuthenticationDao {
 
         Customer customer = null;
         while (resultSet.next()) {
-            int customer_id = Integer.parseInt(resultSet.getString("customer_id"));
-            String customer_name = resultSet.getString("customer_name");
-            String customer_contact = resultSet.getString("customer_contact");
-            String customer_email = resultSet.getString("customer_email");
-            String customer_password = resultSet.getString("customer_password");
-            customer = new Customer(customer_id, customer_name, customer_contact, customer_email, customer_password);
+            String customerIdLabel = "customer_id";
+            String customerNameLiteral = "customer_name";
+            String customerContact1 = "customer_contact";
+            String customerEmailLiteral = "customer_email";
+            String customerPasswordLiteral = "customer_password";
+
+            int customerId = Integer.parseInt(resultSet.getString(customerIdLabel));
+            String customerName = resultSet.getString(customerNameLiteral);
+            String customerContact = resultSet.getString(customerContact1);
+            String customerEmail = resultSet.getString(customerEmailLiteral);
+            String customerPassword = resultSet.getString(customerPasswordLiteral);
+
+            customer = new Customer(customerId, customerName, customerContact, customerEmail, customerPassword);
         }
         return customer;
     }

@@ -1,6 +1,15 @@
 package com.halifaxcarpool.driver.business.beans;
 
-public class Ride {
+import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
+import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.driver.business.IRide;
+import com.halifaxcarpool.driver.business.IRideNode;
+import com.halifaxcarpool.driver.database.dao.IRidesDao;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Ride implements IRide {
 
     private int rideId;
     private int driverId;
@@ -8,14 +17,79 @@ public class Ride {
     private String endLocation;
     private int seatsOffered;
     private int rideStatus;
-    private String dateTime;
 
     public Driver driver;
 
     public double fare;
 
+    public long paymentId;
+
     public Ride(){
-        this.rideStatus = 1;
+        this.rideStatus = 0;
+    }
+
+    public Ride(int rideId, int driverId, String startLocation, String endLocation, int seatsOffered,
+                int rideStatus) {
+        this.rideId = rideId;
+        this.driverId = driverId;
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
+        this.seatsOffered = seatsOffered;
+        this.rideStatus = rideStatus;
+    }
+
+    @Override
+    public boolean createNewRide(IRidesDao ridesDao, IRideNodeDao rideNodeDao,
+                                 IDirectionPointsProvider directionPointsProvider,
+                                 IRideNode rideNode) {
+        boolean isRideCreated = ridesDao.createNewRide(this);
+        if (Boolean.FALSE.equals(isRideCreated)) {
+            return false;
+        }
+        boolean isRideNodeInserted = rideNode.insertRideNodes(this, rideNodeDao, directionPointsProvider);
+        if (Boolean.FALSE.equals(isRideNodeInserted)) {
+            cancelRide(getRideId(), ridesDao);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public List<Ride> viewAllRides(int driverId, IRidesDao ridesDao) {
+        List<Ride> rides = ridesDao.getRides(driverId);
+        return rides.stream().filter((x) -> 0 == x.getRideStatus() ||
+                1 == x.getRideStatus()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ride> viewRidesHistory(int driverId, IRidesDao ridesDao) {
+        List<Ride> rides = ridesDao.getRides(driverId);
+        return rides.stream().filter((x) -> 2 == x.getRideStatus()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Ride> viewOngoingRides(int customerId, IRidesDao ridesDao) {
+        return ridesDao.getActiveRides(customerId);
+    }
+
+    @Override
+    public Ride getRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.getRide(rideId);
+    }
+
+    @Override
+    public boolean startRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.startRide(rideId);
+    }
+
+    @Override
+    public boolean stopRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.stopRide(rideId);
+    }
+
+    @Override
+    public boolean cancelRide(int rideId, IRidesDao ridesDao) {
+        return ridesDao.cancelRide(rideId);
     }
 
     public int getRideId() {
@@ -42,10 +116,6 @@ public class Ride {
         return rideStatus;
     }
 
-    public String getDateTime() {
-        return dateTime;
-    }
-
     public void setRideId(int rideId) {
         this.rideId = rideId;
     }
@@ -62,16 +132,8 @@ public class Ride {
         this.endLocation = endLocation;
     }
 
-    public void setSeatsOffered(int seatsOffered) {
-        this.seatsOffered = seatsOffered;
-    }
-
     public void setRideStatus(int rideStatus) {
         this.rideStatus = rideStatus;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
     }
 
     public void withDriver(Driver driver) {
@@ -82,17 +144,26 @@ public class Ride {
         this.fare = fare;
     }
 
-
-
-    public Ride(int rideId, int driverId, String startLocation, String endLocation, int seatsOffered,
-                int rideStatus, String dateTime) {
-        this.rideId = rideId;
-        this.driverId = driverId;
-        this.startLocation = startLocation;
-        this.endLocation = endLocation;
-        this.seatsOffered = seatsOffered;
-        this.rideStatus = rideStatus;
-        this.dateTime = dateTime;
+    public void withPaymentId(long paymentId) {
+        this.paymentId = paymentId;
     }
+
+
+    public void setSeatsOffered(int seatsOffered) {
+        this.seatsOffered = seatsOffered;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public void setFare(double fare) {
+        this.fare = fare;
+    }
+
+    public void setPaymentId(long paymentId) {
+        this.paymentId = paymentId;
+    }
+
 
 }

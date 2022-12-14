@@ -21,7 +21,6 @@ public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
         try {
             DirectionsResult directionsResult = directionResult.getDirectionsResult(source, destination);
             overviewPolyline = directionsResult.routes[0].overviewPolyline.getEncodedPath();
-            System.out.println(overviewPolyline);
         } catch (Exception e) {
             throw new RuntimeException("Polyline not generated between : " + source + " and " + destination);
         }
@@ -32,7 +31,8 @@ public class DirectionPointsProviderImpl implements IDirectionPointsProvider {
     public long getDistanceBetweenSourceAndDestination(String source, String destination) {
         try {
             DirectionsResult directionsResult = directionResult.getDirectionsResult(source, destination);
-            return directionsResult.routes[0].legs[0].distance.inMeters;
+            long distanceInMeters = directionsResult.routes[0].legs[0].distance.inMeters;
+            return distanceInMeters / 1000;
         } catch (Exception e) {
             throw new RuntimeException("Error fetching Ride distance between : " + source + "and " + destination);
         }

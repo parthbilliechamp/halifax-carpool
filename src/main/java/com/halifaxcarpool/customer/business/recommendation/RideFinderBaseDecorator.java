@@ -1,10 +1,10 @@
 package com.halifaxcarpool.customer.business.recommendation;
 
-public abstract class RideFinderBaseDecorator extends RideFinder {
+public abstract class RideFinderBaseDecorator extends BaseRideFinder {
 
-    RideFinder rideFinder;
+    BaseRideFinder rideFinder;
 
-    public RideFinderBaseDecorator(RideFinder rideFinder) {
+    public RideFinderBaseDecorator(BaseRideFinder rideFinder) {
         this.rideFinder = rideFinder;
     }
 

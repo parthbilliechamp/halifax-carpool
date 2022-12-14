@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+  <title class="header">
+    View Bill
+  </title>
+  <style>
+    .black-border-1 {
+      border-color: black;
+      border-width: medium;
+    }
+
+    .black-border-3 {
+      border-radius: 30px;
+    }
+
+    .black-border-4 {
+      border-color: green;
+      border-width: medium;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" style="margin-left: 30px" href="/customer/view_payment_details">< Back</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+
+<section class="vh-100 bg-image"
+         style="background-color: white">
+  <div class="mask d-flex align-items-center h-100">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div>
+          <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
+            <div class="card-body p-5">
+              <h2 class="text-center mb-5">Your bill</h2>
+              <table class="table black-border-1">
+                <tbody>
+                <tr >
+                  <td>Original amount:</td>
+                  <td th:text="${fare.originalAmount}"/>
+
+                </tr>
+                <tr>
+                  <td>Discount Avaliable: %</td>
+                  <td th:text="${fare.discountPercentage}" />
+                </tr>
+                <tr>
+                  <td>Deduction: </td>
+                  <td th:text="${fare.deduction}" />
+                </tr>
+                <tr>
+                  <td>Final Amount</td>
+                  <td th:text="${fare.finalAmount}"/>
+                </tr>
+                <tr>
+                  <td>
+                    <a class="btn black-border-4 black-border-3" style="color: green" th:href="@{/customer/payment_status_success(paymentId=${paymentId})}">Confirm?</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

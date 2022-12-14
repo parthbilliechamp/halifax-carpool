@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class DriverApprovalDaoMock implements DriverApprovalDao{
+public class DriverApprovalDaoMock implements IDriverApprovalDao {
 
     private List<User> drivers = new ArrayList<>();
 

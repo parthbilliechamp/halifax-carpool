@@ -4,12 +4,8 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.customer.business.beans.RideNode;
-import com.halifaxcarpool.driver.business.beans.Ride;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,15 +23,19 @@ public class RideNodeDaoImpl implements IRideNodeDao {
     public boolean insertRideNodes(List<RideNode> rideNodes) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
             Iterator<RideNode> iterator = rideNodes.iterator();
+            CallableStatement stmt = null;
             while (iterator.hasNext()) {
                 RideNode rideNode = iterator.next();
-                statement.addBatch("CALL insert_ride_nodes(" + rideNode.getRideId() +
-                        "," + rideNode.getLatitude() + "," + rideNode.getLongitude() +
-                        "," + rideNode.getSequence() + ")");
+
+                String SQL_STRING = "{CALL insert_ride_nodes(?, ?, ?, ?)}";
+                stmt = connection.prepareCall(SQL_STRING);
+                stmt.setInt(1, rideNode.getRideId());
+                stmt.setDouble(2, rideNode.getLatitude());
+                stmt.setDouble(3, rideNode.getLongitude());
+                stmt.setInt(4, rideNode.getSequence());
+                stmt.execute();
             }
-            statement.executeBatch();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,15 +49,13 @@ public class RideNodeDaoImpl implements IRideNodeDao {
     public List<RideNode> getRideNodes(LatLng latLng) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            StringBuilder queryBuilder = new StringBuilder();
-            queryBuilder.append("CALL view_ride_nodes(")
-                    .append(latLng.getLatitude())
-                    .append(",")
-                    .append(latLng.getLongitude())
-                    .append(")");
-            ResultSet resultSet =
-                    statement.executeQuery(queryBuilder.toString());
+
+            String SQL_STRING = "{CALL view_ride_nodes(?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setDouble(1, latLng.getLatitude());
+            stmt.setDouble(2, latLng.getLongitude());
+
+            ResultSet resultSet = stmt.executeQuery();
 
             return buildRideNodesFrom(resultSet);
         } catch (SQLException e) {
@@ -69,7 +67,7 @@ public class RideNodeDaoImpl implements IRideNodeDao {
     }
 
     @Override
-    public int getLatestRideId() {
+    public int getLatestRideNodeId() {
         int rideId = 0;
         try {
             connection = database.openDatabaseConnection();
@@ -91,10 +89,14 @@ public class RideNodeDaoImpl implements IRideNodeDao {
 
         List<RideNode> rideNodes = new ArrayList<>();
         while (resultSet.next()) {
-            int rideId = Integer.parseInt(resultSet.getString("ride_id"));
-            double latitude = Double.parseDouble(resultSet.getString("latitude"));
-            double longitude = Double.parseDouble(resultSet.getString("longitude"));
-            int sequence = Integer.parseInt(resultSet.getString("sequence"));
+            String rideIdLabel = "ride_id";
+            String latitudeLabel = "latitude";
+            String longitudeLabel = "longitude";
+            String sequenceLabel = "sequence";
+            int rideId = Integer.parseInt(resultSet.getString(rideIdLabel));
+            double latitude = Double.parseDouble(resultSet.getString(latitudeLabel));
+            double longitude = Double.parseDouble(resultSet.getString(longitudeLabel));
+            int sequence = Integer.parseInt(resultSet.getString(sequenceLabel));
             RideNode rideNode = new RideNode(latitude, longitude, rideId, sequence);
             rideNodes.add(rideNode);
         }

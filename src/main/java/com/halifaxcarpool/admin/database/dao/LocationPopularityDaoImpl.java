@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationPopularityDaoImpl implements LocationPopularityDao{
+public class LocationPopularityDaoImpl implements ILocationPopularityDao {
 
     protected final IDatabase database;
     protected Connection connection;
@@ -27,12 +27,13 @@ public class LocationPopularityDaoImpl implements LocationPopularityDao{
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("CALL get_pickup_locations()");
             while(resultSet.next()){
-                streetNames.add(resultSet.getString("start_location"));
+                String startLocationLiteral = "start_location";
+                streetNames.add(resultSet.getString(startLocationLiteral));
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
             return null;
-        }finally {
+        } finally {
             database.closeDatabaseConnection();
         }
         return streetNames;

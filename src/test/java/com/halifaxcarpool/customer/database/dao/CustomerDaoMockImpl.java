@@ -16,7 +16,6 @@ public class CustomerDaoMockImpl extends IUserDao {
     }
 
     private static void populateMockCustomerData() {
-        //TODO use builder?
         int customer_id = 1;
         mockCustomerData.put(customer_id, new Customer(1, "John", "5321123621", "johnwick@shool.ca", "johncena1234"));
 
@@ -31,10 +30,14 @@ public class CustomerDaoMockImpl extends IUserDao {
     }
 
     @Override
-    public void registerUser(User user) {
-        Customer customerUser = (Customer) user;
-        int customer_id = 5;
-        mockCustomerData.put(customer_id, customerUser);
+    public void registerUser(User user) throws Exception {
+        Customer customer = (Customer) user;
+        int customerId;
+        customerId = customer.getCustomerId();
+        if(mockCustomerData.containsKey(customerId)) {
+            throw new Exception("Customer Already Exists");
+        }
+        mockCustomerData.put(customerId, customer);
     }
 
     @Override
@@ -43,14 +46,15 @@ public class CustomerDaoMockImpl extends IUserDao {
         Customer customerUser = (Customer) user;
         int customerId = customerUser.getCustomerId();
 
-        mockCustomerData.get(customerId);
+        if (mockCustomerData.containsKey(customerId)) {
+            mockCustomerData.get(customerId).setCustomerId(customerUser.getCustomerId());
+            mockCustomerData.get(customerId).setCustomerName(customerUser.getCustomerName());
+            mockCustomerData.get(customerId).setCustomerContact(customerUser.getCustomerContact());
+            mockCustomerData.get(customerId).setCustomerEmail(customerUser.getCustomerEmail());
 
-        mockCustomerData.get(customerId).setCustomerId(customerUser.getCustomerId());
-        mockCustomerData.get(customerId).setCustomerName(customerUser.getCustomerName());
-        mockCustomerData.get(customerId).setCustomerContact(customerUser.getCustomerContact());
-        mockCustomerData.get(customerId).setCustomerEmail(customerUser.getCustomerEmail());
-        mockCustomerData.get(customerId).setCustomerPassword(customerUser.getCustomerPassword());
-        return true;
+            return true;
+        }
+        return false;
     }
 
 }

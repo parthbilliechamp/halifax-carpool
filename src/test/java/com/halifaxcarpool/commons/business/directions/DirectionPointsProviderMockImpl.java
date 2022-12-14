@@ -21,7 +21,8 @@ public class DirectionPointsProviderMockImpl implements IDirectionPointsProvider
 
     @Override
     public long getDistanceBetweenSourceAndDestination(String source, String destination) {
-        return 0;
+
+        return 10;
     }
 
 }

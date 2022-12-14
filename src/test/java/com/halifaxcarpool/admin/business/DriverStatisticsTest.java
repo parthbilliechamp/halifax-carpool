@@ -1,10 +1,9 @@
 package com.halifaxcarpool.admin.business;
 
-import com.halifaxcarpool.admin.business.statistics.DriverStatistics;
 import com.halifaxcarpool.admin.business.statistics.IUserStatisticsBuilder;
 import com.halifaxcarpool.admin.business.statistics.UserStatistics;
-import com.halifaxcarpool.admin.database.dao.DriverDetailsDaoMock;
 import com.halifaxcarpool.admin.database.dao.IUserDetails;
+import com.halifaxcarpool.driver.business.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,9 +17,13 @@ public class DriverStatisticsTest {
     private static final int numberOfSeats = 65;
     private static final int averageSeats = 4;
 
-    protected IUserDetails userDetails = new DriverDetailsDaoMock();
+    private final IAdminModelFactory adminModelFactory = new AdminModelFactory();
 
-    private IUserStatisticsBuilder userStatisticsBuilder = new DriverStatistics(userDetails);
+    private final IDriverDaoFactory driverModelFactory = new DriverDaoTestFactory();
+
+    protected IUserDetails userDetails = driverModelFactory.getDriverDetailsDao();
+
+    private final IUserStatisticsBuilder userStatisticsBuilder = adminModelFactory.getDriverStatisticsBuilder(userDetails);
 
     @Test
     public void calculateNumberOfUsersTest(){

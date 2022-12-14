@@ -25,12 +25,13 @@ public abstract class IUserDetails {
 
     public int getNumberOfRides() {
         try {
+            String rideCountLiteral = "ride_count";
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("CALL get_ride_count()");
             resultSet.next();
-            return resultSet.getInt("ride_count");
+            return resultSet.getInt(rideCountLiteral);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
@@ -40,27 +41,28 @@ public abstract class IUserDetails {
 
     public int getNumberOfSeats(){
         try {
+            String seatsOfferedLiteral = "seats_offered";
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("CALL get_seats_offered()");
             resultSet.next();
-            return resultSet.getInt("seats_offered");
+            return resultSet.getInt(seatsOfferedLiteral);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             database.closeDatabaseConnection();
         }
     }
 
     public int getAverageSeats(){
         try {
+            String avgSeatsOfferedLiteral = "avg_seats_offered";
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
-
             ResultSet resultSet = statement.executeQuery("CALL get_average_seats_offered()");
             resultSet.next();
-            return resultSet.getBigDecimal("avg_seats_offered").intValue();
+            return resultSet.getBigDecimal(avgSeatsOfferedLiteral).intValue();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
@@ -77,14 +79,17 @@ public abstract class IUserDetails {
             ResultSet resultSet = statement.executeQuery("CALL get_ride_locations()");
             while(resultSet.next()){
                 List<String> locations = new ArrayList<>();
-                locations.add(resultSet.getString("start_location"));
-                locations.add(resultSet.getString("end_location"));
-                rideLocations.put(resultSet.getInt("ride_id"), locations);
+                String startLocationLiteral = "start_location";
+                String endLocationLiteral = "end_location";
+                String rideIdLiteral = "ride_id";
+                locations.add(resultSet.getString(startLocationLiteral));
+                locations.add(resultSet.getString(endLocationLiteral));
+                rideLocations.put(resultSet.getInt(rideIdLiteral), locations);
             }
             return rideLocations;
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             database.closeDatabaseConnection();
         }
     }

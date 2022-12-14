@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
           crossorigin="anonymous">
@@ -11,53 +10,38 @@
     </title>
     <style>
 
-        .gradient-custom-3 {
-            /* fallback for old browsers */
-            background: #84fab0;
-
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
-
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
+        .black-border-1 {
+            border-color: black;
+            border-width: medium;
         }
 
-        .gradient-custom-4 {
-            /* fallback for old browsers */
-            background: #84fab0;
-
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
-
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+        .black-border-3 {
+            border-radius: 30px;
         }
 
     </style>
 </head>
 <body>
-
-
 <section class="vh-100 bg-image"
-         style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+         style="background-color: white">
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                    <div class="card" style="border-radius: 15px;">
+                    <div class="card black-border-3" style="border-color: white; box-shadow: darkgrey 1px 1px 2px 2px">
                         <div class="card-body p-5">
-                            <h2 class="text-uppercase text-center mb-5">Select User</h2>
+                            <h2 class="text-center mb-5">tell us what you want to do...</h2>
                             <div>
                                 <a th:href="@{customer/register}"
-                                   class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
-                                    Customer
+                                   class="btn black-border-1 black-border-3 btn-block btn-lg gradient-custom-4 text-body">
+                                    I'll ride
                                 </a>
                             </div>
                             <br>
                             <div class="d-flex justify-content-center">
                                 <a th:href="@{driver/register}"
-                                   class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
-                                    Driver
+                                   class="btn black-border-1 black-border-3 btn-block btn-lg gradient-custom-4 text-body">
+                                    I'll drive
                                 </a>
                             </div>
                         </div>
@@ -67,6 +51,5 @@
         </div>
     </div>
 </section>
-
 </body>
 </html>

@@ -1,15 +1,16 @@
 package com.halifaxcarpool.customer.business.beans;
 
+import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.customer.business.recommendation.DistanceFinder;
 
 import java.util.Objects;
 
 public class RideNode implements Comparable<RideNode> {
 
-    private double latitude;
-    private double longitude;
+    private final double latitude;
+    private final double longitude;
     private int rideId;
-    private int sequence;
+    private final int sequence;
 
     public RideNode(double latitude, double longitude, int rideId, int sequence) {
         this.latitude = latitude;
@@ -22,16 +23,8 @@ public class RideNode implements Comparable<RideNode> {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public int getRideId() {
@@ -44,10 +37,6 @@ public class RideNode implements Comparable<RideNode> {
 
     public int getSequence() {
         return sequence;
-    }
-
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
     }
 
     @Override
@@ -65,7 +54,9 @@ public class RideNode implements Comparable<RideNode> {
 
     @Override
     public int compareTo(RideNode rideNode) {
-        return (int)DistanceFinder.findDistance(latitude, longitude, rideNode.latitude, rideNode.longitude);
+        LatLng latLngStart = new LatLng(latitude, longitude);
+        LatLng latLngEnd = new LatLng(rideNode.latitude, rideNode.longitude);
+        return (int)DistanceFinder.findDistance(latLngStart, latLngEnd);
     }
 
     @Override

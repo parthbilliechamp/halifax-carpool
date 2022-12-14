@@ -5,14 +5,11 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.driver.business.beans.Driver;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverApprovalDaoImpl implements DriverApprovalDao{
+public class DriverApprovalDaoImpl implements IDriverApprovalDao {
     protected final IDatabase database;
     protected Connection connection;
 
@@ -30,11 +27,14 @@ public class DriverApprovalDaoImpl implements DriverApprovalDao{
             ResultSet resultSet = statement.executeQuery("CALL get_unapproved_drivers()");
             while(resultSet.next()){
                 Driver driver = new Driver();
-                driver.setDriverName(resultSet.getString("driver_name"));
-                driver.setRegisteredVehicleNumber(resultSet.getString("registered_vehicle_number"));
-                driver.setDriverLicense(resultSet.getString("driver_license"));
-                driver.setLicenseExpiryDate(resultSet.getString("license_expiry_date"));
-
+                String driverNameLiteral = "driver_name";
+                driver.setDriverName(resultSet.getString(driverNameLiteral));
+                String registeredVehicleNumberLiteral = "registered_vehicle_number";
+                driver.setRegisteredVehicleNumber(resultSet.getString(registeredVehicleNumberLiteral));
+                String driverLicenseLiteral = "driver_license";
+                driver.setDriverLicense(resultSet.getString(driverLicenseLiteral));
+                String licenseExpiryDateLiteral = "license_expiry_date";
+                driver.setLicenseExpiryDate(resultSet.getString(licenseExpiryDateLiteral));
                 unapprovedDrivers.add(driver);
             }
         } catch (SQLException e) {
@@ -48,12 +48,12 @@ public class DriverApprovalDaoImpl implements DriverApprovalDao{
     @Override
     public boolean acceptDriverRequest(String id) {
         connection = database.openDatabaseConnection();
-        Statement statement;
         try {
-            statement = connection.createStatement();
-            statement.executeQuery("CALL accept_driver_profile("+ id +")");
+            String SQL_STRING = "{CALL accept_driver_profile(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, id);
+            stmt.execute();
         } catch (SQLException e) {
-            System.err.println(e);
             return false;
         }finally {
             database.closeDatabaseConnection();
@@ -64,14 +64,14 @@ public class DriverApprovalDaoImpl implements DriverApprovalDao{
     @Override
     public boolean rejectDriverRequest(String id) {
         connection = database.openDatabaseConnection();
-        Statement statement;
         try {
-            statement = connection.createStatement();
-            statement.executeQuery("CALL reject_driver_profile("+ id +")");
+            String SQL_STRING = "{CALL reject_driver_profile(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setString(1, id);
+            stmt.execute();
         } catch (SQLException e) {
-            System.err.println(e);
             return false;
-        }finally {
+        } finally {
             database.closeDatabaseConnection();
         }
         return true;

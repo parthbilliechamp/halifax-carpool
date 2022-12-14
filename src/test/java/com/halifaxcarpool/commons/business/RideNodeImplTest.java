@@ -23,7 +23,7 @@ IDirectionPointsProvider directionPointsProvider = new DirectionPointsProviderMo
     void insertRideNodesTest() {
         String startLocation = "6328-6276 Quinpool Rd, Halifax, NS B3L";
         String endLocation = "6056 University Ave, Halifax, NS B3H";
-        Ride ride = new Ride(1, 1, startLocation, endLocation, 2, 1, "");
+        Ride ride = new Ride(1, 1, startLocation, endLocation, 2, 1);
         rideNode.insertRideNodes(ride, rideNodeDao, directionPointsProvider);
     }
 

@@ -4,7 +4,6 @@ import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.driver.business.beans.Driver;
 import com.halifaxcarpool.driver.business.beans.Ride;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +21,17 @@ public class RidesDaoImpl implements IRidesDao {
     public boolean createNewRide(Ride ride) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            // TODO Get method which return date time.
-            // TODO: Research on calling this method better
 
-            //ride.setDateTime(ride.getDateTime().replace("T", " "));
+            String SQL_STRING = "{CALL create_new_ride(?, ?, ?, ?, ?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, ride.getDriverId());
+            stmt.setString(2, ride.getStartLocation());
+            stmt.setString(3, ride.getEndLocation());
+            stmt.setInt(4, ride.getSeatsOffered());
+            stmt.setInt(5, ride.getRideStatus());
 
-            String sqlString = "CALL create_new_ride(" + ride.getDriverId() + ", \"" +
-                    ride.getStartLocation() + "\", \"" + ride.getEndLocation() + "\", " + ride.getSeatsOffered() + ", "
-                    + ride.getRideStatus() + ")";
+            stmt.executeQuery();
 
-            statement.executeQuery(sqlString);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,8 +45,13 @@ public class RidesDaoImpl implements IRidesDao {
     public List<Ride> getRides(int driverId) {
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL view_rides(" + driverId + ")");
+
+            String SQL_STRING = "{CALL view_rides(?)}";
+            CallableStatement stmt = connection.prepareCall(SQL_STRING);
+            stmt.setInt(1, driverId);
+
+            ResultSet resultSet = stmt.executeQuery();
+
             return buildRidesFrom(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,8 +83,11 @@ public class RidesDaoImpl implements IRidesDao {
         Ride ride = null;
         try {
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL view_ride(" + rideId + ")");
+
+            String SQL_STRING = "{CALL view_ride(?)}";
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(1, rideId);
+            ResultSet resultSet = statement.executeQuery();
             ride = buildRidesFrom(resultSet).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,6 +95,42 @@ public class RidesDaoImpl implements IRidesDao {
             database.closeDatabaseConnection();
         }
         return ride;
+    }
+
+    @Override
+    public boolean startRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL start_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean stopRide(int rideId) {
+        try{
+            connection = database.openDatabaseConnection();
+            CallableStatement statement = connection.prepareCall("CALL stop_ride(?)");
+            statement.setInt(1, rideId);
+            statement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            database.closeDatabaseConnection();
+        }
+        return false;
     }
 
     @Override
@@ -111,15 +154,19 @@ public class RidesDaoImpl implements IRidesDao {
 
         List<Ride> rideList = new ArrayList<>();
         while (resultSet.next()) {
-            int rideId = Integer.parseInt(resultSet.getString("ride_id"));
-            int driverId = Integer.parseInt(resultSet.getString("driver_id"));
-            String startLocation = resultSet.getString("start_location");
-            String endLocation = resultSet.getString("end_location");
-            int seatsOffered = Integer.parseInt(resultSet.getString("seats_offered"));
-            byte rideStatus = Byte.parseByte(resultSet.getString("ride_status"));
-            //TODO convert to local date time
-            String dateTime = resultSet.getString("ride_date_time");
-            Ride ride = new Ride(rideId, driverId, startLocation, endLocation, seatsOffered, rideStatus, dateTime);
+            String rideIdLiteral = "ride_id";
+            String driverIdLiteral = "driver_id";
+            String startLocationLiteral = "start_location";
+            String endLocationLocation = "end_location";
+            String seatsOfferedLiteral = "seats_offered";
+            String rideStatusLiteral = "ride_status";
+            int rideId = Integer.parseInt(resultSet.getString(rideIdLiteral));
+            int driverId = Integer.parseInt(resultSet.getString(driverIdLiteral));
+            String startLocation = resultSet.getString(startLocationLiteral);
+            String endLocation = resultSet.getString(endLocationLocation);
+            int seatsOffered = Integer.parseInt(resultSet.getString(seatsOfferedLiteral));
+            byte rideStatus = Byte.parseByte(resultSet.getString(rideStatusLiteral));
+            Ride ride = new Ride(rideId, driverId, startLocation, endLocation, seatsOffered, rideStatus);
             rideList.add(ride);
         }
         return rideList;
@@ -129,16 +176,23 @@ public class RidesDaoImpl implements IRidesDao {
 
         List<Ride> rideList = new ArrayList<>();
         while (resultSet.next()) {
-            String driverName = resultSet.getString("driver_name");
-            String vehicleNumber = resultSet.getString("registered_vehicle_number");
-            String startLocation = resultSet.getString("start_location");
-            String endLocation = resultSet.getString("end_location");
-            double fare = Double.parseDouble(resultSet.getString("fair_price"));
+            String driverNameLiteral = "driver_name";
+            String registeredVehicleNumberLiteral = "registered_vehicle_number";
+            String startLocationLiteral = "start_location";
+            String endLocationLiteral = "end_location";
+            String fairPriceLiteral = "fair_price";
+            String paymentIdLiteral = "payment_id";
+            String driverName = resultSet.getString(driverNameLiteral);
+            String vehicleNumber = resultSet.getString(registeredVehicleNumberLiteral);
+            String startLocation = resultSet.getString(startLocationLiteral);
+            String endLocation = resultSet.getString(endLocationLiteral);
+            long paymentId = resultSet.getLong(paymentIdLiteral);
+            double fare = Double.parseDouble(resultSet.getString(fairPriceLiteral));
             Ride ride = new Ride();
             ride.setStartLocation(startLocation);
             ride.setEndLocation(endLocation);
             ride.withFare(fare);
-
+            ride.withPaymentId(paymentId);
             Driver driver = new Driver();
             driver.setDriverName(driverName);
             driver.setRegisteredVehicleNumber(vehicleNumber);

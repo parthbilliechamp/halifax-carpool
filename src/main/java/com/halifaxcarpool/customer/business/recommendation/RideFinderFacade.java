@@ -6,9 +6,11 @@ import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
+import com.halifaxcarpool.customer.business.beans.RouteFinderParameter;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.driver.business.IDriverModelFactory;
+import com.halifaxcarpool.driver.business.DriverModelFactory;
 import com.halifaxcarpool.driver.business.IRide;
-import com.halifaxcarpool.driver.business.RideImpl;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
@@ -16,84 +18,62 @@ import java.util.*;
 
 public class RideFinderFacade {
 
-    private static class RideLookupKey {
-        int firstRideId;
-        int secondRideId;
-
-        RideLookupKey(int firstRideId, int secondRideId) {
-            this.firstRideId = firstRideId;
-            this.secondRideId = secondRideId;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            RideLookupKey that = (RideLookupKey) o;
-            return firstRideId == that.firstRideId && secondRideId == that.secondRideId;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(firstRideId, secondRideId);
-        }
-    }
-
     private static final double MAXIMUM_RIDE_THRESHOLD_KM = 0.2;
-    private static final double MAXIMUM_RIDE_THRESHOLD_KM_FOR_TWO_RIDES = 0.2;
+
     private final IRide ride;
 
     public RideFinderFacade() {
-        ride = new RideImpl();
+        IDriverModelFactory driverModelFactory = new DriverModelFactory();
+        ride = driverModelFactory.getDriverRide();
     }
 
-    public List<List<Ride>> findDirectRouteRides(RideRequest rideRequest, IRideNodeDao rideNodeDao,
-                                                 IGeoCoding geoCoding, IRidesDao ridesDao) {
+    public List<List<Ride>> findDirectRouteRidesInvoker(RideRequest rideRequest,
+                                                        IRideNodeDao rideNodeDao,
+                                                        IGeoCoding geoCoding,
+                                                        IRidesDao ridesDao) {
 
         LatLng startLocationPoint = geoCoding.getLatLng(rideRequest.getStartLocation());
         LatLng endLocationPoint = geoCoding.getLatLng(rideRequest.getEndLocation());
+
         if (null == startLocationPoint || null == endLocationPoint) {
-            throw new RuntimeException("Error finding coordinates of the ride request : " + rideRequest.getRideRequestId());
+            throw new RuntimeException("Error finding coordinates of the ride request : " +
+                    rideRequest.getRideRequestId());
         }
-
-        List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
-        List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);
-
-        RideRequestNode startNode =
-                new RideRequestNode(startLocationPoint.getLatitude(), startLocationPoint.getLongitude(),
-                        rideRequest.getRideRequestId());
-        RideRequestNode endNode =
-                new RideRequestNode(endLocationPoint.getLatitude(), endLocationPoint.getLongitude(),
-                        rideRequest.getRideRequestId());
-
-        Set<RideNode> validRidesForStartNode = new HashSet<>();
-        Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
-
-        filterValidRidesForStartNode(rideNodesNearToStartLocation, startNode, validRidesForStartNode);
-        filterValidRidesForEndNode(rideNodesNearToEndLocation, endNode, validRidesForEndNode);
-
-        validRidesForStartNode.retainAll(validRidesForEndNode.keySet());
-
+        RouteFinderParameter routeFinderParameter =
+                new RouteFinderParameter(rideRequest, rideNodeDao, ridesDao, startLocationPoint, endLocationPoint);
+        List<Ride> recommendedRides = findDirectRouteRides(routeFinderParameter);
         List<List<Ride>> recommendedRidesWrapper = new ArrayList<>();
-        List<Ride> recommendedRides = getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNode, ridesDao);
         convertListOfRidesToListOfListOfRides(recommendedRidesWrapper, recommendedRides);
         return recommendedRidesWrapper;
     }
 
-    public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest, IDirectionPointsProvider directionPointsProvider, IRideNodeDao rideNodeDao, IRidesDao ridesDao) {
-        List<LatLng> rideReqPoints = directionPointsProvider.getPointsBetweenSourceAndDestination(rideRequest.getStartLocation(), rideRequest.getEndLocation());
+    public List<List<Ride>> findMultipleRouteRides(RideRequest rideRequest,
+                                                   IDirectionPointsProvider directionPointsProvider,
+                                                   IRideNodeDao rideNodeDao,
+                                                   IRidesDao ridesDao) {
+        List<LatLng> rideRequestNodes = directionPointsProvider.
+                getPointsBetweenSourceAndDestination(rideRequest.getStartLocation(), rideRequest.getEndLocation());
 
-        LatLng startPointOfRideRequest = rideReqPoints.get(0);
+        if (null == rideRequestNodes || rideRequestNodes.isEmpty()) {
+            return new ArrayList<>();
+        }
 
-        LatLng endPointOfRideRequest = rideReqPoints.get(rideReqPoints.size() - 1);
+        LatLng rideRequestStartNode = rideRequestNodes.get(0);
+        LatLng endPointOfRideRequest = rideRequestNodes.get(rideRequestNodes.size() - 1);
         Map<RideLookupKey, List<Ride>> ridesCache = new HashMap<>();
-        for (int i = 1; i < rideReqPoints.size() - 1 && ridesCache.size() <= 3; i += 3) {
-            LatLng middleSearchPoint = rideReqPoints.get(i);
 
-            List<Ride> ridesForFirstRoute = getRidesForRoute1(rideRequest, rideNodeDao, ridesDao, startPointOfRideRequest, middleSearchPoint, rideReqPoints);
-            List<Ride> ridesForSecondRoute = getRidesForRoute2(rideRequest, rideNodeDao, ridesDao, middleSearchPoint, endPointOfRideRequest, rideReqPoints);
+        for (int i = 1; i < rideRequestNodes.size() - 1 && ridesCache.size() <= 3; i += 3) {
+            LatLng intermediateNode = rideRequestNodes.get(i);
+            RouteFinderParameter firstRouterFinderParameter = new RouteFinderParameter(rideRequest, rideNodeDao,
+                    ridesDao, rideRequestStartNode, intermediateNode);
+            List<Ride> ridesForFirstRoute =
+                    findDirectRouteRides(firstRouterFinderParameter);
+            RouteFinderParameter secondRouteFinderParameter = new RouteFinderParameter(rideRequest, rideNodeDao,
+                    ridesDao, intermediateNode, endPointOfRideRequest);
+            List<Ride> ridesForSecondRoute =
+                    findDirectRouteRides(secondRouteFinderParameter);
 
-            if (ridesForFirstRoute.size() != 0 && ridesForSecondRoute.size() != 0) {
+            if (0 != ridesForFirstRoute.size() && 0 != ridesForSecondRoute.size()) {
                 for (Ride ride1 : ridesForFirstRoute) {
                     for (Ride ride2 : ridesForSecondRoute) {
                         if (ride1.getRideId() == ride2.getRideId()) {
@@ -108,88 +88,61 @@ public class RideFinderFacade {
                 }
             }
         }
-
         return new ArrayList<>(ridesCache.values());
     }
 
-    private List<Ride> getRidesForRoute1(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng startPointOfRideRequest, LatLng middleSearchPoint, List<LatLng> rideReqPoints) {
+    private List<Ride> findDirectRouteRides(RouteFinderParameter routeFinderParameter) {
+        IRideNodeDao rideNodeDao = routeFinderParameter.getRideNodeDao();
+        LatLng startLocationPoint = routeFinderParameter.getStartLocationPoint();
+        LatLng endLocationPoint = routeFinderParameter.getEndLocationPoint();
+        RideRequest rideRequest = routeFinderParameter.getRideRequest();
+        IRidesDao ridesDao = routeFinderParameter.getRidesDao();
 
-        List<RideNode> rideNodesNearToStartPoint = rideNodeDao.getRideNodes(startPointOfRideRequest);
-        List<RideNode> rideNodesNearToMiddlePoint = rideNodeDao.getRideNodes(middleSearchPoint);
-        RideRequestNode startNodeOfRideRequest =
-                new RideRequestNode(startPointOfRideRequest.getLatitude(), startPointOfRideRequest.getLongitude(),
+        List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
+        List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);
+
+        RideRequestNode startNode =
+                new RideRequestNode(startLocationPoint.getLatitude(), startLocationPoint.getLongitude(),
                         rideRequest.getRideRequestId());
-        RideRequestNode middleNodeOfRideRequest =
-                new RideRequestNode(middleSearchPoint.getLatitude(), middleSearchPoint.getLongitude(),
+        RideRequestNode endNode =
+                new RideRequestNode(endLocationPoint.getLatitude(), endLocationPoint.getLongitude(),
                         rideRequest.getRideRequestId());
+
+        Set<RideNode> validRidesForStartNode =
+                filterValidRidesForStartNode(rideNodesNearToStartLocation, startNode);
+        Map<RideNode, RideNode> validRidesForEndNodeIdenticalMap =
+                filterValidRidesForEndNode(rideNodesNearToEndLocation, endNode);
+
+        validRidesForStartNode.retainAll(validRidesForEndNodeIdenticalMap.keySet());
+        return getRidesBasedOnDirection(validRidesForStartNode, validRidesForEndNodeIdenticalMap, ridesDao);
+    }
+
+    private static Set<RideNode> filterValidRidesForStartNode(List<RideNode> rideNodesNearToStartLocation,
+                                                              RideRequestNode startNode) {
         Set<RideNode> validRidesForStartNode = new HashSet<>();
-        Map<RideNode, RideNode> validRidesForMiddleNode = new HashMap<>();
-        filterValidRidesForStartNodeForTwoRides(rideNodesNearToStartPoint, startNodeOfRideRequest, validRidesForStartNode);
-        filterValidRidesForEndNodeForTwoRides(rideNodesNearToMiddlePoint, middleNodeOfRideRequest, validRidesForMiddleNode);
-        validRidesForStartNode.retainAll(validRidesForMiddleNode.keySet());
-        return getRidesBasedOnDirection(validRidesForStartNode, validRidesForMiddleNode, ridesDao);
-    }
-
-    private List<Ride> getRidesForRoute2(RideRequest rideRequest, IRideNodeDao rideNodeDao, IRidesDao ridesDao, LatLng middleSearchPoint, LatLng endPointOfRideRequest, List<LatLng> rideReqPoints) {
-
-        List<RideNode> rideNodesNearToMiddlePoint = rideNodeDao.getRideNodes(middleSearchPoint);
-        List<RideNode> rideNodesNearToEndPoint = rideNodeDao.getRideNodes(endPointOfRideRequest);
-        RideRequestNode middleNodeOfRideRequest =
-                new RideRequestNode(middleSearchPoint.getLatitude(), middleSearchPoint.getLongitude(),
-                        rideRequest.getRideRequestId());
-        RideRequestNode endNodeOfRideRequest =
-                new RideRequestNode(endPointOfRideRequest.getLatitude(), endPointOfRideRequest.getLongitude(),
-                        rideRequest.getRideRequestId());
-        Set<RideNode> validRidesForMiddleNode2 = new HashSet<>();
-        Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
-        filterValidRidesForStartNodeForTwoRides(rideNodesNearToMiddlePoint, middleNodeOfRideRequest, validRidesForMiddleNode2);
-        filterValidRidesForEndNodeForTwoRides(rideNodesNearToEndPoint, endNodeOfRideRequest, validRidesForEndNode);
-        validRidesForMiddleNode2.retainAll(validRidesForEndNode.keySet());
-        return getRidesBasedOnDirection(validRidesForMiddleNode2, validRidesForEndNode, ridesDao);
-    }
-
-    private static void filterValidRidesForStartNodeForTwoRides(List<RideNode> rideNodesNearToStartLocation,
-                                                                RideRequestNode startNode,
-                                                                Set<RideNode> validRidesForStartNode) {
         for (RideNode rideNode : rideNodesNearToStartLocation) {
-            double distanceFromStartNode = DistanceFinder.findDistance(startNode.getLatitude(), rideNode.getLatitude(),
-                    startNode.getLongitude(), rideNode.getLongitude());
-            if (distanceFromStartNode < MAXIMUM_RIDE_THRESHOLD_KM_FOR_TWO_RIDES && !validRidesForStartNode.contains(rideNode)) {
-                validRidesForStartNode.add(rideNode);
-            }
-        }
-    }
-
-    private static void filterValidRidesForEndNodeForTwoRides(List<RideNode> rideNodesNearToEndLocation, RideRequestNode endNode, Map<RideNode, RideNode> validRidesForEndNode) {
-        for (RideNode rideNode : rideNodesNearToEndLocation) {
-            double distanceFromEndNode = DistanceFinder.findDistance(endNode.getLatitude(), rideNode.getLatitude(),
-                    endNode.getLongitude(), rideNode.getLongitude());
-            if (distanceFromEndNode <= MAXIMUM_RIDE_THRESHOLD_KM_FOR_TWO_RIDES && !validRidesForEndNode.containsKey(rideNode)) {
-                validRidesForEndNode.put(rideNode, rideNode);
-            }
-        }
-    }
-
-    private static void filterValidRidesForStartNode(List<RideNode> rideNodesNearToStartLocation,
-                                                     RideRequestNode startNode,
-                                                     Set<RideNode> validRidesForStartNode) {
-        for (RideNode rideNode : rideNodesNearToStartLocation) {
-            double distanceFromStartNode = DistanceFinder.findDistance(startNode.getLatitude(), rideNode.getLatitude(),
-                    startNode.getLongitude(), rideNode.getLongitude());
+            LatLng startLocationLatLng = new LatLng(startNode.getLatitude(), startNode.getLongitude());
+            LatLng intermediateLocationLatLng = new LatLng(rideNode.getLatitude(), rideNode.getLongitude());
+            double distanceFromStartNode = DistanceFinder.findDistance(startLocationLatLng, intermediateLocationLatLng);
             if (distanceFromStartNode < MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForStartNode.contains(rideNode)) {
                 validRidesForStartNode.add(rideNode);
             }
         }
+        return validRidesForStartNode;
     }
 
-    private static void filterValidRidesForEndNode(List<RideNode> rideNodesNearToEndLocation, RideRequestNode endNode, Map<RideNode, RideNode> validRidesForEndNode) {
+    private static Map<RideNode, RideNode> filterValidRidesForEndNode(List<RideNode> rideNodesNearToEndLocation,
+                                                                      RideRequestNode endNode) {
+        Map<RideNode, RideNode> validRidesForEndNode = new HashMap<>();
         for (RideNode rideNode : rideNodesNearToEndLocation) {
-            double distanceFromEndNode = DistanceFinder.findDistance(endNode.getLatitude(), rideNode.getLatitude(),
-                    endNode.getLongitude(), rideNode.getLongitude());
+            LatLng endLocationLatLng = new LatLng(endNode.getLatitude(), endNode.getLongitude());
+            LatLng intermediateLocationLatLng = new LatLng(rideNode.getLatitude(), rideNode.getLongitude());
+            double distanceFromEndNode = DistanceFinder.findDistance(endLocationLatLng, intermediateLocationLatLng);
             if (distanceFromEndNode <= MAXIMUM_RIDE_THRESHOLD_KM && !validRidesForEndNode.containsKey(rideNode)) {
                 validRidesForEndNode.put(rideNode, rideNode);
             }
         }
+        return validRidesForEndNode;
     }
 
     private List<Ride> getRidesBasedOnDirection(Set<RideNode> validRidesForStartNode,
@@ -206,7 +159,8 @@ public class RideFinderFacade {
         return recommendedRides;
     }
 
-    private void convertListOfRidesToListOfListOfRides(List<List<Ride>> resultList, List<Ride> recommendedRides) {
+    private void convertListOfRidesToListOfListOfRides(List<List<Ride>> resultList,
+                                                       List<Ride> recommendedRides) {
         for (Ride ride : recommendedRides) {
             List<Ride> rides = new ArrayList<>();
             rides.add(ride);

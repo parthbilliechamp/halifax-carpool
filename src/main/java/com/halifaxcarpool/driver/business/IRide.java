@@ -9,14 +9,20 @@ import java.util.List;
 
 public interface IRide {
 
-    boolean createNewRide(Ride ride, IRidesDao ridesDao, IRideNodeDao rideNodeDao,
+    boolean createNewRide(IRidesDao ridesDao, IRideNodeDao rideNodeDao,
                           IDirectionPointsProvider directionPointsProvider, IRideNode rideNode);
 
-    List<Ride> viewRides(int driverId, IRidesDao ridesDao);
+    List<Ride> viewAllRides(int driverId, IRidesDao ridesDao);
+
+    List<Ride> viewRidesHistory(int driverId, IRidesDao ridesDao);
 
     List<Ride> viewOngoingRides(int customerId, IRidesDao ridesDao);
 
     Ride getRide(int rideId, IRidesDao ridesDao);
+
+    boolean startRide(int rideId, IRidesDao ridesDao);
+
+    boolean stopRide(int rideId, IRidesDao ridesDao);
 
     boolean cancelRide(int rideId, IRidesDao ridesDao);
 
