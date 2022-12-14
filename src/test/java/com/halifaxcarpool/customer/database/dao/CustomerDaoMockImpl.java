@@ -16,7 +16,6 @@ public class CustomerDaoMockImpl extends IUserDao {
     }
 
     private static void populateMockCustomerData() {
-        //TODO use builder?
         int customer_id = 1;
         mockCustomerData.put(customer_id, new Customer(1, "John", "5321123621", "johnwick@shool.ca", "johncena1234"));
 

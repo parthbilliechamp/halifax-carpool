@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
-
-//TODO one of the test case is throwing NPE
 @SpringBootTest
 @ActiveProfiles("test")
 public class RideTest {
