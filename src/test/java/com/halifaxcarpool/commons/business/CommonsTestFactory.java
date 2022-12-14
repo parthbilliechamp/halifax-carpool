@@ -10,7 +10,7 @@ import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.commons.business.geocoding.GeoCodingMockImpl;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 
-public class CommonsFactoryTest implements ICommonsFactory {
+public class CommonsTestFactory implements ICommonsFactory {
 
     @Override
     public IUserAuthentication authenticateUser() {

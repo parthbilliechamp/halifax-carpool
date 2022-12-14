@@ -160,15 +160,13 @@ public class RidesDaoImpl implements IRidesDao {
             String endLocationLocation = "end_location";
             String seatsOfferedLiteral = "seats_offered";
             String rideStatusLiteral = "ride_status";
-            String rideDateTimeLiteral = "ride_date_time";
             int rideId = Integer.parseInt(resultSet.getString(rideIdLiteral));
             int driverId = Integer.parseInt(resultSet.getString(driverIdLiteral));
             String startLocation = resultSet.getString(startLocationLiteral);
             String endLocation = resultSet.getString(endLocationLocation);
             int seatsOffered = Integer.parseInt(resultSet.getString(seatsOfferedLiteral));
             byte rideStatus = Byte.parseByte(resultSet.getString(rideStatusLiteral));
-            String dateTime = resultSet.getString(rideDateTimeLiteral);
-            Ride ride = new Ride(rideId, driverId, startLocation, endLocation, seatsOffered, rideStatus, dateTime);
+            Ride ride = new Ride(rideId, driverId, startLocation, endLocation, seatsOffered, rideStatus);
             rideList.add(ride);
         }
         return rideList;

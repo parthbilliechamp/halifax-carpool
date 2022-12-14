@@ -1,9 +1,8 @@
-package com.halifaxcarpool.customer.business.riderecommendation;
+package com.halifaxcarpool.commons.business.geocoding;
 
-import com.halifaxcarpool.commons.business.CommonsFactoryTest;
+import com.halifaxcarpool.commons.business.CommonsTestFactory;
 import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.beans.LatLng;
-import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class GeoCodingApiTest {
 
-    ICommonsFactory commonsObjectFactory = new CommonsFactoryTest();
+    ICommonsFactory commonsObjectFactory = new CommonsTestFactory();
     IGeoCoding geoCoding = commonsObjectFactory.getGeoCoding();
 
     @Disabled("Disabled to save incurring cost caused by calling the REST API ")

@@ -118,20 +118,20 @@ public class RidesDaoMockImpl implements IRidesDao {
         int driverId = 1;
         List<Ride> rides = new ArrayList<>();
         Ride ride = new Ride(1, driverId, "6056 University Ave, Halifax, NS B3H 1W5",
-                "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5", 3, 1, "");
+                "6328-6276 Quinpool Rd, Halifax, NS B3L 1A5", 3, 1);
         rides.add(ride);
-        ride = new Ride(2, driverId, "Park Lane", "Bayers rd.", 1, 0, "");
+        ride = new Ride(2, driverId, "Park Lane", "Bayers rd.", 1, 0);
         rides.add(ride);
         driverIdToRideListMap.put(driverId, rides);
         driverId = 2;
         rides = new ArrayList<>();
-        rides.add(new Ride(3, driverId, "Citadel", "Gottingen st.", 3, 1, ""));
-        rides.add(new Ride(4, driverId, "Halifax Park", "Cunard st.", 4, 1, ""));
+        rides.add(new Ride(3, driverId, "Citadel", "Gottingen st.", 3, 1));
+        rides.add(new Ride(4, driverId, "Halifax Park", "Cunard st.", 4, 1));
         driverIdToRideListMap.put(driverId, rides);
     }
 
     private static void populateRide(int rideId, int driverId, String startLocation, String endLocation) {
-        Ride ride = new Ride(rideId, driverId, startLocation, endLocation, 3, 1, "");
+        Ride ride = new Ride(rideId, driverId, startLocation, endLocation, 3, 1);
         rideIdToRideMap.put(rideId, ride);
     }
 
@@ -145,7 +145,7 @@ public class RidesDaoMockImpl implements IRidesDao {
     private static void populateActiveRidesMapData() {
         List<Ride> rides = new ArrayList<>();
         Ride ride = new Ride(15, 15, "Citadel",
-                "Halifax Park", 4, 1, "");
+                "Halifax Park", 4, 1);
         Driver driver = new Driver();
         driver.setDriverName("Hakim");
         driver.setRegisteredVehicleNumber("132");
@@ -153,7 +153,7 @@ public class RidesDaoMockImpl implements IRidesDao {
         ride.withFare(2.0);
 
         Ride secondRide = new Ride(16, 16, "Brunswick st.",
-                "Halifax Park", 2, 1, "");
+                "Halifax Park", 2, 1);
         Driver secondDriver = new Driver();
         driver.setDriverName("Ben");
         driver.setRegisteredVehicleNumber("132");

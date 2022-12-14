@@ -17,7 +17,6 @@ public class Ride implements IRide {
     private String endLocation;
     private int seatsOffered;
     private int rideStatus;
-    private String dateTime;
 
     public Driver driver;
 
@@ -30,14 +29,13 @@ public class Ride implements IRide {
     }
 
     public Ride(int rideId, int driverId, String startLocation, String endLocation, int seatsOffered,
-                int rideStatus, String dateTime) {
+                int rideStatus) {
         this.rideId = rideId;
         this.driverId = driverId;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.seatsOffered = seatsOffered;
         this.rideStatus = rideStatus;
-        this.dateTime = dateTime;
     }
 
     @Override
@@ -149,5 +147,23 @@ public class Ride implements IRide {
     public void withPaymentId(long paymentId) {
         this.paymentId = paymentId;
     }
+
+
+    public void setSeatsOffered(int seatsOffered) {
+        this.seatsOffered = seatsOffered;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public void setFare(double fare) {
+        this.fare = fare;
+    }
+
+    public void setPaymentId(long paymentId) {
+        this.paymentId = paymentId;
+    }
+
 
 }

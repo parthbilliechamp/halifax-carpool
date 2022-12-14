@@ -1,6 +1,6 @@
 package com.halifaxcarpool.customer.business;
 
-import com.halifaxcarpool.commons.business.CommonsFactoryTest;
+import com.halifaxcarpool.commons.business.CommonsTestFactory;
 import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
@@ -8,7 +8,6 @@ import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.database.dao.IRideRequestsDao;
 import com.halifaxcarpool.customer.database.dao.RideRequestsDaoMockImpl;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
-import com.halifaxcarpool.driver.database.dao.RidesDaoImpl;
 import com.halifaxcarpool.driver.database.dao.RidesDaoMockImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class FareCalculatorImplTest{
 
-    private final ICommonsFactory commonsFactory = new CommonsFactoryTest();
+    private final ICommonsFactory commonsFactory = new CommonsTestFactory();
     @Test
     public void calculateFairTest(){
         IRideRequestsDao rideRequestsDao = new RideRequestsDaoMockImpl();
@@ -34,9 +33,9 @@ public class FareCalculatorImplTest{
     public void calculateDeductionTest(){
         double originalAmount = 100;
         double discountPercentage = 50.0;
-        IFareCalculator fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
+        FareCalculatorImpl fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
         fareCalculator.calculateDeduction();
-        assert (Double.compare(((FareCalculatorImpl)fareCalculator).getDeduction(),50) == 0);
+        assert (Double.compare(fareCalculator.getDeduction(),50) == 0);
     }
 
     @Test
@@ -45,7 +44,7 @@ public class FareCalculatorImplTest{
         double discountPercentage = 25.0;
         FareCalculatorImpl fareCalculator = new FareCalculatorImpl(originalAmount, discountPercentage);
         fareCalculator.calculateFinalAmount();
-        assert (Double.compare(75.0, ((FareCalculatorImpl)fareCalculator).getFinalAmount()) == 0);
+        assert (Double.compare(75.0, fareCalculator.getFinalAmount()) == 0);
     }
 
 }

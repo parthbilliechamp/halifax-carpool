@@ -1,6 +1,6 @@
 package com.halifaxcarpool.customer.business.riderecommendation;
 
-import com.halifaxcarpool.commons.business.CommonsFactoryTest;
+import com.halifaxcarpool.commons.business.CommonsTestFactory;
 import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.CustomerDaoTestFactory;
@@ -19,7 +19,7 @@ import java.util.*;
 public class RideFinderFacadeTest {
 
     ICustomerDaoFactory customerDaoObjectFactory = new CustomerDaoTestFactory();
-    ICommonsFactory commonsObjectFactory = new CommonsFactoryTest();
+    ICommonsFactory commonsObjectFactory = new CommonsTestFactory();
 
     RideFinderFacade rideFinderFacade = new RideFinderFacade();
     IRideNodeDao rideNodeDao = customerDaoObjectFactory.getRideNodeDao();
@@ -82,12 +82,6 @@ public class RideFinderFacadeTest {
     public void findDirectRouteRidesDifferentStartPointSameEndPointTest() {
         String startLocation = "Ardmore Tea Room, Quinpool Road, Halifax, NS";
         String endLocation = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
-        /**
-         * rideStartsFrom = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
-         * rideEndsAt = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
-         * This is the ride present in mock data which matches the customer end location but since the start
-         * point is far off the ride start location, the algorithm does not recommend this ride.
-         */
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
         List<List<Ride>> rides = rideFinderFacade.findDirectRouteRidesInvoker(rideRequest, rideNodeDao, geoCoding, ridesDao);
         assert 0 == rides.size();
@@ -97,12 +91,6 @@ public class RideFinderFacadeTest {
     public void findDirectRouteRidesSameStartPointDifferentEndPointTest() {
         String startLocation = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
         String endLocation = "Gorsebrook Park, Lundys Lane, Halifax, NS";
-        /**
-         * rideStartsFrom = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
-         * rideEndsAt = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
-         * This is the ride present in mock data which matches the customer end location but since the end
-         * point is far off the ride start location, the algorithm does not recommend this ride.
-         */
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
         List<List<Ride>> rides = rideFinderFacade.findDirectRouteRidesInvoker(rideRequest, rideNodeDao, geoCoding, ridesDao);
         assert 0 == rides.size();
@@ -112,12 +100,6 @@ public class RideFinderFacadeTest {
     public void findDirectRouteRidesDifferentStartPointDifferentEndPointTest() {
         String startLocation = "Ardmore Tea Room, Quinpool Road, Halifax, NS";
         String endLocation = "Gorsebrook Park, Lundys Lane, Halifax, NS";
-        /**
-         * rideStartsFrom = "Atlantica Hotel Halifax, 1980 Robie St, Halifax, NS B3H 3G5";
-         * rideEndsAt = "Halifax Public Gardens, Spring Garden Rd. &, Summer St, Halifax, NS B3J 3S9";
-         * This is the ride present in mock data which matches the customer end location but since the start
-         * point and the end point is far off the ride start location, the algorithm does not recommend this ride.
-         */
         RideRequest rideRequest = new RideRequest(2, 5, startLocation, endLocation);
         List<List<Ride>> rides = rideFinderFacade.findDirectRouteRidesInvoker(rideRequest, rideNodeDao, geoCoding, ridesDao);
         assert 0 == rides.size();

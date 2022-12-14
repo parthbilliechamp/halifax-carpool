@@ -114,6 +114,27 @@ public class Driver extends User {
         return driverApprovalStatus;
     }
 
+
+    public void setDriverEmail(String driverEmail) {
+        this.driverEmail = driverEmail;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
+
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
+    }
+
+    public void setVehicleColor(String vehicleColor) {
+        this.vehicleColor = vehicleColor;
+    }
+
+    public void setDriverApprovalStatus(Integer driverApprovalStatus) {
+        this.driverApprovalStatus = driverApprovalStatus;
+    }
+
     @Override
     public String toString() {
         return "Driver{" +
