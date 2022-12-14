@@ -1,7 +1,10 @@
 package com.halifaxcarpool.commons.business;
 
+import com.halifaxcarpool.admin.business.statistics.UserStatistics;
 import com.halifaxcarpool.commons.business.authentication.IUserAuthentication;
 import com.halifaxcarpool.commons.business.authentication.UserAuthenticationImpl;
+import com.halifaxcarpool.commons.business.authentication.encrypter.IPasswordEncrypter;
+import com.halifaxcarpool.commons.business.authentication.encrypter.PasswordEncrypterImpl;
 import com.halifaxcarpool.commons.business.directions.DirectionPointsProviderMockImpl;
 import com.halifaxcarpool.commons.business.directions.IDirectionPointsProvider;
 import com.halifaxcarpool.commons.business.geocoding.GeoCodingMockImpl;
@@ -22,6 +25,16 @@ public class CommonsFactoryTest implements ICommonsFactory {
     @Override
     public IDirectionPointsProvider getDirectionPointsProvider() {
         return new DirectionPointsProviderMockImpl();
+    }
+
+    @Override
+    public IPasswordEncrypter getPasswordEncrypter() {
+        return new PasswordEncrypterImpl();
+    }
+
+    @Override
+    public UserStatistics getUserStatistics() {
+        return new UserStatistics();
     }
 
 

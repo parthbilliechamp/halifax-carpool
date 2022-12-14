@@ -27,12 +27,13 @@ public class LocationPopularityDaoImpl implements ILocationPopularityDao {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("CALL get_pickup_locations()");
             while(resultSet.next()){
-                streetNames.add(resultSet.getString("start_location"));
+                String startLocationLiteral = "start_location";
+                streetNames.add(resultSet.getString(startLocationLiteral));
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
             return null;
-        }finally {
+        } finally {
             database.closeDatabaseConnection();
         }
         return streetNames;

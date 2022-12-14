@@ -27,11 +27,14 @@ public class DriverApprovalDaoImpl implements IDriverApprovalDao {
             ResultSet resultSet = statement.executeQuery("CALL get_unapproved_drivers()");
             while(resultSet.next()){
                 Driver driver = new Driver();
-                driver.setDriverName(resultSet.getString("driver_name"));
-                driver.setRegisteredVehicleNumber(resultSet.getString("registered_vehicle_number"));
-                driver.setDriverLicense(resultSet.getString("driver_license"));
-                driver.setLicenseExpiryDate(resultSet.getString("license_expiry_date"));
-
+                String driverNameLiteral = "driver_name";
+                driver.setDriverName(resultSet.getString(driverNameLiteral));
+                String registeredVehicleNumberLiteral = "registered_vehicle_number";
+                driver.setRegisteredVehicleNumber(resultSet.getString(registeredVehicleNumberLiteral));
+                String driverLicenseLiteral = "driver_license";
+                driver.setDriverLicense(resultSet.getString(driverLicenseLiteral));
+                String licenseExpiryDateLiteral = "license_expiry_date";
+                driver.setLicenseExpiryDate(resultSet.getString(licenseExpiryDateLiteral));
                 unapprovedDrivers.add(driver);
             }
         } catch (SQLException e) {
@@ -68,7 +71,7 @@ public class DriverApprovalDaoImpl implements IDriverApprovalDao {
             stmt.execute();
         } catch (SQLException e) {
             return false;
-        }finally {
+        } finally {
             database.closeDatabaseConnection();
         }
         return true;

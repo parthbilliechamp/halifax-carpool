@@ -3,7 +3,6 @@ package com.halifaxcarpool.admin.database.dao;
 import com.halifaxcarpool.admin.business.beans.Admin;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
-import com.halifaxcarpool.driver.business.beans.Driver;
 
 import java.sql.*;
 
@@ -14,7 +13,6 @@ public class AdminAuthenticationDaoImpl implements IAdminAuthenticationDao {
 
     public AdminAuthenticationDaoImpl() {
         database = new DatabaseImpl();
-        connection = database.openDatabaseConnection();
     }
 
     @Override
@@ -22,6 +20,7 @@ public class AdminAuthenticationDaoImpl implements IAdminAuthenticationDao {
         ResultSet resultSet;
 
         try {
+            connection = database.openDatabaseConnection();
             String SQL_STRING = "{CALL login_admin(?, ?)}";
             CallableStatement stmt = connection.prepareCall(SQL_STRING);
             stmt.setString(1, userName);
@@ -38,12 +37,14 @@ public class AdminAuthenticationDaoImpl implements IAdminAuthenticationDao {
     private static Admin buildAdminFrom(ResultSet resultSet) throws SQLException {
         Admin admin = null;
         while (resultSet.next()) {
-            int adminId = Integer.parseInt(resultSet.getString("adminId"));
-            String userName = resultSet.getString("admin_username");
-            String password = resultSet.getString("admin_password");
+            String adminIdLiteral = "adminId";
+            int adminId = Integer.parseInt(resultSet.getString(adminIdLiteral));
+            String adminUsernameLiteral = "admin_username";
+            String userName = resultSet.getString(adminUsernameLiteral);
+            String adminPasswordLiteral = "admin_password";
+            String password = resultSet.getString(adminPasswordLiteral);
             admin = new Admin(adminId, userName, password);
         }
-
         return admin;
     }
 }

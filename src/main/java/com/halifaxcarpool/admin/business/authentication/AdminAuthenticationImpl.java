@@ -2,15 +2,17 @@ package com.halifaxcarpool.admin.business.authentication;
 
 import com.halifaxcarpool.admin.business.beans.Admin;
 import com.halifaxcarpool.admin.database.dao.IAdminAuthenticationDao;
+import com.halifaxcarpool.commons.business.CommonsFactory;
+import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.commons.business.authentication.encrypter.IPasswordEncrypter;
-import com.halifaxcarpool.commons.business.authentication.encrypter.PasswordEncrypterImpl;
 
 public class AdminAuthenticationImpl implements IAdminAuthentication {
 
     private static IPasswordEncrypter passwordEncrypter;
 
     public AdminAuthenticationImpl() {
-        passwordEncrypter = new PasswordEncrypterImpl();
+        ICommonsFactory commonsFactory = new CommonsFactory();
+        passwordEncrypter = commonsFactory.getPasswordEncrypter();
     }
 
     @Override

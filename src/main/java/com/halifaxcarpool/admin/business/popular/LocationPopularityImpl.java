@@ -10,6 +10,8 @@ public class LocationPopularityImpl implements ILocationPopularity {
     private final Map<Integer, List<String>> popularLocations;
     private static final String COMMA_SEPARATOR = ",";
 
+    private static final String HALIFAX_CITY = "halifax";
+
     public LocationPopularityImpl(ILocationPopularityDao halifaxPopularityDao){
         this.locationPopularityDao = halifaxPopularityDao;
         popularLocations = new HashMap<>();
@@ -51,8 +53,9 @@ public class LocationPopularityImpl implements ILocationPopularity {
     private String getStreetName(String[] locationBreakdown) {
         Iterator<String> iterator = Arrays.stream(locationBreakdown).iterator();
         int streetIndex = 0;
+        String regex = "\\s";
         while ((iterator.hasNext())) {
-            if (iterator.next().replaceAll("\\s", "").equalsIgnoreCase("halifax")) {
+            if (iterator.next().replaceAll(regex, "").equalsIgnoreCase(HALIFAX_CITY)) {
                 return locationBreakdown[--streetIndex];
             }
             streetIndex++;
@@ -60,17 +63,23 @@ public class LocationPopularityImpl implements ILocationPopularity {
         return null;
     }
 
-    private List<String> getPopularStreets(List<String> streetNames, int maximumOccurrence){
+    private List<String> getPopularStreets(List<String> streetNames, int maximumOccurrence) {
         Iterator<String> iterator = streetNames.iterator();
         List<String> popularStreets = new ArrayList<>();
         while (iterator.hasNext()){
             String streetName = iterator.next();
             int currentFrequency = Collections.frequency(streetNames, streetName);
-            if(maximumOccurrence == currentFrequency && Boolean.FALSE.equals(popularStreets.contains(streetName))) {
+            if(maximumOccurrence == currentFrequency &&
+                    isStreetNameNotPresentInPopularStreets(popularStreets, streetName)) {
                 popularStreets.add(streetName);
             }
         }
         return popularStreets;
+    }
+
+    private boolean isStreetNameNotPresentInPopularStreets(List<String> popularStreets,
+                                                           String streetName) {
+        return Boolean.FALSE.equals(popularStreets.contains(streetName));
     }
 
 }

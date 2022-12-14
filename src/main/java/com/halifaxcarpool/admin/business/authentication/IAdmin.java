@@ -5,6 +5,7 @@ import com.halifaxcarpool.admin.database.dao.IAdminAuthenticationDao;
 
 public interface IAdmin {
 
-    Admin login(String userName, String password, IAdminAuthentication adminAuthentication, IAdminAuthenticationDao adminAuthenticationDao);
+    Admin login(String userName, String password, IAdminAuthentication adminAuthentication,
+                IAdminAuthenticationDao adminAuthenticationDao);
 
 }

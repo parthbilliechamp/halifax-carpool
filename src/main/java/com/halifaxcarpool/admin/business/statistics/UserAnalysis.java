@@ -1,7 +1,7 @@
 package com.halifaxcarpool.admin.business.statistics;
 
 public class UserAnalysis {
-    private IUserStatisticsBuilder userStatisticsBuilder;
+    private final IUserStatisticsBuilder userStatisticsBuilder;
 
     public UserAnalysis(IUserStatisticsBuilder userStatisticsBuilder){
         this.userStatisticsBuilder = userStatisticsBuilder;

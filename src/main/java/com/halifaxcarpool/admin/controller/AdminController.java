@@ -178,7 +178,7 @@ public class AdminController {
 
         IUserDetails driverDetails = driverDaoFactory.getDriverDetailsDao();
         IUserStatisticsBuilder userStatisticsBuilder = adminModelFactory.getDriverStatisticsBuilder(driverDetails);
-        IUserStatistics userStatistics =
+        UserStatistics userStatistics =
                 adminModelFactory.getAnalysisBluePrint(userStatisticsBuilder).deriveUserStatistics();
 
         model.addAttribute(userStatsAttribute, userStatistics);

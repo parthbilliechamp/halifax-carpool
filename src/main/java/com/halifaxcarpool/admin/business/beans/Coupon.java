@@ -6,34 +6,14 @@ import com.halifaxcarpool.admin.database.dao.ICouponDao;
 import java.util.List;
 
 public class Coupon implements ICoupon {
-    public double getDiscountPercentage() {
-        return discountPercentage;
+
+    private int couponId;
+    private double discountPercentage;
+    private String expiry;
+
+    public Coupon() {
+
     }
-
-    public void setDiscountPercentage(double discountPercentage) {
-        this.discountPercentage = discountPercentage;
-    }
-
-    public int getCouponId() {
-        return couponId;
-    }
-
-    public void setCouponId(int couponId) {
-        this.couponId = couponId;
-    }
-
-    public int couponId;
-    public double discountPercentage;
-
-    public String getExpiry() {
-        return expiry;
-    }
-
-    public void setExpiry(String expiry) {
-        this.expiry = expiry;
-    }
-
-    public String expiry;
 
     public Coupon(int couponId, double discountPercentage, String expiry){
         this.couponId = couponId;
@@ -41,8 +21,16 @@ public class Coupon implements ICoupon {
         this.expiry = expiry;
     }
 
-    public Coupon(){
+    public double getDiscountPercentage() {
+        return discountPercentage;
+    }
 
+    public int getCouponId() {
+        return couponId;
+    }
+
+    public String getExpiry() {
+        return expiry;
     }
     @Override
     public boolean createCoupon(Coupon coupon, ICouponDao couponDao) {
@@ -51,16 +39,13 @@ public class Coupon implements ICoupon {
 
     @Override
     public List<Coupon> viewCoupons(ICouponDao iCouponDao) {
-
         return iCouponDao.viewCoupons();
     }
 
     @Override
     public boolean deleteCoupon(int couponId, ICouponDao couponDao) {
-
         return couponDao.deleteCoupon(couponId);
     }
-
 
     @Override
     public Double getMaximumDiscountValidToday(ICouponDao couponDao) {
@@ -72,10 +57,8 @@ public class Coupon implements ICoupon {
         return "Coupon{" +
                 "couponId="+ this.couponId+
                 "discountPercentage="+this.discountPercentage+
-                "expiry="+this.expiry.toString()+
+                "expiry="+ this.expiry +
                 "}";
     }
-
-
 
 }

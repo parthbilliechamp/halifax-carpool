@@ -17,7 +17,6 @@ public class DriverApproval implements IUserApproval {
     private final Date currentDate;
 
     public DriverApproval(IDriverApprovalDao driverApprovalDao){
-
         this.driverApprovalDao = driverApprovalDao;
         try {
             this.currentDate = SIMPLE_DATE_FORMAT.parse(SIMPLE_DATE_FORMAT.format(new Date()));
@@ -50,17 +49,16 @@ public class DriverApproval implements IUserApproval {
             Driver filterDriver = (Driver) itr.next();
             if(null != filterDriver.getLicenseExpiryDate()){
                 Date driverLicenseExpireDate = parseDate(filterDriver.getLicenseExpiryDate());
-                if(driverLicenseExpireDate.compareTo(currentDate)>0){
+                if(driverLicenseExpireDate.compareTo(currentDate) > 0){
                     filteredDrivers.add(filterDriver);
                 }
             }
-
         }
         return filteredDrivers;
     }
 
     private Date parseDate(String date){
-        Date newDate = null;
+        Date newDate;
         try {
             newDate = SIMPLE_DATE_FORMAT.parse(date);
         } catch (ParseException e) {
