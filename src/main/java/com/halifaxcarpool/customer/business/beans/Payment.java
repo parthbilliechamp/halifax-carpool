@@ -13,17 +13,15 @@ import java.util.Random;
 
 public class Payment  implements IPayment {
     public static final String STATUS = "NOT_INITIATED";
-    int paymentId;
-    int rideId;
-    int customerId;
-    int driverId;
-    double amountDue;
+    private int paymentId;
+    private int rideId;
+    private int customerId;
+    private int driverId;
+    private double amountDue;
+    private String status;
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
-    String status;
+
     public Payment(){
 
     }
@@ -40,7 +38,6 @@ public class Payment  implements IPayment {
         return  this.status;
     }
     public int getPaymentId(){return this.paymentId;}
-
     public  int getRideId(){
         return this.rideId;
     }
@@ -50,28 +47,31 @@ public class Payment  implements IPayment {
     public  double getAmountDue(){
         return this.amountDue;
     }
-
     public int getCustomerId(){
         return this.customerId;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public void insertPaymentDetails(int rideId, int rideRequestId, IPaymentDao paymentDao,
-                                     IRidesDao ridesDao, IRideRequestsDao rideRequestsDao, IRideToRequestMapperDao rideToRequestMapperDao) {
+                                     IRidesDao ridesDao, IRideRequestsDao rideRequestsDao,
+                                     IRideToRequestMapperDao rideToRequestMapperDao) {
         Ride ride = ridesDao.getRide(rideId);
-        int customerId = rideRequestsDao.getCustomerId(rideRequestId);
-        Random random = new Random();
+
+        int rideCustomerId = rideRequestsDao.getCustomerId(rideRequestId);
         double amount = rideToRequestMapperDao.getPaymentAmount(rideId, rideRequestId);
-        int paymentId = random.nextInt(100000);
-        Payment payment = new Payment(paymentId,rideId, customerId, ride.getDriverId(), amount, STATUS);
-        System.out.println("Payment: "+paymentId +","+ rideId+","+customerId+","+ride.getDriverId()+","+amount);
+        int newPaymentId = getRandomPaymentId();
+
+        Payment payment = new Payment(newPaymentId,rideId, rideCustomerId, ride.getDriverId(), amount, STATUS);
         paymentDao.insertPaymentRecord(payment);
     }
 
     @Override
     public List<Payment> getCustomerRideHistory(int customerId, IPaymentDao paymentDao) {
-        List<Payment> ridesPayment = paymentDao.getCustomerRidePaymentList(customerId);
-        return ridesPayment;
+        return paymentDao.getCustomerRidePaymentList(customerId);
     }
 
     @Override
@@ -92,5 +92,10 @@ public class Payment  implements IPayment {
     @Override
     public Payment fetchPaymentDetails(int customerId, int rideId, int driverId, IPaymentDao paymentDao) {
         return paymentDao.fetchPaymentDetails(customerId,rideId,driverId);
+    }
+
+    private int getRandomPaymentId(){
+        final int idBound = 1000;
+        return new Random().nextInt(idBound);
     }
 }

@@ -8,11 +8,12 @@ import com.halifaxcarpool.commons.database.dao.IUserDao;
 public class Customer extends User {
 
     private static IPasswordEncrypter passwordEncrypter;
-    public int customerId;
-    String customerName;
-    String customerContact;
-    String customerEmail;
-    String customerPassword;
+    private int customerId;
+    private String customerName;
+    private String customerContact;
+    private String customerEmail;
+    private String customerPassword;
+
     public Customer() {
         passwordEncrypter = new PasswordEncrypterImpl();
     }

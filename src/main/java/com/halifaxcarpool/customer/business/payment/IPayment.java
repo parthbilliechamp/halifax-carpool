@@ -10,16 +10,17 @@ import java.util.List;
 
 public interface IPayment {
 
-    public void insertPaymentDetails(int rideId, int rideRequestId, IPaymentDao paymentDao,
-                                     IRidesDao ridesDao, IRideRequestsDao rideRequestsDao, IRideToRequestMapperDao rideToRequestMapperDao);
+    void insertPaymentDetails(int rideId, int rideRequestId, IPaymentDao paymentDao,
+                              IRidesDao ridesDao, IRideRequestsDao rideRequestsDao,
+                              IRideToRequestMapperDao rideToRequestMapperDao);
 
-    public List<Payment> getCustomerRideHistory(int customerId, IPaymentDao paymentDao);
+    List<Payment> getCustomerRideHistory(int customerId, IPaymentDao paymentDao);
 
-    public double getAmountDue(int paymentId, IPaymentDao paymentDao);
+    double getAmountDue(int paymentId, IPaymentDao paymentDao);
 
-    public  boolean updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao);
+    boolean updatePaymentStatusToSuccess(int paymentId, IPaymentDao paymentDao);
 
-    public boolean driverUpdatePaymentStatus(int paymentId, IPaymentDao paymentDao);
+    boolean driverUpdatePaymentStatus(int paymentId, IPaymentDao paymentDao);
 
-    public Payment fetchPaymentDetails(int customerId, int rideId, int driverId, IPaymentDao paymentDao);
+    Payment fetchPaymentDetails(int customerId, int rideId, int driverId, IPaymentDao paymentDao);
 }

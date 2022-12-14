@@ -13,15 +13,15 @@ public class RideRequest implements IRideRequest {
     private String startLocation;
     private String endLocation;
 
-    public RideRequest() {
-
-    }
-
     public RideRequest(int rideRequestId, int customerId, String startLocation, String endLocation) {
         this.rideRequestId = rideRequestId;
         this.customerId = customerId;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
+    }
+
+    public RideRequest() {
+
     }
 
     @Override

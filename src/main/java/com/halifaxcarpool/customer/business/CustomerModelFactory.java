@@ -11,7 +11,7 @@ import com.halifaxcarpool.customer.business.recommendation.*;
 import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 
-public class CustomerModelMainFactory implements ICustomerModelFactory {
+public class CustomerModelFactory implements ICustomerModelFactory {
 
     @Override
     public User getCustomer() {

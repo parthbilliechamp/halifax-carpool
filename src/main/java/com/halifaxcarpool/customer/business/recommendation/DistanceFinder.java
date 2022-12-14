@@ -7,7 +7,7 @@ public class DistanceFinder {
     private static final int EARTH_RADIUS_KM = 6371;
 
     /**
-     * Method to find distance between two geo coordinates with
+     * Method to find distance between two geo coordinates
      */
     public static double findDistance(LatLng latLngStart, LatLng latLngEnd) {
 
