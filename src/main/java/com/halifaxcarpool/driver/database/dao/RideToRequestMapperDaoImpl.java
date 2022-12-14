@@ -3,7 +3,6 @@ package com.halifaxcarpool.driver.database.dao;
 import com.halifaxcarpool.commons.database.DatabaseImpl;
 import com.halifaxcarpool.commons.database.IDatabase;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
-import java.text.DecimalFormat;
 import java.sql.*;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
 
     IDatabase database;
     Connection connection;
-    private static final DecimalFormat df = new DecimalFormat("0.00");
     public RideToRequestMapperDaoImpl() {
         database = new DatabaseImpl();
     }
@@ -81,7 +79,7 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
 
     @Override
     public boolean updateRideRequestStatus(int rideId, int rideRequestId, String status) {
-        try{
+        try {
             connection = database.openDatabaseConnection();
             String query = "CALL update_ride_request_status(?,?,?);";
             CallableStatement statement = connection.prepareCall(query);
@@ -89,18 +87,14 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
             statement.setInt(1,rideId);
             statement.setInt(2,rideRequestId);
             statement.setString(3,status.toUpperCase());
-
-            System.out.println(query);
-            int result = statement.executeUpdate();
             return true;
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             database.closeDatabaseConnection();
         }
         return false;
-
     }
 
 
@@ -109,9 +103,12 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
     public double getPaymentAmount(int rideId,int rideRequestId) {
         try{
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL get_fair_price(" +
-                    ""+rideId+","+rideRequestId+")");
+
+            String query = "CALL get_fair_price(?,?);";
+            CallableStatement statement = connection.prepareCall(query);
+            statement.setInt(1, rideId);
+            statement.setInt(2, rideRequestId);
+            ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return Double.parseDouble(resultSet.getString(1));
         }

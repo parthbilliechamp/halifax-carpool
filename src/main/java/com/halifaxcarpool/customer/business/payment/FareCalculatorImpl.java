@@ -40,9 +40,11 @@ public class FareCalculatorImpl implements IFareCalculator{
 
         int requestCount = rideRequestsDao.getRideRequestCount(rideId);
         RideRequest rideRequest = rideRequestsDao.getRideRequest(rideRequestId);
-        int distance = (int)(directionPointsProvider.getDistanceBetweenSourceAndDestination(rideRequest.getStartLocation(), rideRequest.getEndLocation()));
+        int distance = (int)(directionPointsProvider.
+                getDistanceBetweenSourceAndDestination(rideRequest.getStartLocation(),
+                        rideRequest.getEndLocation()));
         int numOfSeatsOffered = ridesDao.getRide(rideId).getSeatsOffered();
-        double fare = 0;
+        double fare;
 
         if(requestCount > THRESHOLD_REQUESTS){
             fare = (INFLATION_MULTIPLICATION_FACTOR * distance)/ numOfSeatsOffered;

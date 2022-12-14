@@ -5,7 +5,6 @@ import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
 import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.business.recommendation.*;
-import com.halifaxcarpool.driver.business.IRideToRequestMapper;
 
 public interface ICustomerModelFactory {
 
@@ -14,8 +13,6 @@ public interface ICustomerModelFactory {
     IRideRequest getRideRequest();
 
     BaseRideFinder getDirectRouteRideFinder();
-
-    IRideToRequestMapper getRideToRequestMapper();
 
     DirectRouteRideFinderStrategy getDirectRideFinderStrategy();
 

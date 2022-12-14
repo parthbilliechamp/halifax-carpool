@@ -30,7 +30,9 @@ public class Driver extends User {
         this.driverId = builder.driverId;
     }
 
-    public Driver(Integer driverId, String driverEmail, String driverPassword, String driverLicense, String driverName, String registeredVehicleNumber, String licenseExpiryDate, String vehicleName, String vehicleModel, String vehicleColor, Integer driverApprovalStatus) {
+    public Driver(Integer driverId, String driverEmail, String driverPassword, String driverLicense,
+                  String driverName, String registeredVehicleNumber, String licenseExpiryDate, String vehicleName,
+                  String vehicleModel, String vehicleColor, Integer driverApprovalStatus) {
         this.driverId = driverId;
         this.driverEmail = driverEmail;
         this.driverPassword = driverPassword;
@@ -54,10 +56,6 @@ public class Driver extends User {
 
     public String getDriverEmail() {
         return driverEmail;
-    }
-
-    public void setDriverEmail(String driverEmail) {
-        this.driverEmail = driverEmail;
     }
 
     public String getDriverPassword() {
@@ -104,32 +102,16 @@ public class Driver extends User {
         return vehicleName;
     }
 
-    public void setVehicleName(String vehicleName) {
-        this.vehicleName = vehicleName;
-    }
-
     public String getVehicleModel() {
         return vehicleModel;
-    }
-
-    public void setVehicleModel(String vehicleModel) {
-        this.vehicleModel = vehicleModel;
     }
 
     public String getVehicleColor() {
         return vehicleColor;
     }
 
-    public void setVehicleColor(String vehicleColor) {
-        this.vehicleColor = vehicleColor;
-    }
-
     public Integer getDriverApprovalStatus() {
         return driverApprovalStatus;
-    }
-
-    public void setDriverApprovalStatus(Integer driverApprovalStatus) {
-        this.driverApprovalStatus = driverApprovalStatus;
     }
 
     @Override
@@ -151,16 +133,20 @@ public class Driver extends User {
 
     @Override
     public void registerUser(IUserDao userDao) throws Exception {
+        String driverEmailUnique = "driver_email_UNIQUE";
+        String errorMessage = "Some error has occurred";
+        String exceptionMessage = "Driver already exists";
         String encryptedPassword = passwordEncrypter.encrypt(this.driverPassword);
         setDriverPassword(encryptedPassword);
         try {
             userDao.registerUser(this);
         } catch (Exception e) {
-            if(e.getMessage().contains("driver_email_UNIQUE")) {
-                throw new Exception("Driver already exists");
+            if(e.getMessage().contains(driverEmailUnique)) {
+
+                throw new Exception(exceptionMessage);
             }
             else {
-                throw new Exception("Some error has occurred");
+                throw new Exception(errorMessage);
             }
         }
     }

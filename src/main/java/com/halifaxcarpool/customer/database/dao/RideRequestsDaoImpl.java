@@ -63,9 +63,14 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
     @Override
     public int getRideRequestCount(int rideId) {
         try{
+
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL get_ride_requests_count("+rideId+")");
+
+            String SQL_STRING = "{CALL get_ride_requests_count(?)}";
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(1, rideId);
+
+            ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return resultSet.getInt(1);
         }
@@ -82,12 +87,15 @@ public class RideRequestsDaoImpl implements IRideRequestsDao {
     public int getCustomerId(int rideRequestId) {
         try{
             connection = database.openDatabaseConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("CALL get_customer_id_from_ride_request("+rideRequestId+")");
+
+            String SQL_STRING = "{CALL get_customer_id_from_ride_request(?)}";
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(1, rideRequestId);
+            ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return resultSet.getInt(1);
         }
-        catch (SQLException e){
+        catch (SQLException e) {
             e.printStackTrace();
         }
         finally {

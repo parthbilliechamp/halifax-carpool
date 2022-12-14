@@ -1,15 +1,28 @@
 package com.halifaxcarpool.driver.business;
 
 import com.halifaxcarpool.commons.business.beans.User;
+import com.halifaxcarpool.driver.business.beans.Driver;
+import com.halifaxcarpool.driver.business.beans.Ride;
 
-public interface DriverModelFactory {
+public class DriverModelFactory implements IDriverModelFactory {
 
-    User getDriver();
+    @Override
+    public User getDriver() {
+        return new Driver();
+    }
 
-    IRide getDriverRide();
+    @Override
+    public IRide getDriverRide() {
+        return new Ride();
+    }
 
-    IRideNode getRideNode();
+    @Override
+    public IRideNode getRideNode() {
+        return new RideNodeImpl();
+    }
 
-    IRideToRequestMapper getRideToRequestMapper();
-
+    @Override
+    public IRideToRequestMapper getRideToRequestMapper() {
+        return new RideToRequestMapperImpl();
+    }
 }

@@ -59,7 +59,7 @@ public class PaymentDaoImpl implements IPaymentDao{
 
     @Override
     public double getAmountDue(int paymentId){
-        Double amountDue = 0.0;
+        double amountDue = 0.0;
         try{
             connection = database.openDatabaseConnection();
             CallableStatement statement = connection.prepareCall("CALL get_amount_due(?)");
@@ -104,7 +104,7 @@ public class PaymentDaoImpl implements IPaymentDao{
             statement.executeUpdate();
             return true;
         }
-        catch (SQLException e){
+        catch (SQLException e) {
             e.printStackTrace();
         }
         finally {
@@ -124,8 +124,7 @@ public class PaymentDaoImpl implements IPaymentDao{
             ResultSet resultSet = statement.executeQuery();
             List<Payment> payments = buildPaymentList(resultSet);
             if(payments.size() ==1) {
-                Payment payment = payments.get(0);
-                return payment;
+                return payments.get(0);
             }
             return null;
         }
@@ -141,12 +140,20 @@ public class PaymentDaoImpl implements IPaymentDao{
     private static List<Payment> buildPaymentList(ResultSet resultSet) throws SQLException{
         List<Payment> payments = new ArrayList<>();
         while(resultSet.next()){
-            int paymentId = Integer.parseInt(resultSet.getString("payment_id"));
-            int rideId = Integer.parseInt(resultSet.getString("ride_id"));
-            int customerId = Integer.parseInt(resultSet.getString("customer_id"));
-            int driverId = Integer.parseInt(resultSet.getString("driver_id"));
-            double amountDue = Double.parseDouble(resultSet.getString("amount_due"));
-            String paymentStatus = resultSet.getString("payment_status");
+            String paymentIdLiteral = "payment_id";
+            String rideIdLiteral = "ride_id";
+            String customerIdLiteral = "customer_id";
+            String driverIdLiteral = "driver_id";
+            String amountDueLiteral = "amount_due";
+            String paymentStatusLiteral = "payment_status";
+
+            int paymentId = Integer.parseInt(resultSet.getString(paymentIdLiteral));
+            int rideId = Integer.parseInt(resultSet.getString(rideIdLiteral));
+            int customerId = Integer.parseInt(resultSet.getString(customerIdLiteral));
+            int driverId = Integer.parseInt(resultSet.getString(driverIdLiteral));
+            double amountDue = Double.parseDouble(resultSet.getString(amountDueLiteral));
+
+            String paymentStatus = resultSet.getString(paymentStatusLiteral);
             Payment payment = new Payment(paymentId, rideId, customerId, driverId, amountDue, paymentStatus);
             payments.add(payment);
 

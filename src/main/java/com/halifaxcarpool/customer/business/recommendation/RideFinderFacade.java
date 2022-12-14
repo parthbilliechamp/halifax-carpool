@@ -6,10 +6,10 @@ import com.halifaxcarpool.commons.business.geocoding.IGeoCoding;
 import com.halifaxcarpool.customer.business.beans.RideNode;
 import com.halifaxcarpool.customer.business.beans.RideRequest;
 import com.halifaxcarpool.customer.business.beans.RideRequestNode;
-import com.halifaxcarpool.customer.business.beans.RouterFinderParameter;
+import com.halifaxcarpool.customer.business.beans.RouteFinderParameter;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
+import com.halifaxcarpool.driver.business.IDriverModelFactory;
 import com.halifaxcarpool.driver.business.DriverModelFactory;
-import com.halifaxcarpool.driver.business.DriverModelMainFactory;
 import com.halifaxcarpool.driver.business.IRide;
 import com.halifaxcarpool.driver.business.beans.Ride;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
@@ -23,7 +23,7 @@ public class RideFinderFacade {
     private final IRide ride;
 
     public RideFinderFacade() {
-        DriverModelFactory driverModelFactory = new DriverModelMainFactory();
+        IDriverModelFactory driverModelFactory = new DriverModelFactory();
         ride = driverModelFactory.getDriverRide();
     }
 
@@ -39,9 +39,9 @@ public class RideFinderFacade {
             throw new RuntimeException("Error finding coordinates of the ride request : " +
                     rideRequest.getRideRequestId());
         }
-        RouterFinderParameter routerFinderParameter =
-                new RouterFinderParameter(rideRequest, rideNodeDao, ridesDao, startLocationPoint, endLocationPoint);
-        List<Ride> recommendedRides = findDirectRouteRides(routerFinderParameter);
+        RouteFinderParameter routeFinderParameter =
+                new RouteFinderParameter(rideRequest, rideNodeDao, ridesDao, startLocationPoint, endLocationPoint);
+        List<Ride> recommendedRides = findDirectRouteRides(routeFinderParameter);
         List<List<Ride>> recommendedRidesWrapper = new ArrayList<>();
         convertListOfRidesToListOfListOfRides(recommendedRidesWrapper, recommendedRides);
         return recommendedRidesWrapper;
@@ -64,14 +64,14 @@ public class RideFinderFacade {
 
         for (int i = 1; i < rideRequestNodes.size() - 1 && ridesCache.size() <= 3; i += 3) {
             LatLng intermediateNode = rideRequestNodes.get(i);
-            RouterFinderParameter firstRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao,
+            RouteFinderParameter firstRouterFinderParameter = new RouteFinderParameter(rideRequest, rideNodeDao,
                     ridesDao, rideRequestStartNode, intermediateNode);
             List<Ride> ridesForFirstRoute =
                     findDirectRouteRides(firstRouterFinderParameter);
-            RouterFinderParameter secondRouterFinderParameter = new RouterFinderParameter(rideRequest, rideNodeDao,
+            RouteFinderParameter secondRouteFinderParameter = new RouteFinderParameter(rideRequest, rideNodeDao,
                     ridesDao, intermediateNode, endPointOfRideRequest);
             List<Ride> ridesForSecondRoute =
-                    findDirectRouteRides(secondRouterFinderParameter);
+                    findDirectRouteRides(secondRouteFinderParameter);
 
             if (0 != ridesForFirstRoute.size() && 0 != ridesForSecondRoute.size()) {
                 for (Ride ride1 : ridesForFirstRoute) {
@@ -91,12 +91,12 @@ public class RideFinderFacade {
         return new ArrayList<>(ridesCache.values());
     }
 
-    private List<Ride> findDirectRouteRides(RouterFinderParameter routerFinderParameter) {
-        IRideNodeDao rideNodeDao = routerFinderParameter.getRideNodeDao();
-        LatLng startLocationPoint = routerFinderParameter.getStartLocationPoint();
-        LatLng endLocationPoint = routerFinderParameter.getEndLocationPoint();
-        RideRequest rideRequest = routerFinderParameter.getRideRequest();
-        IRidesDao ridesDao = routerFinderParameter.getRidesDao();
+    private List<Ride> findDirectRouteRides(RouteFinderParameter routeFinderParameter) {
+        IRideNodeDao rideNodeDao = routeFinderParameter.getRideNodeDao();
+        LatLng startLocationPoint = routeFinderParameter.getStartLocationPoint();
+        LatLng endLocationPoint = routeFinderParameter.getEndLocationPoint();
+        RideRequest rideRequest = routeFinderParameter.getRideRequest();
+        IRidesDao ridesDao = routeFinderParameter.getRidesDao();
 
         List<RideNode> rideNodesNearToStartLocation = rideNodeDao.getRideNodes(startLocationPoint);
         List<RideNode> rideNodesNearToEndLocation = rideNodeDao.getRideNodes(endLocationPoint);

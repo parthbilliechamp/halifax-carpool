@@ -4,7 +4,7 @@ import com.halifaxcarpool.commons.business.beans.LatLng;
 import com.halifaxcarpool.customer.database.dao.IRideNodeDao;
 import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
-public class RouterFinderParameter {
+public class RouteFinderParameter {
 
     private final RideRequest rideRequest;
     private final IRideNodeDao rideNodeDao;
@@ -12,11 +12,11 @@ public class RouterFinderParameter {
     private final LatLng startLocationPoint;
     private final LatLng endLocationPoint;
 
-    public RouterFinderParameter(RideRequest rideRequest,
-                                 IRideNodeDao rideNodeDao,
-                                 IRidesDao ridesDao,
-                                 LatLng startLocationPoint,
-                                 LatLng endLocationPoint) {
+    public RouteFinderParameter(RideRequest rideRequest,
+                                IRideNodeDao rideNodeDao,
+                                IRidesDao ridesDao,
+                                LatLng startLocationPoint,
+                                LatLng endLocationPoint) {
         this.rideRequest = rideRequest;
         this.rideNodeDao = rideNodeDao;
         this.ridesDao = ridesDao;

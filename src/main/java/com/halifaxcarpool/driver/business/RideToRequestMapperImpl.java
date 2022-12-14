@@ -21,18 +21,19 @@ public class RideToRequestMapperImpl implements IRideToRequestMapper {
 
     @Override
     public List<RideRequest> viewApprovedRequest(int rideId, IRideToRequestMapperDao rideToRequestMapperDao) {
-        return  rideToRequestMapperDao.viewRidePassengers(rideId);
+        return rideToRequestMapperDao.viewRidePassengers(rideId);
     }
 
     @Override
-    public boolean updateRideRequestStatus(int rideId, int rideRequestId, String status, IRideToRequestMapperDao rideToRequestMapperDao) {
+    public boolean updateRideRequestStatus(int rideId, int rideRequestId, String status,
+                                           IRideToRequestMapperDao rideToRequestMapperDao) {
         return rideToRequestMapperDao.updateRideRequestStatus(rideId, rideRequestId, status);
     }
 
     @Override
-    public double getPaymentAmount(int rideId, int rideRequestId, IRideToRequestMapperDao rideToRequestMapperDao) {
+    public double getPaymentAmount(int rideId, int rideRequestId,
+                                   IRideToRequestMapperDao rideToRequestMapperDao) {
         return rideToRequestMapperDao.getPaymentAmount(rideId, rideRequestId);
     }
-
 
 }

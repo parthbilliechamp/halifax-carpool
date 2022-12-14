@@ -41,7 +41,9 @@ public class Ride implements IRide {
     }
 
     @Override
-    public boolean createNewRide(IRidesDao ridesDao, IRideNodeDao rideNodeDao, IDirectionPointsProvider directionPointsProvider, IRideNode rideNode) {
+    public boolean createNewRide(IRidesDao ridesDao, IRideNodeDao rideNodeDao,
+                                 IDirectionPointsProvider directionPointsProvider,
+                                 IRideNode rideNode) {
         boolean isRideCreated = ridesDao.createNewRide(this);
         if (Boolean.FALSE.equals(isRideCreated)) {
             return false;
@@ -116,10 +118,6 @@ public class Ride implements IRide {
         return rideStatus;
     }
 
-    public String getDateTime() {
-        return dateTime;
-    }
-
     public void setRideId(int rideId) {
         this.rideId = rideId;
     }
@@ -136,16 +134,8 @@ public class Ride implements IRide {
         this.endLocation = endLocation;
     }
 
-    public void setSeatsOffered(int seatsOffered) {
-        this.seatsOffered = seatsOffered;
-    }
-
     public void setRideStatus(int rideStatus) {
         this.rideStatus = rideStatus;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
     }
 
     public void withDriver(Driver driver) {

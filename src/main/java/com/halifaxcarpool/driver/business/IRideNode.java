@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface IRideNode {
 
-    boolean insertRideNodes(Ride ride, IRideNodeDao rideNodeDao, IDirectionPointsProvider directionPointsProvider);
+    boolean insertRideNodes(Ride ride, IRideNodeDao rideNodeDao,
+                            IDirectionPointsProvider directionPointsProvider);
 
     List<RideNode> getRideNodes(LatLng latLng, IRideNodeDao rideNodeDao);
 }

@@ -8,8 +8,6 @@ import com.halifaxcarpool.customer.business.payment.FareCalculatorImpl;
 import com.halifaxcarpool.customer.business.payment.IFareCalculator;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.business.recommendation.*;
-import com.halifaxcarpool.driver.business.IRideToRequestMapper;
-import com.halifaxcarpool.driver.business.RideToRequestMapperImpl;
 
 public class CustomerModelFactory implements ICustomerModelFactory {
 
@@ -26,11 +24,6 @@ public class CustomerModelFactory implements ICustomerModelFactory {
     @Override
     public BaseRideFinder getDirectRouteRideFinder() {
         return new DirectRouteRideFinder();
-    }
-
-    @Override
-    public IRideToRequestMapper getRideToRequestMapper() {
-        return new RideToRequestMapperImpl();
     }
 
     @Override

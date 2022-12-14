@@ -27,6 +27,7 @@ public class DriverDaoImpl extends IUserDao {
     public void registerUser(User user) throws Exception {
         Driver driver = (Driver) user;
         try {
+            String pattern = "yyyy-MM-dd";
             connection = database.openDatabaseConnection();
             Statement statement = connection.createStatement();
             String SQL_STRING = "{CALL insert_driver_details(?,?,?,?,?,?,?,?,?,?)}";
@@ -36,7 +37,7 @@ public class DriverDaoImpl extends IUserDao {
             stmt.setString(3, driver.getDriverLicense());
             stmt.setString(4, driver.getDriverName());
             stmt.setString(5, driver.getRegisteredVehicleNumber());
-            stmt.setString(6, new SimpleDateFormat("yyyy-MM-dd").format(getLicenseDate(driver)));
+            stmt.setString(6, new SimpleDateFormat(pattern).format(getLicenseDate(driver)));
             stmt.setString(7, driver.getVehicleName());
             stmt.setString(8, driver.getVehicleModel());
             stmt.setString(9, driver.getVehicleColor());

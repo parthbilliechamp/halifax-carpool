@@ -85,11 +85,9 @@ public class RidesDaoImpl implements IRidesDao {
             connection = database.openDatabaseConnection();
 
             String SQL_STRING = "{CALL view_ride(?)}";
-            CallableStatement stmt = connection.prepareCall(SQL_STRING);
-            stmt.setInt(1, rideId);
-
-            ResultSet resultSet = stmt.executeQuery();
-
+            CallableStatement statement = connection.prepareCall(SQL_STRING);
+            statement.setInt(1, rideId);
+            ResultSet resultSet = statement.executeQuery();
             ride = buildRidesFrom(resultSet).get(0);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,13 +154,20 @@ public class RidesDaoImpl implements IRidesDao {
 
         List<Ride> rideList = new ArrayList<>();
         while (resultSet.next()) {
-            int rideId = Integer.parseInt(resultSet.getString("ride_id"));
-            int driverId = Integer.parseInt(resultSet.getString("driver_id"));
-            String startLocation = resultSet.getString("start_location");
-            String endLocation = resultSet.getString("end_location");
-            int seatsOffered = Integer.parseInt(resultSet.getString("seats_offered"));
-            byte rideStatus = Byte.parseByte(resultSet.getString("ride_status"));
-            String dateTime = resultSet.getString("ride_date_time");
+            String rideIdLiteral = "ride_id";
+            String driverIdLiteral = "driver_id";
+            String startLocationLiteral = "start_location";
+            String endLocationLocation = "end_location";
+            String seatsOfferedLiteral = "seats_offered";
+            String rideStatusLiteral = "ride_status";
+            String rideDateTimeLiteral = "ride_date_time";
+            int rideId = Integer.parseInt(resultSet.getString(rideIdLiteral));
+            int driverId = Integer.parseInt(resultSet.getString(driverIdLiteral));
+            String startLocation = resultSet.getString(startLocationLiteral);
+            String endLocation = resultSet.getString(endLocationLocation);
+            int seatsOffered = Integer.parseInt(resultSet.getString(seatsOfferedLiteral));
+            byte rideStatus = Byte.parseByte(resultSet.getString(rideStatusLiteral));
+            String dateTime = resultSet.getString(rideDateTimeLiteral);
             Ride ride = new Ride(rideId, driverId, startLocation, endLocation, seatsOffered, rideStatus, dateTime);
             rideList.add(ride);
         }
