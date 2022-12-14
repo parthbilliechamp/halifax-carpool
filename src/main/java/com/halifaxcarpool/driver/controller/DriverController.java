@@ -3,7 +3,7 @@ package com.halifaxcarpool.driver.controller;
 import com.halifaxcarpool.commons.business.CommonsFactory;
 import com.halifaxcarpool.commons.business.ICommonsFactory;
 import com.halifaxcarpool.customer.business.ICustomerModelFactory;
-import com.halifaxcarpool.customer.business.CustomerModelMainFactory;
+import com.halifaxcarpool.customer.business.CustomerModelFactory;
 import com.halifaxcarpool.customer.business.beans.Payment;
 import com.halifaxcarpool.customer.business.payment.IPayment;
 import com.halifaxcarpool.customer.database.dao.*;
@@ -42,7 +42,7 @@ public class DriverController {
     private final IDriverDaoFactory driverDaoFactory = new DriverDaoFactory();
     private final ICustomerDaoFactory customerDaoFactory = new CustomerDaoFactory();
 
-    private final ICustomerModelFactory customerObjectFactory = new CustomerModelMainFactory();
+    private final ICustomerModelFactory customerObjectFactory = new CustomerModelFactory();
     private final ICommonsFactory commonsObjectFactory = new CommonsFactory();
 
     private static final String driverLiteral = "driver";

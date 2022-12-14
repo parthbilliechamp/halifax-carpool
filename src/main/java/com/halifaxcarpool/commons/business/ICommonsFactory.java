@@ -8,6 +8,5 @@ public interface ICommonsFactory {
 
     IUserAuthentication authenticateUser();
     IGeoCoding getGeoCoding();
-
     IDirectionPointsProvider getDirectionPointsProvider();
 }

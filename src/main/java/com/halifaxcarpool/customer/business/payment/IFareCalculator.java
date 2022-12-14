@@ -6,7 +6,8 @@ import com.halifaxcarpool.driver.database.dao.IRidesDao;
 
 public interface IFareCalculator {
 
-    public double calculateFair(int rideId, int rideRequestId , IRideRequestsDao rideRequestsDao, IRidesDao ridesDao, IDirectionPointsProvider directionPointsProvider);
-    public double calculateFinalAmount();
-    public void calculateDeduction();
+    double calculateFair(int rideId, int rideRequestId , IRideRequestsDao rideRequestsDao,
+                         IRidesDao ridesDao, IDirectionPointsProvider directionPointsProvider);
+    double calculateFinalAmount();
+    void calculateDeduction();
 }

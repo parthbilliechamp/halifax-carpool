@@ -36,10 +36,7 @@ public class PaymentDaoImpl implements IPaymentDao{
             database.closeDatabaseConnection();
             }
         return false;
-        }
-
-
-
+    }
 
     @Override
     public List<Payment> getCustomerRidePaymentList(int customerId) {
@@ -62,14 +59,14 @@ public class PaymentDaoImpl implements IPaymentDao{
 
     @Override
     public double getAmountDue(int paymentId){
+        Double amountDue = 0.0;
         try{
             connection = database.openDatabaseConnection();
             CallableStatement statement = connection.prepareCall("CALL get_amount_due(?)");
             statement.setInt(1,paymentId);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-            Double amountDue = Double.parseDouble(resultSet.getString(1));
-            return  amountDue;
+            amountDue = resultSet.getDouble(1);
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -77,7 +74,7 @@ public class PaymentDaoImpl implements IPaymentDao{
         finally {
             database.closeDatabaseConnection();
         }
-        return 0.0;
+        return  amountDue;
     }
 
     @Override

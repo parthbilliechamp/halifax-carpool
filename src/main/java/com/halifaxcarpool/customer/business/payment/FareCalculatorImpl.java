@@ -9,31 +9,20 @@ public class FareCalculatorImpl implements IFareCalculator{
     public static final int THRESHOLD_REQUESTS = 5;
     public static final double BASE_MULTIPLICATION_FACTOR = 10;
     public static final double  INFLATION_MULTIPLICATION_FACTOR= 20;
-    public double originalAmount;
-    public double deduction;
-    public double finalAmount;
+    private double originalAmount;
+    private double deduction;
+    private double finalAmount;
+    private double discountPercentage;
 
-    public double discountPercentage;
-
-    public double getFinalAmount(){
-        return this.finalAmount;
-    }
-    public double getDeduction(){
-        return this.deduction;
-    }
-    public double getOriginalAmount(){
-        return this.originalAmount;
-    }
-    public double getDiscountPercentage(){
-        return this.discountPercentage;
-    }
     public FareCalculatorImpl(double originalAmount, double discountPercentage){
         this.originalAmount = originalAmount;
         this.discountPercentage = discountPercentage;
     }
-    public FareCalculatorImpl(){
+
+    public FareCalculatorImpl() {
 
     }
+
     public double calculateFinalAmount(){
         calculateDeduction();
         this.finalAmount = this.originalAmount - this.deduction;
@@ -46,10 +35,10 @@ public class FareCalculatorImpl implements IFareCalculator{
 
 
     @Override
-    public double calculateFair(int rideId, int rideRequestId, IRideRequestsDao rideRequestsDao, IRidesDao ridesDao, IDirectionPointsProvider directionPointsProvider) {
+    public double calculateFair(int rideId, int rideRequestId, IRideRequestsDao rideRequestsDao,
+                                IRidesDao ridesDao, IDirectionPointsProvider directionPointsProvider) {
 
         int requestCount = rideRequestsDao.getRideRequestCount(rideId);
-        int numSeats = ridesDao.getRide(rideId).getSeatsOffered();
         RideRequest rideRequest = rideRequestsDao.getRideRequest(rideRequestId);
         int distance = (int)(directionPointsProvider.getDistanceBetweenSourceAndDestination(rideRequest.getStartLocation(), rideRequest.getEndLocation()));
         int numOfSeatsOffered = ridesDao.getRide(rideId).getSeatsOffered();
@@ -64,5 +53,18 @@ public class FareCalculatorImpl implements IFareCalculator{
         fare = Math.round(fare);
 
         return fare;
+    }
+
+    public double getFinalAmount(){
+        return this.finalAmount;
+    }
+    public double getDeduction(){
+        return this.deduction;
+    }
+    public double getOriginalAmount(){
+        return this.originalAmount;
+    }
+    public double getDiscountPercentage(){
+        return this.discountPercentage;
     }
 }

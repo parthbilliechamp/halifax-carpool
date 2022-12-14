@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ActiveProfiles("test")
 public class RideRequestImplTest {
 
-    ICustomerModelFactory customerModelFactory = new CustomerModelMainFactory();
+    ICustomerModelFactory customerModelFactory = new CustomerModelFactory();
     CustomerDaoTestFactory customerDaoTestFactory = new CustomerDaoTestFactory();
     IRideRequest rideRequest = customerModelFactory.getRideRequest();
     IRideRequestsDao rideRequestsDao = customerDaoTestFactory.getRideRequestsDao();
