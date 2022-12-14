@@ -87,8 +87,8 @@ public class RideToRequestMapperDaoImpl implements IRideToRequestMapperDao {
             statement.setInt(1,rideId);
             statement.setInt(2,rideRequestId);
             statement.setString(3,status.toUpperCase());
+            statement.execute();
             return true;
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

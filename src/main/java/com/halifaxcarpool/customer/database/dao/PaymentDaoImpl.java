@@ -123,7 +123,7 @@ public class PaymentDaoImpl implements IPaymentDao{
             statement.setInt(3, driverId);
             ResultSet resultSet = statement.executeQuery();
             List<Payment> payments = buildPaymentList(resultSet);
-            if(payments.size() ==1) {
+            if(payments.size() == 1) {
                 return payments.get(0);
             }
             return null;

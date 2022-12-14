@@ -62,7 +62,6 @@ public class DriverController {
     private static final String paymentLiteral = "payment";
     private static final String approvedRequestLiteral = "approvedRequest";
     private static final String ridesLiteral = "rides";
-    private static final String DRIVER_VIEW_RIDE_HISTORY = "view_ride_history";
     private static final String DRIVER_VIEW_MY_RIDES = "view_driver_my_rides";
     private static final String VIEW_PAYMENT_DETAILS = "view_driver_payment_status";
 
@@ -317,7 +316,7 @@ public class DriverController {
         model.addAttribute(approvedRequestLiteral, rideRequests);
         model.addAttribute(rideIdLiteral, rideId);
 
-        return DRIVER_VIEW_RIDE_HISTORY;
+        return "view_ride_history";
     }
 
     @GetMapping("/driver/update_payment_status")
