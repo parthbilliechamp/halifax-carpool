@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class CouponImplTest{
 
     private IAdminDaoFactory adminDaoFactory = new AdminDaoTestFactory();
+    private IAdminModelFactory adminModelFactory = new AdminModelFactory();
 
     private ICouponDao couponDaoMock = adminDaoFactory.getCouponDao();
 
@@ -22,13 +23,13 @@ public class CouponImplTest{
     @Test
     public void createCouponTest(){
         Coupon coupon = new Coupon(10,25,"2023-11-21");
-        ICoupon couponImpl = new Coupon();
+        ICoupon couponImpl = adminModelFactory.getCoupon();
         assert (couponImpl.createCoupon(coupon,couponDaoMock));
     }
 
     @Test
     public void getMaximumDiscountValidTodayTest(){
-        ICoupon couponImpl = new Coupon();
+        ICoupon couponImpl = adminModelFactory.getCoupon();
         assert (couponImpl.getMaximumDiscountValidToday(couponDaoMock) !=0);
     }
 
