@@ -1,6 +1,6 @@
 # Project Details
 * Read the complete project report [here](https://drive.google.com/file/d/1IV-6y123-gQ2x4QX_Pbu65yxqldnUWLQ/view?usp=share_link/)
-* View the project video presentation [here](https://drive.google.com/file/d/1IV-6y123-gQ2x4QX_Pbu65yxqldnUWLQ/view?usp=share_link/)
+* View the project video presentation [here](https://drive.google.com/file/d/1-4o1YN6ECCsIWmJIdgpgo_zxZURj09Rt/view/)
 
 # Abstract
 
