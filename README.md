@@ -27,6 +27,10 @@ The main goal of this project is to create a web application that provides effic
 # Tools
 
   - [Java with SpringBoot](https://spring.io/projects/spring-boot)
+    - For implementing the backend services.
+
+  - [Gradle](https://gradle.org/)
+    - Build tool for the project
    
   - [React JS](https://react.dev/)
     - For developing the front end of the application
